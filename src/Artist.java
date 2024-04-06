@@ -12,8 +12,8 @@ public class Artist extends User {
         this.rating = 0.0;
     }
 
-    public Artist(int userId, String username, String password, String email, String phone, String name, int age, Location location, String bio, String genre, double rating) {
-        super(userId, username, password, email, phone, name, age, location);
+    public Artist(int userId, String username, String password, String name, int age, Location location, String bio, String genre, double rating) {
+        super(userId, username, password, name, age, location);
         this.bio = bio;
         this.genre = genre;
         this.rating = rating;
@@ -47,10 +47,10 @@ public class Artist extends User {
 
     public void fromCSV(String csv) {
         String[] values = csv.split(",");
-        super.fromCSV(values[0] + "," + values[1] + "," + values[2] + "," + values[3] + "," + values[4] + "," + values[5] + "," + values[6] + "," + values[7] + "," + values[8]);
-        this.bio = values[9];
-        this.genre = values[10];
-        this.rating = Double.parseDouble(values[11]);
+        super.fromCSV(values[0] + "," + values[1] + "," + values[2] + "," + values[3] + "," + values[4] + "," + values[5] + "," + values[6] + "," + values[7] + "," + values[8] + "," + values[9] + "," + values[10]);
+        this.bio = values[11];
+        this.genre = values[12];
+        this.rating = Double.parseDouble(values[13]);
     }
 
     public void fromInput(Scanner scanner) {
@@ -62,7 +62,5 @@ public class Artist extends User {
         System.out.print("Enter rating: ");
         this.rating = scanner.nextDouble();
     }
-
-    
 
 }
