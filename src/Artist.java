@@ -12,11 +12,19 @@ public class Artist extends User {
         this.rating = 0.0;
     }
 
-    public Artist(int userId, String username, String password, String name, int age, Location location, String bio, String genre, double rating) {
+    public Artist(int userId, String username, String password) {
+        super(userId, username, password);
+        this.bio = "";
+        this.genre = "";
+        this.rating = 0.0;
+    }
+
+    public Artist(int userId, String username, String password, String name, int age, Location location, String bio, String genre){//, double rating) {
         super(userId, username, password, name, age, location);
         this.bio = bio;
         this.genre = genre;
-        this.rating = rating;
+        //this.rating = rating;
+        this.rating = 0.0;
     }
 
     public Artist(Artist artist) {

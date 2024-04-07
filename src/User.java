@@ -23,6 +23,15 @@ public abstract class User {
         this.reviews = new ArrayList<Review>();
     }
 
+    public User(int userId, String username, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.name = "";
+        this.age = 0;
+        this.location = null;
+    }
+
     public User(int userId, String username, String password, String name, int age, Location location) {
         this.userId = userId;
         this.username = username;
