@@ -22,23 +22,23 @@ public class Customer extends User {
     
     public Customer() {
         super();
-        this.tickets = new TreeSet<Ticket>();
+        this.tickets = new TreeSet<>();
         //this.wishlist = new ArrayList<model.Event>();
-        this.history = new ArrayList<Event>();
-        this.favorites = new TreeSet<Event>();
-        this.followedArtists = new ArrayList<Artist>();
-        this.reviews = new ArrayList<Review>();
+        this.history = new ArrayList<>();
+        this.favorites = new TreeSet<>();
+        this.followedArtists = new ArrayList<>();
+        this.reviews = new ArrayList<>();
         this.wallet = 0.0;
     }
 
     public Customer(int userId, String username, String password) {
         super(userId, username, password);
-        this.tickets = new TreeSet<Ticket>();
+        this.tickets = new TreeSet<>();
         //this.wishlist = new ArrayList<model.Event>();
-        this.history = new ArrayList<Event>();
-        this.favorites = new TreeSet<Event>();
-        this.followedArtists = new ArrayList<Artist>();
-        this.reviews = new ArrayList<Review>();
+        this.history = new ArrayList<>();
+        this.favorites = new TreeSet<>();
+        this.followedArtists = new ArrayList<>();
+        this.reviews = new ArrayList<>();
         this.wallet = 0.0;
     }
     
@@ -51,23 +51,23 @@ public class Customer extends User {
         this.followedArtists = new ArrayList<user.Artist>(followedArtists);
         this.reviews = new ArrayList<model.Review>(reviews);
         this.wallet = wallet;*/
-        this.tickets = new TreeSet<Ticket>();
+        this.tickets = new TreeSet<>();
         //this.wishlist = new ArrayList<model.Event>();
-        this.history = new ArrayList<Event>();
-        this.favorites = new TreeSet<Event>();
-        this.followedArtists = new ArrayList<Artist>();
-        this.reviews = new ArrayList<Review>();
+        this.history = new ArrayList<>();
+        this.favorites = new TreeSet<>();
+        this.followedArtists = new ArrayList<>();
+        this.reviews = new ArrayList<>();
         this.wallet = 0;
     }
     
     public Customer(Customer customer) {
         super(customer);
-        this.tickets = new TreeSet<Ticket>(customer.getTickets());
+        this.tickets = new TreeSet<>(customer.getTickets());
         //this.wishlist = new ArrayList<model.Event>(customer.getWishlist());
-        this.history = new ArrayList<Event>(customer.getHistory());
-        this.favorites = new TreeSet<Event>(customer.getFavorites());
-        this.followedArtists = new ArrayList<Artist>(customer.getFollowedArtists());
-        this.reviews = new ArrayList<Review>(customer.getReviews());
+        this.history = new ArrayList<>(customer.getHistory());
+        this.favorites = new TreeSet<>(customer.getFavorites());
+        this.followedArtists = new ArrayList<>(customer.getFollowedArtists());
+        this.reviews = new ArrayList<>(customer.getReviews());
         this.wallet = customer.getWallet();
     }
     
@@ -79,12 +79,12 @@ public class Customer extends User {
     public List<Review> getReviews() { return reviews; }
     public double getWallet() { return wallet; }
     
-    public void setTickets(TreeSet<Ticket> tickets) { this.tickets = new TreeSet<Ticket>(tickets); }
+    public void setTickets(TreeSet<Ticket> tickets) { this.tickets = new TreeSet<>(tickets); }
     //public void setWishlist(List<model.Event> wishlist) { this.wishlist = new ArrayList<model.Event>(wishlist); }
-    public void setHistory(List<Event> history) { this.history = new ArrayList<Event>(history); }
-    public void setFavorites(TreeSet<Event> favorites) { this.favorites = new TreeSet<Event>(favorites); }
-    public void setFollowedArtists(List<Artist> followedArtists) { this.followedArtists = new ArrayList<Artist>(followedArtists); }
-    public void setReviews(List<Review> reviews) { this.reviews = new ArrayList<Review>(reviews); }
+    public void setHistory(List<Event> history) { this.history = new ArrayList<>(history); }
+    public void setFavorites(TreeSet<Event> favorites) { this.favorites = new TreeSet<>(favorites); }
+    public void setFollowedArtists(List<Artist> followedArtists) { this.followedArtists = new ArrayList<>(followedArtists); }
+    public void setReviews(List<Review> reviews) { this.reviews = new ArrayList<>(reviews); }
     public void setWallet(double wallet) { this.wallet = wallet; }
     
     public String toString() {
@@ -102,12 +102,12 @@ public class Customer extends User {
     public void fromCSV(String csv) {
         String[] values = csv.split(",");
         super.fromCSV(values[0] + "," + values[1] + "," + values[2] + "," + values[3] + "," + values[4] + "," + values[5] + "," + values[6] + "," + values[7] + "," + values[8] + "," + values[9] + "," + values[10]);
-        this.tickets = new TreeSet<Ticket>();
+        this.tickets = new TreeSet<>();
         //this.wishlist = new ArrayList<model.Event>();
-        this.history = new ArrayList<Event>();
-        this.favorites = new TreeSet<Event>();
-        this.followedArtists = new ArrayList<Artist>();
-        this.reviews = new ArrayList<Review>();
+        this.history = new ArrayList<>();
+        this.favorites = new TreeSet<>();
+        this.followedArtists = new ArrayList<>();
+        this.reviews = new ArrayList<>();
         this.wallet = 0.0;
     }
     
@@ -118,9 +118,7 @@ public class Customer extends User {
     }
     
     public void addTicket(Ticket ticket) { tickets.add(ticket); }
-    
     public void removeTicket(Ticket ticket) { tickets.remove(ticket); }
-
     public void showTickets() {
         for (Ticket ticket : tickets)
             System.out.println(ticket);
@@ -143,34 +141,27 @@ public class Customer extends User {
     }
     
     public void addEventToFavorites(Event event) { favorites.add(event); }
-    
     public void removeEventFromFavorites(Event event) { favorites.remove(event); }
-
     public void showFavorites() {
         for (Event event : favorites)
             System.out.println(event);
     }
     
     public void addArtistToFollowedArtists(Artist artist) { followedArtists.add(artist); }
-    
     public void removeArtistFromFollowedArtists(Artist artist) { followedArtists.remove(artist); }
-
     public void showFollowedArtists() {
         for (Artist artist : followedArtists)
             System.out.println(artist);
     }
     
     public void addReview(Review review) { reviews.add(review); }
-    
     public void removeReview(Review review) { reviews.remove(review); }
-
     public void showReviews() {
         for (Review review : reviews)
             System.out.println(review);
     }
     
     public void addFunds(double amount) { wallet += amount; }
-
     public void showWallet() { System.out.println("Wallet: " + wallet); }
     
     public void purchaseTicket(Ticket ticket) {

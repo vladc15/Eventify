@@ -17,10 +17,10 @@ public class RegistrationService {
     private User currentUser;
 
     public RegistrationService() {
-        this.customers = new ArrayList<Customer>();
-        this.artists = new ArrayList<Artist>();
+        this.customers = new ArrayList<>();
+        this.artists = new ArrayList<>();
         this.admin = Admin.getInstance();
-        this.ids = new HashSet<Integer>();
+        this.ids = new HashSet<>();
         this.currentUser = null;
     }
 
@@ -30,10 +30,10 @@ public class RegistrationService {
     public Set<Integer> getIds() { return ids; }
     public User getCurrentUser() { return currentUser; }
 
-    public void setCustomers(List<Customer> customers) { this.customers = new ArrayList<Customer>(customers); }
-    public void setArtists(List<Artist> artists) { this.artists = new ArrayList<Artist>(artists); }
+    public void setCustomers(List<Customer> customers) { this.customers = new ArrayList<>(customers); }
+    public void setArtists(List<Artist> artists) { this.artists = new ArrayList<>(artists); }
     public void setAdmin(Admin admin) { this.admin = admin; }
-    public void setIds(Set<Integer> ids) { this.ids = new HashSet<Integer>(ids); }
+    public void setIds(Set<Integer> ids) { this.ids = new HashSet<>(ids); }
     public void setCurrentUser(User currentUser) { this.currentUser = currentUser; }
 
     public int logIn(String username, String password) {
@@ -113,7 +113,7 @@ public class RegistrationService {
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
-        if (response == "yes") {
+        if (response.equals("yes")) {
             System.out.println("Customer name:");
             String name = scanner.nextLine();
             System.out.println("Customer age:");
@@ -149,7 +149,7 @@ public class RegistrationService {
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
-        if (response == "yes") {
+        if (response.equals("yes")) {
             System.out.println("Artist name:");
             String name = scanner.nextLine();
             System.out.println("Artist age:");

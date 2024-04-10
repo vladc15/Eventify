@@ -1,5 +1,4 @@
 import application.App;
-import model.ConcertTicket;
 import service.AdminService;
 import service.ArtistService;
 import service.CustomerService;

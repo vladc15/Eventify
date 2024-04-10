@@ -34,10 +34,10 @@ public abstract class Event implements Comparable<Event>{
         this.totalTickets = 0;
         this.availableTickets = 0;
         this.location = new Location();
-        this.artists = new ArrayList<Artist>();
+        this.artists = new ArrayList<>();
         this.seats = new ArrayList<List<Character>>();
-        this.reviews = new ArrayList<Review>();
-        this.ticketPrices = new HashMap<String, Double>();
+        this.reviews = new ArrayList<>();
+        this.ticketPrices = new HashMap<>();
         this.genre = "";
     }
 
@@ -53,7 +53,7 @@ public abstract class Event implements Comparable<Event>{
         this.totalTickets = totalTickets;
         this.availableTickets = availableTickets;
         this.location = new Location(location);
-        this.artists = new ArrayList<Artist>(artists);
+        this.artists = new ArrayList<>(artists);
 
         //this.seats = new ArrayList<List<Character>>(seats);
         this.seats = new ArrayList<>();
@@ -64,7 +64,7 @@ public abstract class Event implements Comparable<Event>{
             }
             seats.add(row);
         }
-        this.reviews = new ArrayList<Review>();
+        this.reviews = new ArrayList<>();
         this.ticketPrices = new HashMap<String, Double>(ticketPrices);
         this.genre = genre;
     }
@@ -222,7 +222,7 @@ public abstract class Event implements Comparable<Event>{
         Location location = new Location();
         location.fromInput(scanner);
         this.location = location;
-        artists = new ArrayList<Artist>();
+        artists = new ArrayList<>();
         System.out.print("Enter number of artists: ");
         int numberOfArtists = scanner.nextInt();
         for (int i = 0; i < numberOfArtists; i++) {
@@ -243,7 +243,7 @@ public abstract class Event implements Comparable<Event>{
             }
             seats.add(row);
         }
-        reviews = new ArrayList<Review>();
+        reviews = new ArrayList<>();
         System.out.print("Enter number of reviews: ");
         int numberOfReviews = scanner.nextInt();
         for (int i = 0; i < numberOfReviews; i++) {

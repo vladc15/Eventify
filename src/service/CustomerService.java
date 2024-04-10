@@ -325,7 +325,7 @@ public class CustomerService implements IUserService {
             List<Event> futureEvents = getFutureEvents();
             Location userLocation = customer.getLocation();
             for (Event event : futureEvents)
-                if (event.getLocation().getCity() == userLocation.getCity())
+                if (event.getLocation().getCity().equals(userLocation.getCity()))
                     System.out.println(event);
         } else if (option == 3) {
             System.out.println("Enter date: ");

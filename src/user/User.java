@@ -26,7 +26,7 @@ public abstract class User {
         this.name = "";
         this.age = 0;
         this.location = new Location();
-        this.reviews = new ArrayList<Review>();
+        this.reviews = new ArrayList<>();
     }
 
     public User(int userId, String username, String password) {
@@ -46,7 +46,7 @@ public abstract class User {
         this.age = age;
         //this.location = location;
         this.location = new Location(location);
-        this.reviews = new ArrayList<Review>();
+        this.reviews = new ArrayList<>();
     }
 
     public User(User user) {
@@ -57,7 +57,7 @@ public abstract class User {
         this.age = user.getAge();
         //this.location = user.getLocation();
         this.location = new Location(user.getLocation());
-        this.reviews = new ArrayList<Review>(user.getReviews());
+        this.reviews = new ArrayList<>(user.getReviews());
     }
 
     public int getUserId() { return userId; }
@@ -74,7 +74,7 @@ public abstract class User {
     public void setName(String name) { this.name = name; }
     public void setAge(int age) { this.age = age; }
     public void setLocation(Location location) { this.location = new Location(location); }
-    public void setReviews(List<Review> reviews) { this.reviews = new ArrayList<Review>(reviews); }
+    public void setReviews(List<Review> reviews) { this.reviews = new ArrayList<>(reviews); }
 
     public String toString() { return "Username: " + username + ", Name: " + name + ", Age: " + age + ", model.Location: " + location; }
     public String toCSV() { return userId + "," + username + "," + password + "," + name + "," + age + "," + location.toCSV(); }

@@ -27,9 +27,9 @@ public class App {
     private List<Ticket> tickets;
 
     private App() {
-        this.futureEvents = new ArrayList<Event>();
-        this.pastEvents = new ArrayList<Event>();
-        this.tickets = new ArrayList<Ticket>();
+        this.futureEvents = new ArrayList<>();
+        this.pastEvents = new ArrayList<>();
+        this.tickets = new ArrayList<>();
         this.registrationService = new RegistrationService();
     }
 
@@ -53,9 +53,9 @@ public class App {
 //    public void setArtists(List<user.Artist> artists) { this.artists = new ArrayList<user.Artist>(artists); }
 //    public void setAdmin(user.Admin admin) { this.admin = admin; }
 //    public void setIds(Set<Integer> ids) { this.ids = new HashSet<Integer>(ids); }
-    public void setFutureEvents(List<Event> futureEvents) { this.futureEvents = new ArrayList<Event>(futureEvents); }
-    public void setPastEvents(List<Event> pastEvents) { this.pastEvents = new ArrayList<Event>(pastEvents); }
-    public void setTickets(List<Ticket> tickets) { this.tickets = new ArrayList<Ticket>(tickets); }
+    public void setFutureEvents(List<Event> futureEvents) { this.futureEvents = new ArrayList<>(futureEvents); }
+    public void setPastEvents(List<Event> pastEvents) { this.pastEvents = new ArrayList<>(pastEvents); }
+    public void setTickets(List<Ticket> tickets) { this.tickets = new ArrayList<>(tickets); }
     
 //    public void addCustomer(user.Customer customer) { customers.add(customer); }
 //    public void addArtist(user.Artist artist) { artists.add(artist); }

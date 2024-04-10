@@ -74,7 +74,7 @@ public interface IUserService {
                     System.out.println("Enter the type of the ticket you want to update: ");
                     String type = scanner.nextLine();
                     System.out.println("Enter new price: ");
-                    Double price = scanner.nextDouble();
+                    double price = scanner.nextDouble();
                     scanner.nextLine();
                     event.updateTickets(type, price);
                 }
