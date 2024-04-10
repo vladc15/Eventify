@@ -82,44 +82,44 @@ public class RegistrationService {
 
     public void signUpAdmin(Scanner scanner) {
         if (this.admin != null) {
-            System.out.println("user.Admin already exists! Only one admin is allowed.");
+            System.out.println("Admin already exists! Only one admin is allowed.");
             return;
         }
-        System.out.println("user.Admin username:");
+        System.out.println("Admin username:");
         String username = scanner.nextLine();
         // check if username is already taken, even for admin
-        while (checkUsername(username)) {
+        while (!checkUsername(username)) {
             System.out.println("Username already exists! Choose another one!");
             username = scanner.nextLine();
         }
-        System.out.println("user.Admin password:");
+        System.out.println("Admin password:");
         String password = scanner.nextLine();
         int allocated_id = allocateId();
         this.admin = Admin.getInstance(allocated_id, username, password);
-        System.out.println("user.Admin account created successfully!");
+        System.out.println("Admin account created successfully!");
     }
 
     public void signUpCustomer(Scanner scanner) {
-        System.out.println("user.Customer username:");
+        System.out.println("Customer username:");
         String username = scanner.nextLine();
 
-        while (checkUsername(username)) {
+        while (!checkUsername(username)) {
             System.out.println("Username already exists! Choose another one!");
             username = scanner.nextLine();
         }
 
-        System.out.println("user.Customer password:");
+        System.out.println("Customer password:");
         String password = scanner.nextLine();
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
         if (response == "yes") {
-            System.out.println("user.Customer name:");
+            System.out.println("Customer name:");
             String name = scanner.nextLine();
-            System.out.println("user.Customer age:");
+            System.out.println("Customer age:");
             int age = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("user.Customer location:");
+            System.out.println("Customer location:");
             Location location = new Location();
             location.fromInput(scanner);
             int allocated_id = allocateId();
@@ -132,35 +132,35 @@ public class RegistrationService {
             Customer customer = new Customer(allocated_id, username, password);
             customers.add(customer);
         }
-        System.out.println("user.Customer account created successfully!");
+        System.out.println("Customer account created successfully!");
     }
 
     public void signUpArtist(Scanner scanner) {
-        System.out.println("user.Artist username:");
+        System.out.println("Artist username:");
         String username = scanner.nextLine();
 
-        while (checkUsername(username)) {
+        while (!checkUsername(username)) {
             System.out.println("Username already exists! Choose another one!");
             username = scanner.nextLine();
         }
 
-        System.out.println("user.Artist password:");
+        System.out.println("Artist password:");
         String password = scanner.nextLine();
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
         if (response == "yes") {
-            System.out.println("user.Artist name:");
+            System.out.println("Artist name:");
             String name = scanner.nextLine();
-            System.out.println("user.Artist age:");
+            System.out.println("Artist age:");
             int age = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("user.Artist location:");
+            System.out.println("Artist location:");
             Location location = new Location();
             location.fromInput(scanner);
-            System.out.println("user.Artist bio:");
+            System.out.println("Artist bio:");
             String bio = scanner.nextLine();
-            System.out.println("user.Artist genre:");
+            System.out.println("Artist genre:");
             String genre = scanner.nextLine();
             int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password, name, age, location, bio, genre);
@@ -172,7 +172,7 @@ public class RegistrationService {
             Artist artist = new Artist(allocated_id, username, password);
             artists.add(artist);
         }
-        System.out.println("user.Artist account created successfully!");
+        System.out.println("Artist account created successfully!");
     }
 
     public void deleteCustomer(Customer customer) { customers.remove(customer); }
