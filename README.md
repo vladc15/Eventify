@@ -1,1 +1,1 @@
-## Eventify - model.Ticket Booking Platform
+## Eventify - Ticket Booking Platform
