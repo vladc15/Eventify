@@ -48,6 +48,14 @@ public class ConcertTicket extends Ticket {
         this.meetAndGreetPrice = scanner.nextDouble();
     }
 
+    public void fromInputEvent(Scanner scanner, Event event) {
+        super.fromInputEvent(scanner, event);
+        System.out.print("Enter after party price: ");
+        this.afterPartyPrice = scanner.nextDouble();
+        System.out.print("Enter meet and greet price: ");
+        this.meetAndGreetPrice = scanner.nextDouble();
+    }
+
     public int compareTo(ConcertTicket concertTicket) {
         return super.compareTo(concertTicket);
     }

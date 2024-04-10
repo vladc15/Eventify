@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 public class Customer extends User {
     private TreeSet<Ticket> tickets;
-    private List<Event> wishlist;
+    //private List<Event> wishlist;
     private List<Event> history;
     private TreeSet<Event> favorites;
     private List<Artist> followedArtists;
@@ -16,7 +16,7 @@ public class Customer extends User {
     public Customer() {
         super();
         this.tickets = new TreeSet<Ticket>();
-        this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -27,7 +27,7 @@ public class Customer extends User {
     public Customer(int userId, String username, String password) {
         super(userId, username, password);
         this.tickets = new TreeSet<Ticket>();
-        this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -45,7 +45,7 @@ public class Customer extends User {
         this.reviews = new ArrayList<Review>(reviews);
         this.wallet = wallet;*/
         this.tickets = new TreeSet<Ticket>();
-        this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -56,7 +56,7 @@ public class Customer extends User {
     public Customer(Customer customer) {
         super(customer);
         this.tickets = new TreeSet<Ticket>(customer.getTickets());
-        this.wishlist = new ArrayList<Event>(customer.getWishlist());
+        //this.wishlist = new ArrayList<Event>(customer.getWishlist());
         this.history = new ArrayList<Event>(customer.getHistory());
         this.favorites = new TreeSet<Event>(customer.getFavorites());
         this.followedArtists = new ArrayList<Artist>(customer.getFollowedArtists());
@@ -65,7 +65,7 @@ public class Customer extends User {
     }
     
     public TreeSet<Ticket> getTickets() { return tickets; }
-    public List<Event> getWishlist() { return wishlist; }
+    //public List<Event> getWishlist() { return wishlist; }
     public List<Event> getHistory() { return history; }
     public TreeSet<Event> getFavorites() { return favorites; }
     public List<Artist> getFollowedArtists() { return followedArtists; }
@@ -73,7 +73,7 @@ public class Customer extends User {
     public double getWallet() { return wallet; }
     
     public void setTickets(TreeSet<Ticket> tickets) { this.tickets = new TreeSet<Ticket>(tickets); }
-    public void setWishlist(List<Event> wishlist) { this.wishlist = new ArrayList<Event>(wishlist); }
+    //public void setWishlist(List<Event> wishlist) { this.wishlist = new ArrayList<Event>(wishlist); }
     public void setHistory(List<Event> history) { this.history = new ArrayList<Event>(history); }
     public void setFavorites(TreeSet<Event> favorites) { this.favorites = new TreeSet<Event>(favorites); }
     public void setFollowedArtists(List<Artist> followedArtists) { this.followedArtists = new ArrayList<Artist>(followedArtists); }
@@ -81,22 +81,22 @@ public class Customer extends User {
     public void setWallet(double wallet) { this.wallet = wallet; }
     
     public String toString() {
-        return super.toString() + ", Tickets: " + tickets.toString() + ", Wishlist: " + wishlist.toString() + ", History: " + history.toString() + ", Favorites: " + favorites.toString() + ", Followed Artists: " + followedArtists.toString() + ", Reviews: " + reviews.toString() + ", Wallet: " + wallet;
+        return super.toString() + ", Tickets: " + tickets.toString() + ", History: " + history.toString() + ", Favorites: " + favorites.toString() + ", Followed Artists: " + followedArtists.toString() + ", Reviews: " + reviews.toString() + ", Wallet: " + wallet;
     }
     
     public String toCSV() {
-        return super.toCSV() + "," + tickets.toString() + "," + wishlist.toString() + "," + history.toString() + "," + favorites.toString() + "," + followedArtists.toString() + "," + reviews.toString() + "," + wallet;
+        return super.toCSV() + "," + tickets.toString() + "," + history.toString() + "," + favorites.toString() + "," + followedArtists.toString() + "," + reviews.toString() + "," + wallet;
     }
     
     public boolean equals(Customer customer) {
-        return super.equals(customer) && tickets.equals(customer.getTickets()) && wishlist.equals(customer.getWishlist()) && history.equals(customer.getHistory()) && favorites.equals(customer.getFavorites()) && followedArtists.equals(customer.getFollowedArtists()) && reviews.equals(customer.getReviews()) && wallet == customer.getWallet();
+        return super.equals(customer) && tickets.equals(customer.getTickets()) && history.equals(customer.getHistory()) && favorites.equals(customer.getFavorites()) && followedArtists.equals(customer.getFollowedArtists()) && reviews.equals(customer.getReviews()) && wallet == customer.getWallet();
     }
     
     public void fromCSV(String csv) {
         String[] values = csv.split(",");
         super.fromCSV(values[0] + "," + values[1] + "," + values[2] + "," + values[3] + "," + values[4] + "," + values[5] + "," + values[6] + "," + values[7] + "," + values[8] + "," + values[9] + "," + values[10]);
         this.tickets = new TreeSet<Ticket>();
-        this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -119,14 +119,14 @@ public class Customer extends User {
             System.out.println(ticket);
     }
     
-    public void addEventToWishlist(Event event) { wishlist.add(event); }
+    //public void addEventToWishlist(Event event) { wishlist.add(event); }
     
-    public void removeEventFromWishlist(Event event) { wishlist.remove(event); }
+    //public void removeEventFromWishlist(Event event) { wishlist.remove(event); }
 
-    public void showWishlist() {
+    /*public void showWishlist() {
         for (Event event : wishlist)
             System.out.println(event);
-    }
+    }*/
     
     public void addEventToHistory(Event event) { history.add(event); }
 

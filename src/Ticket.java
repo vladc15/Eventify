@@ -65,6 +65,16 @@ public abstract class Ticket implements Comparable<Ticket> {
         System.out.print("Enter seat: ");
         this.seat = scanner.nextLine();
     }
+
+    public void fromInputEvent(Scanner scanner, Event event) {
+        System.out.print("Enter ticket ID: ");
+        this.ticketId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter type: ");
+        this.type = scanner.nextLine();
+        System.out.print("Enter seat: ");
+        this.seat = scanner.nextLine();
+    }
     
     public double getPrice() {
         return event.getTicketPrices().get(type);

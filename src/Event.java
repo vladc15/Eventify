@@ -297,6 +297,12 @@ public abstract class Event implements Comparable<Event>{
         showSeats();
     }
 
+    public void showReviews() {
+        for (Review review : reviews) {
+            System.out.println(review);
+        }
+    }
+
     public void showEventWithoutSeats() {
         System.out.println("Event ID: " + eventId + ", Name: " + name + ", Description: " + description + ", Date: " + date + ", Time: " + time + ", Duration: " + duration + ", Total Tickets: " + totalTickets + ", Available Tickets: " + availableTickets + ", Location: " + location + ", Artists: " + artists);
     }
@@ -339,5 +345,9 @@ public abstract class Event implements Comparable<Event>{
         if (ratingComparison > 0)
             return 1;
         return reviews.size() - event.getReviews().size();
+    }
+
+    public void updateTickets(String type, double price) {
+        ticketPrices.put(type, price);
     }
 }

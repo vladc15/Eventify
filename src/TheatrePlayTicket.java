@@ -39,6 +39,12 @@ public class TheatrePlayTicket extends Ticket {
         this.qaPrice = scanner.nextDouble();
     }
 
+    public void fromInputEvent(Scanner scanner, Event event) {
+        super.fromInputEvent(scanner, event);
+        System.out.print("Enter QA price: ");
+        this.qaPrice = scanner.nextDouble();
+    }
+
     public int compareTo(TheatrePlayTicket theatrePlayTicket) {
         return super.compareTo(theatrePlayTicket);
     }

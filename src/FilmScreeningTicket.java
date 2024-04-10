@@ -47,6 +47,14 @@ public class FilmScreeningTicket extends Ticket {
         System.out.print("Enter IMAX price: ");
         this.imaxPrice = scanner.nextDouble();
     }
+
+    public void fromInputEvent(Scanner scanner, Event event) {
+        super.fromInputEvent(scanner, event);
+        System.out.print("Enter QA price: ");
+        this.qaPrice = scanner.nextDouble();
+        System.out.print("Enter IMAX price: ");
+        this.imaxPrice = scanner.nextDouble();
+    }
     
     public int compareTo(FilmScreeningTicket filmScreeningTicket) {
         return super.compareTo(filmScreeningTicket);

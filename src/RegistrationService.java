@@ -86,9 +86,8 @@ public class RegistrationService {
         }
         System.out.println("Admin password:");
         String password = scanner.nextLine();
-        int allocated_id = ids.size();
+        int allocated_id = allocateId();
         this.admin = Admin.getInstance(allocated_id, username, password);
-        ids.add(allocated_id);
         System.out.println("Admin account created successfully!");
     }
 
@@ -115,17 +114,15 @@ public class RegistrationService {
             System.out.println("Customer location:");
             Location location = new Location();
             location.fromInput(scanner);
-            int allocated_id = ids.size();
+            int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password, name, age, location);
             customers.add(customer);
-            ids.add(allocated_id);
         }
         else {
             // create account with basic info
-            int allocated_id = ids.size();
+            int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password);
             customers.add(customer);
-            ids.add(allocated_id);
         }
         System.out.println("Customer account created successfully!");
     }
@@ -157,19 +154,27 @@ public class RegistrationService {
             String bio = scanner.nextLine();
             System.out.println("Artist genre:");
             String genre = scanner.nextLine();
-            int allocated_id = ids.size();
+            int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password, name, age, location, bio, genre);
             artists.add(artist);
-            ids.add(allocated_id);
         }
         else {
             // create account with basic info
-            int allocated_id = ids.size();
+            int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password);
             artists.add(artist);
-            ids.add(allocated_id);
         }
         System.out.println("Artist account created successfully!");
+    }
+
+    public void deleteCustomer(Customer customer) { customers.remove(customer); }
+    public void deleteArtist(Artist artist) { artists.remove(artist); }
+    public void deleteAdmin() { admin = null; }
+
+    public int allocateId() {
+        int id = ids.size();
+        ids.add(id);
+        return id;
     }
 
 }

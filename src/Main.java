@@ -7,8 +7,3 @@ public class Main {
         ConcertTicket concertTicket = new ConcertTicket();
     }
 }
-
-
-// gestionarea de CRUD pe event in admin si artist (sau in event)
-// clasa pentru like
-

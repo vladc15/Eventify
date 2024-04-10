@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -24,6 +22,7 @@ public class App {
         this.futureEvents = new ArrayList<Event>();
         this.pastEvents = new ArrayList<Event>();
         this.tickets = new ArrayList<Ticket>();
+        this.registrationService = new RegistrationService();
     }
 
     public static App getInstance() {
@@ -87,6 +86,11 @@ public class App {
         }
     }
 
+    public void moveEventsToPast() {
+        for (Event event : futureEvents)
+            moveEventToPast(event);
+    }
+
     public Event findFutureEvent(Event event) {
         for (Event e : futureEvents)
             if (e.equals(event))
@@ -116,15 +120,14 @@ public class App {
     }
 
     public int logIn(String username, String password) { return registrationService.logIn(username, password); }
-
     public int logIn(Scanner scanner) { return registrationService.logIn(scanner); }
-
     public int logOut() { return registrationService.logOut(); }
+    public void deleteCustomer(Customer customer) { registrationService.deleteCustomer(customer); }
+    public void deleteArtist(Artist artist) { registrationService.deleteArtist(artist); }
+    public void deleteAdmin() { registrationService.deleteAdmin(); }
 
     public void signUpAdmin(Scanner scanner) { registrationService.signUpAdmin(scanner); }
-
     public void signUpCustomer(Scanner scanner) { registrationService.signUpCustomer(scanner); }
-
     public void signUpArtist(Scanner scanner) { registrationService.signUpArtist(scanner); }
 
 }
