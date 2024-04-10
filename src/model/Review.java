@@ -1,3 +1,7 @@
+package model;
+
+import user.User;
+
 import java.util.Scanner;
 
 public class Review {
@@ -55,7 +59,7 @@ public class Review {
     public void setEvent(Event event) { this.event = event; }
     public void setUser(User user) { this.user = user; }
     
-    public String toString() { return "Review ID: " + reviewId + ", Event: " + event.toString() + ", User: " + user.toString() + ", Rating: " + rating + ", Comment: " + comment; }
+    public String toString() { return "model.Review ID: " + reviewId + ", model.Event: " + event.toString() + ", user.User: " + user.toString() + ", Rating: " + rating + ", Comment: " + comment; }
     public String toCSV() { return reviewId + "," + event.toCSV() + "," + user.toCSV() + "," + rating + "," + comment; }
     
     public boolean equals(Review review) { return reviewId == review.getReviewId() && event.equals(review.getEvent()) && user.equals(review.getUser()) && rating == review.getRating() && comment.equals(review.getComment()); }
@@ -65,9 +69,9 @@ public class Review {
         this.reviewId = Integer.parseInt(values[0]);
         //this.eventId = Integer.parseInt(values[1]);
         //this.userId = Integer.parseInt(values[2]);
-        /*this.event = new Event();
+        /*this.event = new model.Event();
         this.event.fromCSV(values[1]);
-        this.user = new User();
+        this.user = new user.User();
         this.user.fromCSV(values[2]);
         this.rating = Double.parseDouble(values[3]);
         this.comment = values[4];*/
@@ -78,11 +82,11 @@ public class Review {
     public void fromInput(Scanner scanner) {
         /*System.out.print("Enter event: ");
         //this.eventId = scanner.nextInt();
-        this.event = new Event();
+        this.event = new model.Event();
         this.event.fromInput(scanner);
         System.out.print("Enter user: ");
         //this.userId = scanner.nextInt();
-        this.user = new User();
+        this.user = new user.User();
         this.user.fromInput(scanner);*/
         System.out.print("Enter rating: ");
         this.rating = scanner.nextDouble();

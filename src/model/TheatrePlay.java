@@ -1,6 +1,10 @@
+package model;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import user.Artist;
 
 public class TheatrePlay extends Event {
     private boolean intermission;

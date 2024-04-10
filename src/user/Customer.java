@@ -1,3 +1,10 @@
+package user;
+
+import model.Event;
+import model.Location;
+import model.Review;
+import model.Ticket;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -5,18 +12,18 @@ import java.util.TreeSet;
 
 public class Customer extends User {
     private TreeSet<Ticket> tickets;
-    //private List<Event> wishlist;
+    //private List<model.Event> wishlist;
     private List<Event> history;
     private TreeSet<Event> favorites;
     private List<Artist> followedArtists;
-    //private List<Concert> recommendedConcerts;
+    //private List<model.Concert> recommendedConcerts;
     private List<Review> reviews;
     private double wallet;
     
     public Customer() {
         super();
         this.tickets = new TreeSet<Ticket>();
-        //this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<model.Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -27,7 +34,7 @@ public class Customer extends User {
     public Customer(int userId, String username, String password) {
         super(userId, username, password);
         this.tickets = new TreeSet<Ticket>();
-        //this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<model.Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -35,17 +42,17 @@ public class Customer extends User {
         this.wallet = 0.0;
     }
     
-    public Customer(int userId, String username, String password, String name, int age, Location location){//TreeSet<Ticket> tickets, List<Event> wishlist, List<Event> history, TreeSet<Event> favorites, List<Artist> followedArtists, List<Review> reviews, double wallet) {
+    public Customer(int userId, String username, String password, String name, int age, Location location){//TreeSet<model.Ticket> tickets, List<model.Event> wishlist, List<model.Event> history, TreeSet<model.Event> favorites, List<user.Artist> followedArtists, List<model.Review> reviews, double wallet) {
         super(userId, username, password, name, age, location);
-        /*this.tickets = new TreeSet<Ticket>(tickets);
-        this.wishlist = new ArrayList<Event>(wishlist);
-        this.history = new ArrayList<Event>(history);
-        this.favorites = new TreeSet<Event>(favorites);
-        this.followedArtists = new ArrayList<Artist>(followedArtists);
-        this.reviews = new ArrayList<Review>(reviews);
+        /*this.tickets = new TreeSet<model.Ticket>(tickets);
+        this.wishlist = new ArrayList<model.Event>(wishlist);
+        this.history = new ArrayList<model.Event>(history);
+        this.favorites = new TreeSet<model.Event>(favorites);
+        this.followedArtists = new ArrayList<user.Artist>(followedArtists);
+        this.reviews = new ArrayList<model.Review>(reviews);
         this.wallet = wallet;*/
         this.tickets = new TreeSet<Ticket>();
-        //this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<model.Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -56,7 +63,7 @@ public class Customer extends User {
     public Customer(Customer customer) {
         super(customer);
         this.tickets = new TreeSet<Ticket>(customer.getTickets());
-        //this.wishlist = new ArrayList<Event>(customer.getWishlist());
+        //this.wishlist = new ArrayList<model.Event>(customer.getWishlist());
         this.history = new ArrayList<Event>(customer.getHistory());
         this.favorites = new TreeSet<Event>(customer.getFavorites());
         this.followedArtists = new ArrayList<Artist>(customer.getFollowedArtists());
@@ -65,7 +72,7 @@ public class Customer extends User {
     }
     
     public TreeSet<Ticket> getTickets() { return tickets; }
-    //public List<Event> getWishlist() { return wishlist; }
+    //public List<model.Event> getWishlist() { return wishlist; }
     public List<Event> getHistory() { return history; }
     public TreeSet<Event> getFavorites() { return favorites; }
     public List<Artist> getFollowedArtists() { return followedArtists; }
@@ -73,7 +80,7 @@ public class Customer extends User {
     public double getWallet() { return wallet; }
     
     public void setTickets(TreeSet<Ticket> tickets) { this.tickets = new TreeSet<Ticket>(tickets); }
-    //public void setWishlist(List<Event> wishlist) { this.wishlist = new ArrayList<Event>(wishlist); }
+    //public void setWishlist(List<model.Event> wishlist) { this.wishlist = new ArrayList<model.Event>(wishlist); }
     public void setHistory(List<Event> history) { this.history = new ArrayList<Event>(history); }
     public void setFavorites(TreeSet<Event> favorites) { this.favorites = new TreeSet<Event>(favorites); }
     public void setFollowedArtists(List<Artist> followedArtists) { this.followedArtists = new ArrayList<Artist>(followedArtists); }
@@ -96,7 +103,7 @@ public class Customer extends User {
         String[] values = csv.split(",");
         super.fromCSV(values[0] + "," + values[1] + "," + values[2] + "," + values[3] + "," + values[4] + "," + values[5] + "," + values[6] + "," + values[7] + "," + values[8] + "," + values[9] + "," + values[10]);
         this.tickets = new TreeSet<Ticket>();
-        //this.wishlist = new ArrayList<Event>();
+        //this.wishlist = new ArrayList<model.Event>();
         this.history = new ArrayList<Event>();
         this.favorites = new TreeSet<Event>();
         this.followedArtists = new ArrayList<Artist>();
@@ -119,12 +126,12 @@ public class Customer extends User {
             System.out.println(ticket);
     }
     
-    //public void addEventToWishlist(Event event) { wishlist.add(event); }
+    //public void addEventToWishlist(model.Event event) { wishlist.add(event); }
     
-    //public void removeEventFromWishlist(Event event) { wishlist.remove(event); }
+    //public void removeEventFromWishlist(model.Event event) { wishlist.remove(event); }
 
     /*public void showWishlist() {
-        for (Event event : wishlist)
+        for (model.Event event : wishlist)
             System.out.println(event);
     }*/
     

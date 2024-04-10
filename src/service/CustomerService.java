@@ -1,7 +1,17 @@
+package service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeSet;
+
+import model.Event;
+import model.Location;
+import model.Review;
+import model.Ticket;
+import user.Artist;
+import user.Customer;
+
 
 // singleton
 public class CustomerService implements IUserService {
@@ -32,7 +42,7 @@ public class CustomerService implements IUserService {
     public Customer getCustomer() { return customer; }
 
     public void showMenu() {
-        System.out.println("\n----------Customer menu:----------");
+        System.out.println("\n----------user.Customer menu:----------");
         System.out.println("1. Access profile");
         System.out.println("2. Access history");
         System.out.println("3. Access favorites");

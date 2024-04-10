@@ -1,6 +1,12 @@
+package user;
+
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+
+import model.Location;
+import model.Review;
+
 
 public abstract class User {
     protected int userId;
@@ -70,14 +76,14 @@ public abstract class User {
     public void setLocation(Location location) { this.location = new Location(location); }
     public void setReviews(List<Review> reviews) { this.reviews = new ArrayList<Review>(reviews); }
 
-    public String toString() { return "Username: " + username + ", Name: " + name + ", Age: " + age + ", Location: " + location; }
+    public String toString() { return "Username: " + username + ", Name: " + name + ", Age: " + age + ", model.Location: " + location; }
     public String toCSV() { return userId + "," + username + "," + password + "," + name + "," + age + "," + location.toCSV(); }
     
     public boolean equals(User user) { return userId == user.getUserId() && username.equals(user.getUsername()) && password.equals(user.getPassword()) && name.equals(user.getName()) && age == user.getAge() && location.equals(user.getLocation()); }
     
     public void fromCSV(String csv) {
         String[] values = csv.split(",");
-        //return new User(Integer.parseInt(values[0]), values[1], values[2], values[3], values[4], values[5], values[6], Integer.parseInt(values[7]), new Location(values[8], values[9], Integer.parseInt(values[10]));
+        //return new user.User(Integer.parseInt(values[0]), values[1], values[2], values[3], values[4], values[5], values[6], Integer.parseInt(values[7]), new model.Location(values[8], values[9], Integer.parseInt(values[10]));
         this.userId = Integer.parseInt(values[0]); this.username = values[1]; this.password = values[2]; this.name = values[3]; this.age = Integer.parseInt(values[4]); this.location = new Location(Integer.parseInt(values[5]), values[6], values[7], Integer.parseInt(values[8]), Integer.parseInt(values[9]), Integer.parseInt(values[10]));
     }
     public void fromInput(Scanner scanner) {
@@ -94,10 +100,10 @@ public abstract class User {
         //int age = scanner.nextInt();
         this.age = scanner.nextInt();
         System.out.print("Enter location: ");
-        //Location location = new Location();
+        //model.Location location = new model.Location();
         //location.fromInput(scanner);
         this.location = new Location();
         this.location.fromInput(scanner);
-        //return new User(username, password, email, phone, name, age, location);
+        //return new user.User(username, password, email, phone, name, age, location);
     }
 }

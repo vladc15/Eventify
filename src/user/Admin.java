@@ -1,3 +1,7 @@
+package user;
+
+import model.Location;
+
 // singleton, only one admin
 public class Admin extends User {
     private static Admin instance = null;
@@ -14,7 +18,7 @@ public class Admin extends User {
 
     public static Admin getInstance() {
         if (instance == null) {
-            instance = new Admin(0, "admin", "adminpa55", "Admin", 0, new Location());
+            instance = new Admin(0, "admin", "adminpa55", "user.Admin", 0, new Location());
         }
         return instance;
     }

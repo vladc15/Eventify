@@ -1,3 +1,11 @@
+package application;
+
+import model.Event;
+import model.Ticket;
+import service.RegistrationService;
+import user.Artist;
+import user.Customer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
@@ -8,9 +16,9 @@ import java.util.Scanner;
 public class App {
     private static App instance = null;
 
-    /*private List<Customer> customers;
-    private List<Artist> artists;
-    private Admin admin;
+    /*private List<user.Customer> customers;
+    private List<user.Artist> artists;
+    private user.Admin admin;
     private Set<Integer> ids;*/
     private RegistrationService registrationService;
 
@@ -32,31 +40,31 @@ public class App {
         return instance;
     }
 
-//    public List<Customer> getCustomers() { return registrationService.getCustomers(); }
-//    public List<Artist> getArtists() { return registrationService.getArtists(); }
-//    public Admin getAdmin() { return registrationService.getAdmin(); }
+//    public List<user.Customer> getCustomers() { return registrationService.getCustomers(); }
+//    public List<user.Artist> getArtists() { return registrationService.getArtists(); }
+//    public user.Admin getAdmin() { return registrationService.getAdmin(); }
 //    public Set<Integer> getIds() { return registrationService.getIds(); }
     public List<Event> getFutureEvents() { return futureEvents; }
     public List<Event> getPastEvents() { return pastEvents; }
     public List<Ticket> getTickets() { return tickets; }
     public RegistrationService getRegistrationService() { return registrationService; }
     
-//    public void setCustomers(List<Customer> customers) { this.customers = new ArrayList<Customer>(customers); }
-//    public void setArtists(List<Artist> artists) { this.artists = new ArrayList<Artist>(artists); }
-//    public void setAdmin(Admin admin) { this.admin = admin; }
+//    public void setCustomers(List<user.Customer> customers) { this.customers = new ArrayList<user.Customer>(customers); }
+//    public void setArtists(List<user.Artist> artists) { this.artists = new ArrayList<user.Artist>(artists); }
+//    public void setAdmin(user.Admin admin) { this.admin = admin; }
 //    public void setIds(Set<Integer> ids) { this.ids = new HashSet<Integer>(ids); }
     public void setFutureEvents(List<Event> futureEvents) { this.futureEvents = new ArrayList<Event>(futureEvents); }
     public void setPastEvents(List<Event> pastEvents) { this.pastEvents = new ArrayList<Event>(pastEvents); }
     public void setTickets(List<Ticket> tickets) { this.tickets = new ArrayList<Ticket>(tickets); }
     
-//    public void addCustomer(Customer customer) { customers.add(customer); }
-//    public void addArtist(Artist artist) { artists.add(artist); }
+//    public void addCustomer(user.Customer customer) { customers.add(customer); }
+//    public void addArtist(user.Artist artist) { artists.add(artist); }
     public void addFutureEvent(Event event) { futureEvents.add(event); }
     public void addPastEvent(Event event) { pastEvents.add(event); }
     public void addTicket(Ticket ticket) { tickets.add(ticket); }
     
-//    public void removeCustomer(Customer customer) { customers.remove(customer); }
-//    public void removeArtist(Artist artist) { artists.remove(artist); }
+//    public void removeCustomer(user.Customer customer) { customers.remove(customer); }
+//    public void removeArtist(user.Artist artist) { artists.remove(artist); }
     public void removeFutureEvent(Event event) { futureEvents.remove(event); }
     public void removePastEvent(Event event) { pastEvents.remove(event); }
     public void removeTicket(Ticket ticket) { tickets.remove(ticket); }

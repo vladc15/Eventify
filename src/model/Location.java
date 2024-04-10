@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Scanner;
 
 public class Location {
@@ -58,7 +60,7 @@ public class Location {
 
     public void fromCSV(String csv) {
         String[] values = csv.split(",");
-        //return new Location(values[0], values[1], Integer.parseInt(values[2]));
+        //return new model.Location(values[0], values[1], Integer.parseInt(values[2]));
         this.locationId = Integer.parseInt(values[0]);
         this.address = values[1];
         this.city = values[2];
@@ -75,7 +77,7 @@ public class Location {
         this.city = scanner.nextLine();
         System.out.print("Enter total capacity: ");
         //int totalCapacity = scanner.nextInt();
-        //return new Location(address, city, totalCapacity);
+        //return new model.Location(address, city, totalCapacity);
         this.totalCapacity = scanner.nextInt();
         System.out.print("Enter rows: ");
         //int rows = scanner.nextInt();

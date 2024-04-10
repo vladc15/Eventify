@@ -1,5 +1,15 @@
+package service;
+
 import java.util.List;
 import java.util.Scanner;
+
+import model.Event;
+import model.Review;
+import model.Ticket;
+import user.Admin;
+import user.Artist;
+import user.Customer;
+
 
 public class AdminService implements IUserService {
     private static AdminService instance = null;
@@ -31,7 +41,7 @@ public class AdminService implements IUserService {
     // CRUD operations on profile, events, customers, artists, reviews, tickets
     // profile, events(CRUD), customers(R, D), artists(R, D), reviews(R, U, D), tickets(R, D)
     public void showMenu() {
-        System.out.println("\n----------Admin menu:----------");
+        System.out.println("\n----------user.Admin menu:----------");
         System.out.println("1. Access profile");
         System.out.println("2. Access events");
         System.out.println("3. Access customers");
@@ -91,7 +101,7 @@ public class AdminService implements IUserService {
                 System.out.println(event);
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
-            System.out.println("1. Concert");
+            System.out.println("1. model.Concert");
             System.out.println("2. Film screening");
             System.out.println("3. Theater play");
             System.out.print("Enter option: ");

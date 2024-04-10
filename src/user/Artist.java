@@ -1,4 +1,8 @@
+package user;
+
 import java.util.Scanner;
+
+import model.Location;
 
 public class Artist extends User {
     private String bio;

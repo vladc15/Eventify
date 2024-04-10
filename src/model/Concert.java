@@ -1,12 +1,16 @@
+package model;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import user.Artist;
+
 public class Concert extends Event {
     //private String genre;
     private Boolean isSeated;
-    //private Artist headliner; // conventie ca primul artist din lista de artisti sa fie headliner
-    //private List<Artist> openers; // restul sa fie openeri
+    //private user.Artist headliner; // conventie ca primul artist din lista de artisti sa fie headliner
+    //private List<user.Artist> openers; // restul sa fie openeri
     private Boolean afterParty; // si daca este true, ultimul sa fie DJ
     private Boolean meetAndGreet;
 

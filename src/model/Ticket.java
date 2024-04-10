@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Scanner;
 
 public abstract class Ticket implements Comparable<Ticket> {
@@ -40,7 +42,7 @@ public abstract class Ticket implements Comparable<Ticket> {
     public void setType(String type) { this.type = type; }
     public void setSeat(String seat) { this.seat = seat; }
 
-    public String toString() { return "Ticket ID: " + ticketId + ", Event: " + event.toString() + ", Type: " + type + ", Seat: " + seat;}
+    public String toString() { return "model.Ticket ID: " + ticketId + ", model.Event: " + event.toString() + ", Type: " + type + ", Seat: " + seat;}
     public String toCSV() { return ticketId + "," + event.toCSV() + "," + type + "," + seat;}
 
     public boolean equals(Ticket ticket) { return ticketId == ticket.getTicketId() && event.equals(ticket.getEvent()) && type.equals(ticket.getType()) && seat.equals(ticket.getSeat());}

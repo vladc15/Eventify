@@ -1,3 +1,16 @@
+package service;
+
+import model.FilmScreening;
+import model.TheatrePlay;
+import model.Ticket;
+import model.Concert;
+import model.Event;
+import model.FilmScreeningTicket;
+import model.TheatrePlayTicket;
+import model.ConcertTicket;
+import user.Artist;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,7 +42,7 @@ public class ArtistService implements IUserService {
     public Artist getArtist() { return artist; }
 
     public void showMenu() {
-        System.out.println("\n----------Artist menu:----------");
+        System.out.println("\n----------user.Artist menu:----------");
         System.out.println("1. Access profile");
         System.out.println("2. Access bio");
         System.out.println("3. Access genre");
@@ -164,7 +177,7 @@ public class ArtistService implements IUserService {
                     System.out.println(event);
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
-            System.out.println("1. Concert");
+            System.out.println("1. model.Concert");
             System.out.println("2. Film screening");
             System.out.println("3. Theater play");
             System.out.print("Enter option: ");
