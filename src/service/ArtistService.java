@@ -42,7 +42,7 @@ public class ArtistService implements IUserService {
     public Artist getArtist() { return artist; }
 
     public void showMenu() {
-        System.out.println("\n----------user.Artist menu:----------");
+        System.out.println("\n----------Artist menu:----------");
         System.out.println("1. Access profile");
         System.out.println("2. Access bio");
         System.out.println("3. Access genre");
@@ -177,7 +177,7 @@ public class ArtistService implements IUserService {
                     System.out.println(event);
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
-            System.out.println("1. model.Concert");
+            System.out.println("1. Concert");
             System.out.println("2. Film screening");
             System.out.println("3. Theater play");
             System.out.print("Enter option: ");

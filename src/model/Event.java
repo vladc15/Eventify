@@ -117,10 +117,10 @@ public abstract class Event implements Comparable<Event>{
     public void setGenre(String genre) { this.genre = genre; }
 
     public String toString() {
-        return "model.Event ID: " + eventId + ", Name: " + name + ", Description: " + description +
+        return "Event ID: " + eventId + ", Name: " + name + ", Description: " + description +
                 ", Date: " + date + ", Time: " + time + ", Duration: " + duration + ", Total Tickets: " + totalTickets +
-                ", Available Tickets: " + availableTickets + ", model.Location: " + location + ", Artists: " + artists + ", Seats: " + seats +
-                ", Reviews: " + reviews + ", model.Ticket Prices: " + ticketPrices + ", Genre: " + genre;
+                ", Available Tickets: " + availableTickets + ", Location: " + location + ", Artists: " + artists + ", Seats: " + seats +
+                ", Reviews: " + reviews + ", Ticket Prices: " + ticketPrices + ", Genre: " + genre;
     }
 
     public String toCSV() {
@@ -308,7 +308,7 @@ public abstract class Event implements Comparable<Event>{
     }
 
     public void showEventWithoutSeats() {
-        System.out.println("model.Event ID: " + eventId + ", Name: " + name + ", Description: " + description + ", Date: " + date + ", Time: " + time + ", Duration: " + duration + ", Total Tickets: " + totalTickets + ", Available Tickets: " + availableTickets + ", model.Location: " + location + ", Artists: " + artists);
+        System.out.println("Event ID: " + eventId + ", Name: " + name + ", Description: " + description + ", Date: " + date + ", Time: " + time + ", Duration: " + duration + ", Total Tickets: " + totalTickets + ", Available Tickets: " + availableTickets + ", Location: " + location + ", Artists: " + artists);
     }
 
     public Boolean isAvailable() {

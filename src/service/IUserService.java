@@ -34,8 +34,8 @@ public interface IUserService {
         System.out.println("3. Date");
         System.out.println("4. Time");
         System.out.println("5. Duration");
-        System.out.println("6. model.Location");
-        System.out.println("7. model.Ticket types and prices");
+        System.out.println("6. Location");
+        System.out.println("7. Ticket types and prices");
         System.out.println("9. Genre");
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -121,7 +121,7 @@ public interface IUserService {
             System.out.println("Invalid event type");
         if (event != null) {
             getFutureEvents().add(event);
-            System.out.println("model.Event added successfully!");
+            System.out.println("Event added successfully!");
         }
     }
 
@@ -139,7 +139,7 @@ public interface IUserService {
 
     default Ticket updateTicket(Ticket ticket, Scanner scanner) {
         System.out.println("Specify what do you want to update: ");
-        System.out.println("1. model.Ticket type");
+        System.out.println("1. Ticket type");
         System.out.println("2. Seat");
         System.out.println("3. Both");
         System.out.println("Enter your choice: ");

@@ -76,7 +76,7 @@ public abstract class User {
     public void setLocation(Location location) { this.location = new Location(location); }
     public void setReviews(List<Review> reviews) { this.reviews = new ArrayList<>(reviews); }
 
-    public String toString() { return "Username: " + username + ", Name: " + name + ", Age: " + age + ", model.Location: " + location; }
+    public String toString() { return "Username: " + username + ", Name: " + name + ", Age: " + age + ", Location: " + location; }
     public String toCSV() { return userId + "," + username + "," + password + "," + name + "," + age + "," + location.toCSV(); }
     
     public boolean equals(User user) { return userId == user.getUserId() && username.equals(user.getUsername()) && password.equals(user.getPassword()) && name.equals(user.getName()) && age == user.getAge() && location.equals(user.getLocation()); }

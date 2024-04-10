@@ -42,7 +42,7 @@ public class CustomerService implements IUserService {
     public Customer getCustomer() { return customer; }
 
     public void showMenu() {
-        System.out.println("\n----------user.Customer menu:----------");
+        System.out.println("\n----------Customer menu:----------");
         System.out.println("1. Access profile");
         System.out.println("2. Access history");
         System.out.println("3. Access favorites");
