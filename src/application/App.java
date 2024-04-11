@@ -7,6 +7,7 @@ import user.Artist;
 import user.Customer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -95,8 +96,19 @@ public class App {
     }
 
     public void moveEventsToPast() {
-        for (Event event : futureEvents)
-            moveEventToPast(event);
+        /*for (Event event : futureEvents)
+            moveEventToPast(event);*/
+        Iterator<Event> iterator = futureEvents.iterator();
+        while (iterator.hasNext()) {
+            Event event = iterator.next();
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate eventDate = LocalDate.parse(event.getDate(), formatter);
+            if (eventDate.isBefore(currentDate)) {
+                iterator.remove();
+                pastEvents.add(event);
+            }
+        }
     }
 
     public Event findFutureEvent(Event event) {
