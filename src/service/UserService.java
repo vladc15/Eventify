@@ -7,7 +7,7 @@ import user.User;
 import java.util.List;
 import java.util.Scanner;
 
-public interface IUserService {
+public interface UserService {
     void showMenu();
     void executeAction(Scanner scanner);
 

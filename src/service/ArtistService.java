@@ -10,11 +10,10 @@ import model.TheatrePlayTicket;
 import model.ConcertTicket;
 import user.Artist;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ArtistService implements IUserService {
+public class ArtistService implements UserService {
     private static ArtistService instance = null;
     private Artist artist;
 

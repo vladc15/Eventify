@@ -14,7 +14,7 @@ import user.Customer;
 
 
 // singleton
-public class CustomerService implements IUserService {
+public class CustomerService implements UserService {
     private static CustomerService instance = null;
     private Customer customer;
 

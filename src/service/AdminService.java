@@ -11,7 +11,7 @@ import user.Artist;
 import user.Customer;
 
 
-public class AdminService implements IUserService {
+public class AdminService implements UserService {
     private static AdminService instance = null;
     private Admin admin;
 
