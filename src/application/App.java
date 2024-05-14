@@ -142,9 +142,9 @@ public class App {
     public int logIn(String username, String password) { return registrationService.logIn(username, password); }
     public int logIn(Scanner scanner) { return registrationService.logIn(scanner); }
     public int logOut() { return registrationService.logOut(); }
-    public void deleteCustomer(Customer customer) { registrationService.deleteCustomer(customer); }
-    public void deleteArtist(Artist artist) { registrationService.deleteArtist(artist); }
-    public void deleteAdmin() { registrationService.deleteAdmin(); }
+    //public void deleteCustomer(Customer customer) { registrationService.deleteCustomer(customer); }
+    //public void deleteArtist(Artist artist) { registrationService.deleteArtist(artist); }
+    //public void deleteAdmin() { registrationService.deleteAdmin(); }
 
     public void signUpAdmin(Scanner scanner) { registrationService.signUpAdmin(scanner); }
     public void signUpCustomer(Scanner scanner) { registrationService.signUpCustomer(scanner); }

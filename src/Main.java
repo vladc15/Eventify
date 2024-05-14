@@ -1,4 +1,5 @@
 import application.App;
+import database.DatabaseManagerUtil;
 import model.*;
 import service.AdminService;
 import service.ArtistService;
@@ -21,6 +22,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         App app = App.getInstance();
         RegistrationService registrationService = app.getRegistrationService();
+        DatabaseManagerUtil.initDatabase();
 
         initApp(app); // add some initial data
 

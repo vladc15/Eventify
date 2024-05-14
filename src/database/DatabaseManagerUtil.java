@@ -1,21 +1,10 @@
 package database;
 
-import model.ConcertTicket;
 import repository.*;
 
-public class DatabaseManager {
-    private static DatabaseManager instance;
+public class DatabaseManagerUtil {
 
-    private DatabaseManager() { initDatabase(); }
-
-    public static DatabaseManager getInstance() {
-        if (instance == null) {
-            instance = new DatabaseManager();
-        }
-        return instance;
-    }
-
-    private void initDatabase() {
+    public static void initDatabase() {
         LocationRepository.createTable();
 
         EventRepository.createTable();
