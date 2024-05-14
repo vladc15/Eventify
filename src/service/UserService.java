@@ -267,7 +267,13 @@ public interface UserService {
                     newLocation.fromInput(scanner);
 
                     user.setLocation(newLocation);
-                    userRepository.updateLocation(locationRepository.getLocationId(newLocation), userRepository.getUserId(user));
+                    int locationId = locationRepository.getLocationId(newLocation);
+                    if (locationId != -1)
+                        userRepository.updateLocation(locationId, userRepository.getUserId(user));
+                    else {
+                        locationRepository.addLocation(newLocation);
+                        userRepository.updateLocation(locationRepository.getLocationId(newLocation), userRepository.getUserId(user));
+                    }
                     AuditService.getInstance().logAction("Location updated");
 
                     break;

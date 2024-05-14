@@ -2,6 +2,7 @@ package application;
 
 import model.Event;
 import model.Ticket;
+import repository.EventRepository;
 import service.RegistrationService;
 import user.Artist;
 import user.Customer;
@@ -28,7 +29,8 @@ public class App {
     private List<Ticket> tickets;
 
     private App() {
-        this.futureEvents = new ArrayList<>();
+        EventRepository eventRepository = new EventRepository();
+        this.futureEvents = eventRepository.getEvents();
         this.pastEvents = new ArrayList<>();
         this.tickets = new ArrayList<>();
         this.registrationService = new RegistrationService();

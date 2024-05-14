@@ -110,39 +110,6 @@ public class CustomerRepository {
         }
     }
 
-    /*public static Customer getCustomerById(int id) {
-        Connection connection = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        Customer customer = null;
-        try {
-            connection = DatabaseConfiguration.getConnection();
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM customers WHERE id = " + id);
-            if (rs.next()) {
-                customer = new Customer(rs.getDouble("wallet"));
-            }
-            return customer;
-        } catch (Exception e) {
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                    connection.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            e.printStackTrace();
-            return null;
-        }
-    }*/
 
     public List<Customer> getCustomers() {
         Connection connection = null;

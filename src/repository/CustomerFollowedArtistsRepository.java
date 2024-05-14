@@ -73,12 +73,12 @@ public class CustomerFollowedArtistsRepository {
         List<Artist> artists = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectCustomerFollowedArtistsSql = "SELECT * FROM customer_followed_artists WHERE customerId = " + customerId;
+            String selectCustomerFollowedArtistsSql = "SELECT * FROM customer_followed_artists cfa LEFT JOIN artists a ON cfa.artistId = a.id WHERE cfa.customerId = " + customerId;
             stmt = connection.createStatement();
             rs = stmt.executeQuery(selectCustomerFollowedArtistsSql);
             artists = new ArrayList<>();
             while (rs.next()) {
-                Artist artist = (Artist)UserRepository.getUserById(rs.getInt("artistId"));
+                Artist artist = (Artist)UserRepository.getUserById(rs.getInt("id"));
                 artists.add(artist);
             }
         } catch (Exception e) {

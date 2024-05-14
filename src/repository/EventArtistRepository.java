@@ -109,12 +109,12 @@ public class EventArtistRepository {
         List<Artist> artists = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectArtistsSql = "SELECT * FROM event_artists WHERE eventID=" + eventID;
+            String selectArtistsSql = "SELECT * FROM event_artists ea LEFT JOIN artists a ON ea.artistID = a.id WHERE eventID=" + eventID;
             stmt = connection.createStatement();
             rs = stmt.executeQuery(selectArtistsSql);
             while (rs.next()) {
-                int artistID = rs.getInt("artistID");
-                Artist artist = (Artist)UserRepository.getUserById(artistID);
+                int userId = rs.getInt("id");
+                Artist artist = (Artist)UserRepository.getUserById(userId);
                 artists.add(artist);
             }
             connection.close();

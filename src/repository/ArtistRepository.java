@@ -75,49 +75,6 @@ public class ArtistRepository {
         }
     }
 
-    /*public static Artist getArtistById(int id) {
-        Connection connection = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        Artist artist = null;
-        try {
-            connection = DatabaseConfiguration.getConnection();
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM artists WHERE id = " + id);
-            if (rs.next()) {
-                artist = new Artist(rs.getString("bio"), rs.getString("genre"), rs.getDouble("rating"));
-                //artist.setId(rs.getInt("id"));
-                artist.setUserId(rs.getInt("userId"));
-            }
-            return artist;
-            connection.close();
-        } catch (Exception e) {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            e.printStackTrace();
-            return null;
-        }
-    }*/
-
     public List<Artist> getArtists() {
         Connection connection = null;
         Statement stmt = null;
