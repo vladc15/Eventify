@@ -1,10 +1,7 @@
 import application.App;
 import database.DatabaseManagerUtil;
 import model.*;
-import service.AdminService;
-import service.ArtistService;
-import service.CustomerService;
-import service.RegistrationService;
+import service.*;
 import user.Admin;
 import user.Artist;
 import user.Customer;
@@ -65,24 +62,28 @@ public class Main {
 
             if (accountType == 1) {
                 Customer currentCustomer = (Customer) currentUser;
+                AuditService.getInstance().logAction("Customer login");
                 System.out.println("Welcome into the customer account, " + currentUser.getName() + "!");
                 CustomerService customerService = CustomerService.getInstance(currentCustomer);
                 customerService.executeAction(scanner);
                 break;
             } else if (accountType == 2) {
                 Artist currentArtist = (Artist) currentUser;
+                AuditService.getInstance().logAction("Artist login");
                 System.out.println("Welcome into the artist account, " + currentUser.getName() + "!");
                 ArtistService artistService = ArtistService.getInstance(currentArtist);
                 artistService.executeAction(scanner);
                 break;
             } else {
                 Admin currentAdmin = (Admin) currentUser;
+                AuditService.getInstance().logAction("Admin login");
                 System.out.println("Welcome into the admin account, " + currentUser.getName() + "!");
                 AdminService adminService = AdminService.getInstance(currentAdmin);
                 adminService.executeAction(scanner);
                 break;
             }
         }
+        AuditService.getInstance().close();
     }
 
     private static void initApp(App app) {

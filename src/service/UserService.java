@@ -74,26 +74,31 @@ public interface UserService {
                 System.out.println("Enter new name: ");
                 event.setName(scanner.nextLine());
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event name updated");
                 break;
             case 2:
                 System.out.println("Enter new description: ");
                 event.setDescription(scanner.nextLine());
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event description updated");
                 break;
             case 3:
                 System.out.println("Enter new date: ");
                 event.setDate(scanner.nextLine());
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event date updated");
                 break;
             case 4:
                 System.out.println("Enter new time: ");
                 event.setTime(scanner.nextLine());
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event time updated");
                 break;
             case 5:
                 System.out.println("Enter new duration: ");
                 event.setDuration(Integer.parseInt(scanner.nextLine()));
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event duration updated");
                 break;
             case 6:
                 System.out.println("Enter new location: ");
@@ -101,6 +106,7 @@ public interface UserService {
                 newLocation.fromInput(scanner);
                 event.setLocation(newLocation);
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event location updated");
                 break;
             case 7:
                 System.out.println("Do you want to update existing ticket prices or add new ones? (update/add)");
@@ -113,6 +119,7 @@ public interface UserService {
                     scanner.nextLine();
                     event.updateTickets(type, price);
                     getMapEventRepository().updateMap(event.getEventId(), type, price);
+                    AuditService.getInstance().logAction("Event ticket updated");
                 }
                 else if (response.equals("add")) {
                     System.out.println("Enter the number of new ticket types: ");
@@ -124,6 +131,8 @@ public interface UserService {
                         System.out.println("Enter ticket price: ");
                         String price = scanner.nextLine();
                         event.updateTickets(type, Double.parseDouble(price));
+                        getMapEventRepository().addToMap(event.getEventId(), type, Double.parseDouble(price));
+                        AuditService.getInstance().logAction("Event ticket added");
                     }
                 }
                 else
@@ -133,6 +142,7 @@ public interface UserService {
                 System.out.println("Enter new genre: ");
                 event.setGenre(scanner.nextLine());
                 getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event genre updated");
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -147,18 +157,21 @@ public interface UserService {
             event.fromInput(scanner);
             ConcertRepository concertRepository = getConcertRepository();
             concertRepository.addConcert((Concert) event);
+            AuditService.getInstance().logAction("Concert added");
         }
         else if (eventType == 2) {
             event = new FilmScreening();
             event.fromInput(scanner);
             FilmScreeningRepository filmScreeningRepository = getFilmScreeningRepository();
             filmScreeningRepository.addFilmScreening((FilmScreening) event);
+            AuditService.getInstance().logAction("Film screening added");
         }
         else if (eventType == 3) {
             event = new TheatrePlay();
             event.fromInput(scanner);
             TheatrePlayRepository theatrePlayRepository = getTheatrePlayRepository();
             theatrePlayRepository.addTheatrePlay((TheatrePlay) event);
+            AuditService.getInstance().logAction("Theatre play added");
         }
         else
             System.out.println("Invalid event type");
@@ -194,6 +207,7 @@ public interface UserService {
 
                 ticket.setType(scanner.nextLine());
                 ticketRepository.updateType(ticketRepository.getTicketId(ticket), scanner.nextLine());
+                AuditService.getInstance().logAction("Ticket type updated");
 
                 break;
             case 2:
@@ -201,6 +215,7 @@ public interface UserService {
 
                 ticket.setSeat(scanner.nextLine());
                 ticketRepository.updateSeat(ticketRepository.getTicketId(ticket), scanner.nextLine());
+                AuditService.getInstance().logAction("Ticket seat updated");
 
                 break;
             default:
@@ -217,6 +232,7 @@ public interface UserService {
         int option = scanner.nextInt();
         if (option == 1) {
             System.out.println(user);
+            AuditService.getInstance().logAction("Profile shown");
         } else if (option == 2) {
             System.out.println("1. Change name");
             System.out.println("2. Change age");
@@ -233,6 +249,7 @@ public interface UserService {
 
                     user.setName(newName);
                     userRepository.updateName(newName, userRepository.getUserId(user));
+                    AuditService.getInstance().logAction("Name updated");
 
                     break;
                 case 2:
@@ -241,6 +258,7 @@ public interface UserService {
 
                     user.setAge(newAge);
                     userRepository.updateAge(newAge, userRepository.getUserId(user));
+                    AuditService.getInstance().logAction("Age updated");
 
                     break;
                 case 3:
@@ -250,6 +268,7 @@ public interface UserService {
 
                     user.setLocation(newLocation);
                     userRepository.updateLocation(locationRepository.getLocationId(newLocation), userRepository.getUserId(user));
+                    AuditService.getInstance().logAction("Location updated");
 
                     break;
                 default:

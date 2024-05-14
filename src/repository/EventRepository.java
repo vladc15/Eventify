@@ -291,7 +291,6 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
-            return null;
         }
         return events;
     }
@@ -332,7 +331,6 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
-            return null;
         }
         return reviews;
     }
@@ -373,7 +371,6 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
-            return null;
         }
         return tickets;
     }

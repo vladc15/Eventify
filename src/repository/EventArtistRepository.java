@@ -118,6 +118,7 @@ public class EventArtistRepository {
                 artists.add(artist);
             }
             connection.close();
+            return artists;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -154,6 +155,7 @@ public class EventArtistRepository {
                 artistIds.add(artistID);
             }
             connection.close();
+            return artistIds;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -190,6 +192,7 @@ public class EventArtistRepository {
                 eventIds.add(eventID);
             }
             connection.close();
+            return eventIds;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -227,6 +230,7 @@ public class EventArtistRepository {
                 events.add(event);
             }
             connection.close();
+            return events;
         } catch (Exception e) {
             if (connection != null) {
                 try {

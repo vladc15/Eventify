@@ -117,6 +117,7 @@ public class CustomerTicketsRepository {
                 tickets.add(rs.getInt("ticketId"));
             }
             connection.close();
+            return tickets;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -159,6 +160,7 @@ public class CustomerTicketsRepository {
                 tickets.add(ticket);
             }
             connection.close();
+            return tickets;
         } catch (Exception e) {
             if (connection != null) {
                 try {

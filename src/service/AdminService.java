@@ -100,6 +100,7 @@ public class AdminService implements UserService {
             List<Event> events = getEventRepository().getEvents();
             for (Event event : events)
                 System.out.println(event);
+            AuditService.getInstance().logAction("Showed events");
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
             System.out.println("1. Concert");
@@ -140,12 +141,14 @@ public class AdminService implements UserService {
                 if (event.getEventId() == id) {
                     futureEvents.remove(event);
                     getEventRepository().deleteEvent(event);
+                    AuditService.getInstance().logAction("Deleted event");
                     break;
                 }
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
                     pastEvents.remove(event);
                     getEventRepository().deleteEvent(event);
+                    AuditService.getInstance().logAction("Deleted event");
                     break;
                 }
             setFutureEvents(futureEvents);
@@ -166,6 +169,7 @@ public class AdminService implements UserService {
             List<Customer> customers = getCustomerRepository().getCustomers();
             for (Customer customer : customers)
                 System.out.println(customer);
+            AuditService.getInstance().logAction("Showed customers");
         } else if (option == 2)
             return;
         else
@@ -182,6 +186,7 @@ public class AdminService implements UserService {
             List<Artist> artists = getArtistRepository().getArtists();
             for (Artist artist : artists)
                 System.out.println(artist);
+            AuditService.getInstance().logAction("Showed artists");
         } else if (option == 2)
             return;
         else
@@ -207,6 +212,7 @@ public class AdminService implements UserService {
                     List<Review> reviews = getReviewRepository().getReviewsByEventId(getEventRepository().getEventId(event));
                     for (Review review : reviews)
                         System.out.println(review);
+                    AuditService.getInstance().logAction("Showed reviews");
                     break;
                 }
         } else if (option == 2) {
@@ -232,6 +238,8 @@ public class AdminService implements UserService {
                             double newRating = scanner.nextDouble();
                             getReviewRepository().updateReview(review, newRating, newReview);
                             review.setComment(newReview);
+                            review.setRating(newRating);
+                            AuditService.getInstance().logAction("Updated review");
                             break;
                         }
                     break;
@@ -255,6 +263,7 @@ public class AdminService implements UserService {
                         if (review.getReviewId() == reviewId) {
                             reviews.remove(review);
                             getReviewRepository().deleteReview(review);
+                            AuditService.getInstance().logAction("Deleted review");
                             break;
                         }
                     break;
@@ -276,6 +285,7 @@ public class AdminService implements UserService {
             List<Ticket> tickets = getTicketRepository().getTickets();
             for (Ticket ticket : tickets)
                 System.out.println(ticket);
+            AuditService.getInstance().logAction("Showed tickets");
         } else if (option == 2) {
             //List<Ticket> tickets = getTickets();
             List<Ticket> tickets = getTicketRepository().getTickets();
@@ -287,6 +297,7 @@ public class AdminService implements UserService {
                 if (ticket.getTicketId() == id) {
                     tickets.remove(ticket);
                     getTicketRepository().deleteTicket(ticket);
+                    AuditService.getInstance().logAction("Deleted ticket");
                     break;
                 }
             //setTickets(tickets);

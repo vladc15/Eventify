@@ -95,11 +95,13 @@ public class ArtistService implements UserService {
         if (option == 1) {
             //System.out.println("Bio: " + artist.getBio());
             System.out.println("Bio: " + artistRepository.getBio(artistRepository.getArtistId(artist)));
+            AuditService.getInstance().logAction("Showed bio");
         } else if (option == 2) {
             System.out.print("Enter new bio: ");
             String newBio = scanner.nextLine();
             artist.setBio(newBio);
             artistRepository.updateBio(artistRepository.getArtistId(artist), newBio);
+            AuditService.getInstance().logAction("Updated bio");
         } else if (option == 3)
             return;
         else
@@ -117,11 +119,13 @@ public class ArtistService implements UserService {
         if (option == 1) {
             //System.out.println("Genre: " + artist.getGenre());
             System.out.println("Genre: " + artistRepository.getGenre(artistRepository.getArtistId(artist)));
+            AuditService.getInstance().logAction("Showed genre");
         } else if (option == 2) {
             System.out.print("Enter new genre: ");
             String newGenre = scanner.nextLine();
             artist.setGenre(newGenre);
             artistRepository.updateGenre(artistRepository.getArtistId(artist), newGenre);
+            AuditService.getInstance().logAction("Updated genre");
         } else if (option == 3)
             return;
         else
@@ -137,6 +141,7 @@ public class ArtistService implements UserService {
             //System.out.println("Rating: " + artist.getRating());
             ArtistRepository artistRepository = getArtistRepository();
             System.out.println("Rating: " + artistRepository.getRating(artistRepository.getArtistId(artist)));
+            AuditService.getInstance().logAction("Showed rating");
         } else if (option == 2)
             return;
         else
@@ -159,6 +164,7 @@ public class ArtistService implements UserService {
             List<Review> reviews = artistRepository.getReviews(artistRepository.getArtistId(artist));
             for (Review review : reviews)
                 System.out.println(review);
+            AuditService.getInstance().logAction("Showed reviews");
         } else if (option == 2)
             return;
         else
@@ -185,6 +191,7 @@ public class ArtistService implements UserService {
             List<Event> events = artistRepository.getEvents(artistRepository.getArtistId(artist));
             for (Event event : events)
                 System.out.println(event);
+            AuditService.getInstance().logAction("Showed events");
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
             System.out.println("1. Concert");
@@ -225,12 +232,14 @@ public class ArtistService implements UserService {
                 if (event.getEventId() == id) {
                     futureEvents.remove(event);
                     getEventRepository().deleteEvent(event);
+                    AuditService.getInstance().logAction("Deleted event");
                     break;
                 }
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
                     pastEvents.remove(event);
                     getEventRepository().deleteEvent(event);
+                    AuditService.getInstance().logAction("Deleted event");
                     break;
                 }
             setFutureEvents(futureEvents);
@@ -258,6 +267,7 @@ public class ArtistService implements UserService {
             List<Ticket> tickets = artistRepository.getTickets(artistRepository.getArtistId(artist));
             for (Ticket ticket : tickets)
                 System.out.println(ticket);
+            AuditService.getInstance().logAction("Showed tickets");
         } else if (option == 2) {
             System.out.println("These are your events:");
             List<Event> futureEvents = getFutureEvents();
@@ -320,6 +330,7 @@ public class ArtistService implements UserService {
                 if (ticket.getTicketId() == id) {
                     tickets.remove(ticket);
                     getTicketRepository().deleteTicket(ticket);
+                    AuditService.getInstance().logAction("Deleted ticket");
                     break;
                 }
             //setTickets(tickets);

@@ -43,16 +43,19 @@ public class RegistrationService {
     public int logIn(String username, String password) {
         if (admin.getUsername().equals(username) && admin.getPassword().equals(password)) {
             currentUser = admin;
+            AuditService.getInstance().logAction("Admin logged in");
             return 0;
         }
         for (Customer customer : customers)
             if (customer.getUsername().equals(username) && customer.getPassword().equals(password)) {
                 currentUser = customer;
+                AuditService.getInstance().logAction("Customer logged in");
                 return 1;
             }
         for (Artist artist : artists)
             if (artist.getUsername().equals(username) && artist.getPassword().equals(password)) {
                 currentUser = artist;
+                AuditService.getInstance().logAction("Artist logged in");
                 return 2;
             }
         return -1;
@@ -69,6 +72,7 @@ public class RegistrationService {
     public int logOut() {
         System.out.println("Goodbye, " + currentUser.getUsername() + "!");
         currentUser = null;
+        AuditService.getInstance().logAction("User logged out");
         return 0;
     }
 
@@ -107,6 +111,7 @@ public class RegistrationService {
         this.admin = Admin.getInstance(allocated_id, username, password);
         AdminRepository adminRepository = new AdminRepository();
         adminRepository.addAdmin(this.admin);
+        AuditService.getInstance().logAction("Admin account created");
         System.out.println("Admin account created successfully!");
     }
 
@@ -138,6 +143,7 @@ public class RegistrationService {
             Customer customer = new Customer(allocated_id, username, password, name, age, location);
             customers.add(customer);
             customerRepository.addCustomer(customer);
+            AuditService.getInstance().logAction("Customer account created");
         }
         else {
             // create account with basic info
@@ -145,6 +151,7 @@ public class RegistrationService {
             Customer customer = new Customer(allocated_id, username, password);
             customers.add(customer);
             customerRepository.addCustomer(customer);
+            AuditService.getInstance().logAction("Customer account created");
         }
         System.out.println("Customer account created successfully!");
     }
@@ -181,6 +188,7 @@ public class RegistrationService {
             Artist artist = new Artist(allocated_id, username, password, name, age, location, bio, genre);
             artists.add(artist);
             artistRepository.addArtist(artist);
+            AuditService.getInstance().logAction("Artist account created");
         }
         else {
             // create account with basic info
@@ -188,6 +196,7 @@ public class RegistrationService {
             Artist artist = new Artist(allocated_id, username, password);
             artists.add(artist);
             artistRepository.addArtist(artist);
+            AuditService.getInstance().logAction("Artist account created");
         }
         System.out.println("Artist account created successfully!");
     }
