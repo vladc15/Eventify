@@ -6,6 +6,7 @@ import model.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 public class TicketRepository {
     public static void createTable() {
@@ -238,5 +239,100 @@ public class TicketRepository {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void updateType(int ticketID, String type) {
+        Connection connection = null;
+        Statement stmt = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            String updateTypeSql = "UPDATE tickets SET type = '" + type + "' WHERE id = " + ticketID;
+            stmt = connection.createStatement();
+            stmt.execute(updateTypeSql);
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSeat(int ticketID, String seat) {
+        Connection connection = null;
+        Statement stmt = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            String updateSeatSql = "UPDATE tickets SET seat = '" + seat + "' WHERE id = " + ticketID;
+            stmt = connection.createStatement();
+            stmt.execute(updateSeatSql);
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public List<Ticket> getTickets() {
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<Ticket> tickets = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            String getTicketsSql = "SELECT * FROM tickets";
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery(getTicketsSql);
+            while (rs.next()) {
+                int ticketId = rs.getInt(1);
+                tickets.add(getTicketById(ticketId));
+            }
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+        return tickets;
     }
 }

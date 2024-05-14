@@ -1,14 +1,13 @@
 package repository;
 
 import database.DatabaseConfiguration;
-import model.Concert;
-import model.Event;
-import model.FilmScreening;
-import model.TheatrePlay;
+import model.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventRepository {
     public static void createTable() {
@@ -254,6 +253,129 @@ public class EventRepository {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Event> getEvents() {
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<Event> events = new ArrayList<>();
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM events");
+            while (rs.next()) {
+                Event event = getEventById(rs.getInt("id"));
+                events.add(event);
+            }
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+            return null;
+        }
+        return events;
+    }
+
+    public List<Review> getReviews(Event event) {
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<Review> reviews = new ArrayList<>();
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM reviews WHERE eventID = " + getEventId(event));
+            while (rs.next()) {
+                Review review = new Review(rs.getInt("id"), event, UserRepository.getUserById(rs.getInt("userID")), rs.getDouble("rating"), rs.getString("comment"));
+                reviews.add(review);
+            }
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+            return null;
+        }
+        return reviews;
+    }
+
+    public List<Ticket> getTickets(Event event) {
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<Ticket> tickets = new ArrayList<>();
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM tickets WHERE eventID = " + getEventId(event));
+            while (rs.next()) {
+                Ticket ticket = TicketRepository.getTicketById(rs.getInt("id"));
+                tickets.add(ticket);
+            }
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+            return null;
+        }
+        return tickets;
     }
 
 }

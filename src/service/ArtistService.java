@@ -1,13 +1,8 @@
 package service;
 
-import model.FilmScreening;
-import model.TheatrePlay;
-import model.Ticket;
-import model.Concert;
-import model.Event;
-import model.FilmScreeningTicket;
-import model.TheatrePlayTicket;
-import model.ConcertTicket;
+import model.*;
+import repository.ArtistRepository;
+import repository.TicketRepository;
 import user.Artist;
 
 import java.util.List;
@@ -96,12 +91,15 @@ public class ArtistService implements UserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         scanner.nextLine();
+        ArtistRepository artistRepository = getArtistRepository();
         if (option == 1) {
-            System.out.println("Bio: " + artist.getBio());
+            //System.out.println("Bio: " + artist.getBio());
+            System.out.println("Bio: " + artistRepository.getBio(artistRepository.getArtistId(artist)));
         } else if (option == 2) {
             System.out.print("Enter new bio: ");
             String newBio = scanner.nextLine();
             artist.setBio(newBio);
+            artistRepository.updateBio(artistRepository.getArtistId(artist), newBio);
         } else if (option == 3)
             return;
         else
@@ -115,12 +113,15 @@ public class ArtistService implements UserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         scanner.nextLine();
+        ArtistRepository artistRepository = getArtistRepository();
         if (option == 1) {
-            System.out.println("Genre: " + artist.getGenre());
+            //System.out.println("Genre: " + artist.getGenre());
+            System.out.println("Genre: " + artistRepository.getGenre(artistRepository.getArtistId(artist)));
         } else if (option == 2) {
             System.out.print("Enter new genre: ");
             String newGenre = scanner.nextLine();
             artist.setGenre(newGenre);
+            artistRepository.updateGenre(artistRepository.getArtistId(artist), newGenre);
         } else if (option == 3)
             return;
         else
@@ -133,7 +134,9 @@ public class ArtistService implements UserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            System.out.println("Rating: " + artist.getRating());
+            //System.out.println("Rating: " + artist.getRating());
+            ArtistRepository artistRepository = getArtistRepository();
+            System.out.println("Rating: " + artistRepository.getRating(artistRepository.getArtistId(artist)));
         } else if (option == 2)
             return;
         else
@@ -146,12 +149,16 @@ public class ArtistService implements UserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            List<Event> pastEvents = getPastEvents();
+            /*List<Event> pastEvents = getPastEvents();
             for (Event event : pastEvents)
                 if (event.getArtists().contains(artist)) {
                     System.out.println("Reviews for event " + event.getName() + ":");
                     event.showReviews();
-                }
+                }*/
+            ArtistRepository artistRepository = getArtistRepository();
+            List<Review> reviews = artistRepository.getReviews(artistRepository.getArtistId(artist));
+            for (Review review : reviews)
+                System.out.println(review);
         } else if (option == 2)
             return;
         else
@@ -168,12 +175,16 @@ public class ArtistService implements UserService {
         int option = scanner.nextInt();
         if (option == 1) {
             System.out.println("These are your events:");
-            List<Event> events = getFutureEvents();
+            /*List<Event> events = getFutureEvents();
             List<Event> pastEvents = getPastEvents();
             events.addAll(pastEvents);
             for (Event event : events)
                 if (event.getArtists().contains(artist))
-                    System.out.println(event);
+                    System.out.println(event);*/
+            ArtistRepository artistRepository = getArtistRepository();
+            List<Event> events = artistRepository.getEvents(artistRepository.getArtistId(artist));
+            for (Event event : events)
+                System.out.println(event);
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
             System.out.println("1. Concert");
@@ -213,11 +224,13 @@ public class ArtistService implements UserService {
             for (Event event : futureEvents)
                 if (event.getEventId() == id) {
                     futureEvents.remove(event);
+                    getEventRepository().deleteEvent(event);
                     break;
                 }
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
                     pastEvents.remove(event);
+                    getEventRepository().deleteEvent(event);
                     break;
                 }
             setFutureEvents(futureEvents);
@@ -237,10 +250,14 @@ public class ArtistService implements UserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            List<Ticket> tickets = getTickets();
+            /*List<Ticket> tickets = getTickets();
             for (Ticket ticket : tickets)
                 if (ticket.getEvent().getArtists().contains(artist))
-                    System.out.println(ticket);
+                    System.out.println(ticket);*/
+            ArtistRepository artistRepository = getArtistRepository();
+            List<Ticket> tickets = artistRepository.getTickets(artistRepository.getArtistId(artist));
+            for (Ticket ticket : tickets)
+                System.out.println(ticket);
         } else if (option == 2) {
             System.out.println("These are your events:");
             List<Event> futureEvents = getFutureEvents();
@@ -264,8 +281,6 @@ public class ArtistService implements UserService {
                 }
             switch (eventType) {
                 case 0:
-                    // de pus allocatedId in fromInput
-                    // todo
                     ConcertTicket concertTicket = new ConcertTicket();
                     concertTicket.fromInputEvent(scanner, eventChosen);
                     addTicket(concertTicket);
@@ -285,7 +300,9 @@ public class ArtistService implements UserService {
             }
 
         } else if (option == 3) {
-            List<Ticket> tickets = getTickets();
+            //List<Ticket> tickets = getTickets();
+            ArtistRepository artistRepository = getArtistRepository();
+            List<Ticket> tickets = artistRepository.getTickets(artistRepository.getArtistId(artist));
             for (Ticket ticket : tickets)
                 if (ticket.getEvent().getArtists().contains(artist))
                     System.out.println(ticket);
@@ -302,9 +319,10 @@ public class ArtistService implements UserService {
             for (Ticket ticket : tickets)
                 if (ticket.getTicketId() == id) {
                     tickets.remove(ticket);
+                    getTicketRepository().deleteTicket(ticket);
                     break;
                 }
-            setTickets(tickets);
+            //setTickets(tickets);
         } else if (option == 5)
             return;
         else

@@ -1,6 +1,10 @@
 package service;
 
 import model.Location;
+import repository.AdminRepository;
+import repository.ArtistRepository;
+import repository.CustomerRepository;
+import repository.UserRepository;
 import user.Admin;
 import user.Artist;
 import user.Customer;
@@ -69,7 +73,12 @@ public class RegistrationService {
     }
 
     private Boolean checkUsername(String username) {
-        if (admin != null && admin.getUsername().equals(username))
+        UserRepository userRepository = new UserRepository();
+        if (userRepository.getUserIdByUsername(username) != -1)
+            return false;
+        return true;
+
+        /*if (admin != null && admin.getUsername().equals(username))
             return false;
         for (Customer customer : customers)
             if (customer.getUsername().equals(username))
@@ -77,7 +86,7 @@ public class RegistrationService {
         for (Artist artist : artists)
             if (artist.getUsername().equals(username))
                 return false;
-        return true;
+        return true;*/
     }
 
     public void signUpAdmin(Scanner scanner) {
@@ -96,6 +105,8 @@ public class RegistrationService {
         String password = scanner.nextLine();
         int allocated_id = allocateId();
         this.admin = Admin.getInstance(allocated_id, username, password);
+        AdminRepository adminRepository = new AdminRepository();
+        adminRepository.addAdmin(this.admin);
         System.out.println("Admin account created successfully!");
     }
 
@@ -113,6 +124,7 @@ public class RegistrationService {
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
+        CustomerRepository customerRepository = new CustomerRepository();
         if (response.equals("yes")) {
             System.out.println("Customer name:");
             String name = scanner.nextLine();
@@ -125,12 +137,14 @@ public class RegistrationService {
             int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password, name, age, location);
             customers.add(customer);
+            customerRepository.addCustomer(customer);
         }
         else {
             // create account with basic info
             int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password);
             customers.add(customer);
+            customerRepository.addCustomer(customer);
         }
         System.out.println("Customer account created successfully!");
     }
@@ -149,6 +163,7 @@ public class RegistrationService {
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
+        ArtistRepository artistRepository = new ArtistRepository();
         if (response.equals("yes")) {
             System.out.println("Artist name:");
             String name = scanner.nextLine();
@@ -165,19 +180,21 @@ public class RegistrationService {
             int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password, name, age, location, bio, genre);
             artists.add(artist);
+            artistRepository.addArtist(artist);
         }
         else {
             // create account with basic info
             int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password);
             artists.add(artist);
+            artistRepository.addArtist(artist);
         }
         System.out.println("Artist account created successfully!");
     }
 
-    public void deleteCustomer(Customer customer) { customers.remove(customer); }
-    public void deleteArtist(Artist artist) { artists.remove(artist); }
-    public void deleteAdmin() { admin = null; }
+    //public void deleteCustomer(Customer customer) { customers.remove(customer); }
+    //public void deleteArtist(Artist artist) { artists.remove(artist); }
+    //public void deleteAdmin() { admin = null; }
 
     public int allocateId() {
         int id = ids.size();

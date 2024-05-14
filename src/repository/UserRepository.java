@@ -214,4 +214,94 @@ public class UserRepository {
         return null;
     }
 
+    public void updateName(String name, int userId) {
+        Connection connection = null;
+        Statement stmt = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            String updateNameSql = "UPDATE users SET name = '" + name + "' WHERE id = " + userId;
+            stmt.execute(updateNameSql);
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAge(int age, int userId) {
+        Connection connection = null;
+        Statement stmt = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            String updateAgeSql = "UPDATE users SET age = " + age + " WHERE id = " + userId;
+            stmt.execute(updateAgeSql);
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void updateLocation(int locationId, int userId) {
+        Connection connection = null;
+        Statement stmt = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            String updateLocationSql = "UPDATE users SET locationID = " + locationId + " WHERE id = " + userId;
+            stmt.execute(updateLocationSql);
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+    }
+
 }
