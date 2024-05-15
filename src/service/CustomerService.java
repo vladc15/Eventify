@@ -283,8 +283,9 @@ public class CustomerService implements UserService {
                     System.out.println("Rating (1-5): ");
                     double rating = scanner.nextDouble();
                     int allocatedId = getRegistrationService().allocateId();
-                    customer.addReview(new Review(allocatedId, event, customer, rating, review));
                     getReviewRepository().insertReview(getEventRepository().getEventId(event), getUserRepository().getUserId(customer), rating, review);
+                    Review new_review = new Review(allocatedId, event, customer, rating, review);
+                    customer.addReview(new Review(getReviewRepository().getReviewId(new_review), event, customer, rating, review));
                     AuditService.getInstance().logAction("Added review");
                     break;
                 }

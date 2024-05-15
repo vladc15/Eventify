@@ -52,7 +52,7 @@ public class Location {
     public void setRows(int rows) { this.rows = rows; }
     public void setColumns(int columns) { this.columns = columns; }
 
-    public String toString() { return "Address: " + address + ", City: " + city + ", Total Capacity: " + totalCapacity + ", Rows: " + rows + ", Columns: " + columns; }
+    public String toString() { return "LocationId: " + locationId + "Address: " + address + ", City: " + city + ", Total Capacity: " + totalCapacity + ", Rows: " + rows + ", Columns: " + columns; }
     public String toCSV() { return locationId + "," + address + "," + city + "," + totalCapacity + "," + rows + "," + columns; }
 
     public boolean equals(Location location) { return address.equals(location.getAddress()) && city.equals(location.getCity()) && totalCapacity == location.getTotalCapacity() && rows == location.getRows() && columns == location.getColumns(); }
@@ -71,10 +71,10 @@ public class Location {
     public void fromInput(Scanner scanner) {
         System.out.print("Enter address: ");
         //String address = scanner.nextLine();
-        this.address = scanner.nextLine();
+        this.address = scanner.next();
         System.out.print("Enter city: ");
         //String city = scanner.nextLine();
-        this.city = scanner.nextLine();
+        this.city = scanner.next();
         System.out.print("Enter total capacity: ");
         //int totalCapacity = scanner.nextInt();
         //return new model.Location(address, city, totalCapacity);
@@ -90,10 +90,10 @@ public class Location {
     public void fromInputUser(Scanner scanner) {
         System.out.print("Enter address: ");
         //String address = scanner.nextLine();
-        this.address = scanner.nextLine();
+        this.address = scanner.next();
         System.out.print("Enter city: ");
         //String city = scanner.nextLine();
-        this.city = scanner.nextLine();
+        this.city = scanner.next();
     }
 
 }

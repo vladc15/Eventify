@@ -3,8 +3,10 @@ package service;
 import application.App;
 import model.*;
 import repository.*;
+import user.Artist;
 import user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -103,7 +105,7 @@ public interface UserService {
             case 6:
                 System.out.println("Enter new location: ");
                 Location newLocation = new Location();
-                newLocation.fromInput(scanner);
+                newLocation.fromInputUser(scanner);
                 event.setLocation(newLocation);
                 getEventRepository().updateEventById(event.getEventId(), event);
                 AuditService.getInstance().logAction("Event location updated");
@@ -151,24 +153,44 @@ public interface UserService {
     }
 
     default void addEvent(Scanner scanner, int eventType) {
+        System.out.println("These are the artists available: ");
+        List<Artist> artists = getArtistRepository().getArtists();
+        for (Artist artist : artists)
+            System.out.println(artist);
+        System.out.println("Enter the IDs of the artists you want to add to the event: ");
+        scanner.nextLine();
+        String[] artistIds = scanner.nextLine().split(" ");
+        List<Integer> ids = new ArrayList<>();
+        for (int i = 0; i < artistIds.length; i++)
+            ids.add(Integer.parseInt(artistIds[i]));
+        List<Artist> eventArtists = new ArrayList<>();
+        for (int id : ids)
+            for (Artist artist : artists)
+                if (artist.getUserId() == id) {
+                    eventArtists.add(artist);
+                    break;
+                }
         Event event = null;
         if (eventType == 1) {
             event = new Concert();
-            event.fromInput(scanner);
+            event.setArtists(eventArtists);
+            event.fromInputWithoutArtists(scanner);
             ConcertRepository concertRepository = getConcertRepository();
             concertRepository.addConcert((Concert) event);
             AuditService.getInstance().logAction("Concert added");
         }
         else if (eventType == 2) {
             event = new FilmScreening();
-            event.fromInput(scanner);
+            event.setArtists(eventArtists);
+            event.fromInputWithoutArtists(scanner);
             FilmScreeningRepository filmScreeningRepository = getFilmScreeningRepository();
             filmScreeningRepository.addFilmScreening((FilmScreening) event);
             AuditService.getInstance().logAction("Film screening added");
         }
         else if (eventType == 3) {
             event = new TheatrePlay();
-            event.fromInput(scanner);
+            event.setArtists(eventArtists);
+            event.fromInputWithoutArtists(scanner);
             TheatrePlayRepository theatrePlayRepository = getTheatrePlayRepository();
             theatrePlayRepository.addTheatrePlay((TheatrePlay) event);
             AuditService.getInstance().logAction("Theatre play added");

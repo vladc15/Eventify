@@ -214,6 +214,7 @@ public class ArtistService implements UserService {
                     okId = 1;
                     break;
                 }
+            setFutureEvents(events);
             if (okId == 0)
                 System.out.println("Invalid id.");
         } else if (option == 4) {

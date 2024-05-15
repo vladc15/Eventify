@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.Event;
+import model.Location;
 import model.Review;
 import model.Ticket;
+import repository.LocationRepository;
 import user.Admin;
 import user.Artist;
 import user.Customer;
@@ -48,7 +50,8 @@ public class AdminService implements UserService {
         System.out.println("4. Access artists");
         System.out.println("5. Access reviews");
         System.out.println("6. Access tickets");
-        System.out.println("7. Log out");
+        System.out.println("7. Access locations");
+        System.out.println("8. Log out");
     }
 
     public void executeAction(Scanner scanner) {
@@ -77,6 +80,9 @@ public class AdminService implements UserService {
                     manageTickets(scanner);
                     break;
                 case 7:
+                    manageLocations(scanner);
+                    break;
+                case 8:
                     logOut();
                     return;
                 default:
@@ -302,6 +308,49 @@ public class AdminService implements UserService {
                 }
             //setTickets(tickets);
         } else if (option == 3)
+            return;
+        else
+            System.out.println("Invalid option. Try again.");
+    }
+
+    private void manageLocations(Scanner scanner) {
+        System.out.println("1. Show locations");
+        System.out.println("2. Add location");
+        System.out.println("3. Update location");
+        System.out.println("4. Delete location");
+        System.out.println("5. Back");
+        System.out.print("Enter option: ");
+        int option = scanner.nextInt();
+        if (option == 1) {
+            List<Location> locations = getLocationRepository().getLocations();
+            for (Location location : locations)
+                System.out.println(location);
+            AuditService.getInstance().logAction("Showed locations");
+        } else if (option == 2) {
+            System.out.print("Enter location: ");
+            Location location = new Location();
+            location.fromInputUser(scanner);
+            getLocationRepository().addLocation(location);
+            AuditService.getInstance().logAction("Added location");
+        } else if (option == 3) {
+            List<Location> locations = getLocationRepository().getLocations();
+            for (Location location : locations)
+                System.out.println(location);
+            System.out.print("Enter location id: ");
+            int locationId = scanner.nextInt();
+            Location location = getLocationRepository().getLocationById(locationId);
+            location.fromInputUser(scanner);
+            getLocationRepository().updateLocation(location);
+            AuditService.getInstance().logAction("Updated location");
+        } else if (option == 4) {
+            List<Location> locations = getLocationRepository().getLocations();
+            for (Location location : locations)
+                System.out.println(location);
+            System.out.print("Enter location id: ");
+            int locationId = scanner.nextInt();
+            getLocationRepository().deleteLocation(locationId);
+            AuditService.getInstance().logAction("Deleted location");
+        } else if (option == 5)
             return;
         else
             System.out.println("Invalid option. Try again.");

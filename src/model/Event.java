@@ -220,7 +220,7 @@ public abstract class Event implements Comparable<Event>{
         System.out.print("Enter available tickets: ");
         availableTickets = scanner.nextInt();
         Location location = new Location();
-        location.fromInput(scanner);
+        location.fromInputUser(scanner);
         this.location = location;
         artists = new ArrayList<>();
         System.out.print("Enter number of artists: ");
@@ -231,7 +231,7 @@ public abstract class Event implements Comparable<Event>{
             artists.add(artist);
         }
         seats = new ArrayList<List<Character>>();
-        System.out.print("Enter number of rows: ");
+        /*System.out.print("Enter number of rows: ");
         int numberOfRows = scanner.nextInt();
         for (int i = 0; i < numberOfRows; i++) {
             List<Character> row = new ArrayList<Character>();
@@ -242,15 +242,15 @@ public abstract class Event implements Comparable<Event>{
                 row.add(scanner.next().charAt(0));
             }
             seats.add(row);
-        }
+        }*/
         reviews = new ArrayList<>();
-        System.out.print("Enter number of reviews: ");
+        /*System.out.print("Enter number of reviews: ");
         int numberOfReviews = scanner.nextInt();
         for (int i = 0; i < numberOfReviews; i++) {
             Review review = new Review();
             review.fromInput(scanner);
             reviews.add(review);
-        }
+        }*/
         ticketPrices = new HashMap<String, Double>();
         System.out.print("Enter number of ticket prices: ");
         int numberOfTicketPrices = scanner.nextInt();
@@ -263,6 +263,40 @@ public abstract class Event implements Comparable<Event>{
         }
         System.out.print("Enter genre: ");
         genre = scanner.nextLine();
+    }
+
+    public void fromInputWithoutArtists(Scanner scanner) {
+        System.out.print("Enter name: ");
+        name = scanner.nextLine();
+        System.out.print("Enter description: ");
+        description = scanner.nextLine();
+        System.out.print("Enter date: ");
+        date = scanner.nextLine();
+        System.out.print("Enter time: ");
+        time = scanner.nextLine();
+        System.out.print("Enter duration: ");
+        duration = scanner.nextInt();
+        System.out.print("Enter total tickets: ");
+        totalTickets = scanner.nextInt();
+        System.out.print("Enter available tickets: ");
+        availableTickets = scanner.nextInt();
+        Location location = new Location();
+        location.fromInputUser(scanner);
+        this.location = location;
+        seats = new ArrayList<List<Character>>();
+        reviews = new ArrayList<>();
+        ticketPrices = new HashMap<String, Double>();
+        System.out.print("Enter number of ticket prices: ");
+        int numberOfTicketPrices = scanner.nextInt();
+        for (int i = 0; i < numberOfTicketPrices; i++) {
+            System.out.print("Enter type of ticket " + (i + 1) + ": ");
+            String type = scanner.next();
+            System.out.print("Enter price of ticket " + (i + 1) + ": ");
+            double price = scanner.nextDouble();
+            ticketPrices.put(type, price);
+        }
+        System.out.print("Enter genre: ");
+        genre = scanner.next();
     }
 
     public void showSeats() {
