@@ -55,8 +55,15 @@ public class UserRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            String insertUserSql = "INSERT INTO users(username, password, name, age, locationID) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ", " + LocationRepository.getLocationId(user.getLocation()) + ")";
-            stmt.execute(insertUserSql);
+            if (user.getLocation() == null) {
+                String insertUserSql = "INSERT INTO users(username, password, name, age) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ")";
+                stmt.execute(insertUserSql);
+            } else {
+                String insertUserSql = "INSERT INTO users(username, password, name, age, locationID) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ", " + LocationRepository.getLocationId(user.getLocation()) + ")";
+                stmt.execute(insertUserSql);
+            }
+            //String insertUserSql = "INSERT INTO users(username, password, name, age, locationID) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ", " + LocationRepository.getLocationId(user.getLocation()) + ")";
+            //stmt.execute(insertUserSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -92,8 +99,15 @@ public class UserRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            String updateUserSql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', age = " + user.getAge() + ", locationID = " + LocationRepository.getLocationId(user.getLocation()) + " WHERE id = " + userId;
-            stmt.execute(updateUserSql);
+            if (user.getLocation() == null) {
+                String updateUserSql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', age = " + user.getAge() + " WHERE id = " + userId;
+                stmt.execute(updateUserSql);
+            } else {
+                String updateUserSql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', age = " + user.getAge() + ", locationID = " + LocationRepository.getLocationId(user.getLocation()) + " WHERE id = " + userId;
+                stmt.execute(updateUserSql);
+            }
+            //String updateUserSql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', age = " + user.getAge() + ", locationID = " + LocationRepository.getLocationId(user.getLocation()) + " WHERE id = " + userId;
+            //stmt.execute(updateUserSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -231,10 +245,21 @@ public class UserRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM users u LEFT JOIN customers c LEFT JOIN artists a LEFT JOIN admins ad ON (u.id = c.userId OR u.id = a.userId OR u.id = ad.userId) WHERE u.id = " + userId);
+            rs = stmt.executeQuery("SELECT * FROM users u " +
+                                        "LEFT JOIN customers c ON u.id = c.userId " +
+                                        "LEFT JOIN artists a ON u.id = a.userId " +
+                                        "LEFT JOIN admins ad ON u.id = ad.userId WHERE u.id = " + userId);
             if (rs.next()) {
                 if (rs.getInt("c.userId") == userId) {
-                    Customer c = new Customer(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")));
+                    Customer c = null;
+                    if (rs.getInt("u.locationID") == 0) {
+                        c = new Customer(userId, rs.getString("u.username"), rs.getString("u.password"));
+                        c.setName(rs.getString("u.name"));
+                        c.setAge(rs.getInt("u.age"));
+                    }
+                    else
+                        c = new Customer(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")));
+                    //Customer c = new Customer(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")));
                     int customer_id = rs.getInt("c.id");
                     c.setFavorites(CustomerFavoritesRepository.getCustomerFavorites(customer_id));
                     c.setHistory(CustomerHistoryRepository.getCustomerHistory(customer_id));
@@ -243,9 +268,13 @@ public class UserRepository {
                     c.setTickets(CustomerTicketsRepository.getTicketsByCustomerId(customer_id));
                     user = c;
                 } else if (rs.getInt("a.userId") == userId) {
-                    user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")), rs.getString("a.bio"), rs.getString("a.genre"));
+                    if (rs.getInt("u.locationID") == 0)
+                        user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), null, rs.getString("a.bio"), rs.getString("a.genre"));
+                    else {
+                        user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")), rs.getString("a.bio"), rs.getString("a.genre"));
+                    }
                 } else if (rs.getInt("ad.userId") == userId) {
-                    user = Admin.getInstance();
+                    user = AdminRepository.getAdmin();
                 }
             }
             connection.commit();

@@ -103,7 +103,7 @@ public abstract class User {
         //model.Location location = new model.Location();
         //location.fromInput(scanner);
         this.location = new Location();
-        this.location.fromInput(scanner);
+        this.location.fromInputUser(scanner);
         //return new user.User(username, password, email, phone, name, age, location);
     }
 }

@@ -7,11 +7,12 @@ public class DatabaseConfiguration {
     private static final String USER = "vlad";
     private static final String PASSWORD = "vlad";
 
-    private static Connection connection;
+    //private static Connection connection;
 
     private DatabaseConfiguration() {}
 
     public static Connection getConnection() {
+        Connection connection = null;
         try {
             if (connection == null || connection.isClosed()) {
                 connection = java.sql.DriverManager.getConnection(URL, USER, PASSWORD);
@@ -23,13 +24,4 @@ public class DatabaseConfiguration {
         return connection;
     }
 
-    public static void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

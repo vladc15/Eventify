@@ -18,12 +18,22 @@ public class RegistrationService {
     private Admin admin;
     private Set<Integer> ids;
 
+    private UserRepository userRepository = new UserRepository();
+    private CustomerRepository customerRepository = new CustomerRepository();
+    private ArtistRepository artistRepository = new ArtistRepository();
+    private AdminRepository adminRepository = new AdminRepository();
+
     private User currentUser;
 
     public RegistrationService() {
-        this.customers = new ArrayList<>();
+        /*this.customers = new ArrayList<>();
         this.artists = new ArrayList<>();
-        this.admin = Admin.getInstance();
+        this.admin = Admin.getInstance();*/
+
+        this.customers = customerRepository.getCustomers();
+        this.artists = artistRepository.getArtists();
+        this.admin = adminRepository.getAdmin();
+
         this.ids = new HashSet<>();
         this.currentUser = null;
     }
@@ -77,7 +87,6 @@ public class RegistrationService {
     }
 
     private Boolean checkUsername(String username) {
-        UserRepository userRepository = new UserRepository();
         if (userRepository.getUserIdByUsername(username) != -1)
             return false;
         return true;
@@ -109,7 +118,6 @@ public class RegistrationService {
         String password = scanner.nextLine();
         int allocated_id = allocateId();
         this.admin = Admin.getInstance(allocated_id, username, password);
-        AdminRepository adminRepository = new AdminRepository();
         adminRepository.addAdmin(this.admin);
         AuditService.getInstance().logAction("Admin account created");
         System.out.println("Admin account created successfully!");
@@ -129,7 +137,6 @@ public class RegistrationService {
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
-        CustomerRepository customerRepository = new CustomerRepository();
         if (response.equals("yes")) {
             System.out.println("Customer name:");
             String name = scanner.nextLine();
@@ -138,7 +145,7 @@ public class RegistrationService {
             scanner.nextLine();
             System.out.println("Customer location:");
             Location location = new Location();
-            location.fromInput(scanner);
+            location.fromInputUser(scanner);
             int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password, name, age, location);
             customers.add(customer);
@@ -170,7 +177,6 @@ public class RegistrationService {
 
         System.out.println("Do you want to enter extra information about you? (yes/no)");
         String response = scanner.nextLine();
-        ArtistRepository artistRepository = new ArtistRepository();
         if (response.equals("yes")) {
             System.out.println("Artist name:");
             String name = scanner.nextLine();
@@ -206,7 +212,7 @@ public class RegistrationService {
     //public void deleteAdmin() { admin = null; }
 
     public int allocateId() {
-        int id = ids.size();
+        int id = 100 + ids.size();
         ids.add(id);
         return id;
     }

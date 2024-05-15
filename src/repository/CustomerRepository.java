@@ -6,6 +6,7 @@ import model.Ticket;
 import user.Customer;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -56,9 +57,14 @@ public class CustomerRepository {
 
         Connection connection = null;
         Statement stmt = null;
+        //PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
+            /*stmt = connection.prepareStatement("INSERT INTO customers(wallet, userId) VALUES(?, ?)");
+            stmt.setDouble(1, customer.getWallet());
+            stmt.setInt(2, UserRepository.getUserId(customer));
+            stmt.executeUpdate();*/
             String insertCustomerSql = "INSERT INTO customers(wallet, userId) VALUES(" + customer.getWallet() + ", " + UserRepository.getUserId(customer) + ")";
             stmt.execute(insertCustomerSql);
             connection.commit();
@@ -248,7 +254,7 @@ public class CustomerRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM tickets WHERE customerId = " + getCustomerId(customer));
+            rs = stmt.executeQuery("SELECT * FROM customer_tickets WHERE customerId = " + getCustomerId(customer));
             while (rs.next()) {
                 Ticket ticket = TicketRepository.getTicketById(rs.getInt("id"));
                 tickets.add(ticket);

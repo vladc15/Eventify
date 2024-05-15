@@ -35,7 +35,7 @@ public class Main {
             if (answer.equals("n")) {
                 System.out.println("-------Register-------");
                 System.out.println("Choose the type of account:");
-                System.out.println("1. User");
+                System.out.println("1. Customer");
                 System.out.println("2. Artist");
                 System.out.println("3. Admin");
                 System.out.println("Enter your choice:");
