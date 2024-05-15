@@ -39,6 +39,13 @@ public class CustomerTicketsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -70,6 +77,13 @@ public class CustomerTicketsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -100,6 +114,13 @@ public class CustomerTicketsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -117,7 +138,6 @@ public class CustomerTicketsRepository {
                 tickets.add(rs.getInt("ticketId"));
             }
             connection.close();
-            return tickets;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -141,8 +161,16 @@ public class CustomerTicketsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return tickets;
     }
 
     public static TreeSet<Ticket> getTicketsByCustomerId(int customerId) {
@@ -160,7 +188,6 @@ public class CustomerTicketsRepository {
                 tickets.add(ticket);
             }
             connection.close();
-            return tickets;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -184,8 +211,16 @@ public class CustomerTicketsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return tickets;
     }
 
     public void showTicketsByCustomerId(int customerId) {

@@ -44,6 +44,13 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -73,6 +80,13 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -102,6 +116,13 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -131,6 +152,13 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -138,12 +166,13 @@ public class ReviewRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
+        int reviewId = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
             rs = stmt.executeQuery("SELECT id FROM reviews WHERE user_id = " + UserRepository.getUserId(review.getUser()) + " AND event_id = " + EventRepository.getEventId(review.getEvent()) + " AND rating = " + review.getRating() + " AND comment = '" + review.getComment() + "'");
             if (rs.next()) {
-                return rs.getInt("id");
+                reviewId = rs.getInt("id");
             }
             connection.commit();
             connection.close();
@@ -163,9 +192,24 @@ public class ReviewRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return -1;
+        return reviewId;
     }
 
     public static void updateReview(Review review, double newRating, String newComment) {
@@ -194,6 +238,13 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -212,7 +263,6 @@ public class ReviewRepository {
             }
             connection.commit();
             connection.close();
-            return reviews;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -230,9 +280,16 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
-            return null;
-
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return reviews;
     }
 
     public static List<Review> getReviewsByUserId(int userId) {
@@ -250,7 +307,6 @@ public class ReviewRepository {
             }
             connection.commit();
             connection.close();
-            return reviews;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -268,8 +324,16 @@ public class ReviewRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return reviews;
     }
 
 }

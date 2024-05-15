@@ -38,31 +38,88 @@ public class CustomerFollowedArtistsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void addCustomerFollowedArtist(int customerId, int artistId) {
         Connection connection = null;
+        Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String insertCustomerFollowedArtistSql = "INSERT INTO customer_followed_artists(customerId, artistId) VALUES(" +
                     customerId + "," + artistId + ")";
-            Statement stmt = connection.createStatement();
+            stmt = connection.createStatement();
             stmt.execute(insertCustomerFollowedArtistSql);
+            connection.commit();
+            connection.close();
         } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void removeCustomerFollowedArtist(int customerId, int artistId) {
         Connection connection = null;
+        Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String deleteCustomerFollowedArtistSql = "DELETE FROM customer_followed_artists WHERE customerId = " + customerId + " AND artistId = " + artistId;
-            Statement stmt = connection.createStatement();
+            stmt = connection.createStatement();
             stmt.execute(deleteCustomerFollowedArtistSql);
+            connection.commit();
+            connection.close();
         } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -104,8 +161,16 @@ public class CustomerFollowedArtistsRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return artists;
     }
 
     public void showCustomerFollowedArtists(int customerId) {

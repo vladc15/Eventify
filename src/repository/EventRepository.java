@@ -38,6 +38,13 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -68,6 +75,13 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -98,6 +112,13 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -128,6 +149,13 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -159,6 +187,13 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -175,7 +210,6 @@ public class EventRepository {
             if (rs.next()) {
                 eventId = rs.getInt("id");
             }
-            return eventId;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -200,8 +234,16 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
-            return -1;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return eventId;
     }
 
     public static void deleteEvent(Event event) {
@@ -227,7 +269,6 @@ public class EventRepository {
                 }
             }
             connection.close();
-            return event;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -251,8 +292,16 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return event;
     }
 
     public List<Event> getEvents() {
@@ -291,6 +340,14 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return events;
     }
@@ -331,6 +388,14 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return reviews;
     }
@@ -371,6 +436,14 @@ public class EventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return tickets;
     }

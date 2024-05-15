@@ -21,7 +21,7 @@ public class Main {
         RegistrationService registrationService = app.getRegistrationService();
         DatabaseManagerUtil.initDatabase();
 
-        initApp(app); // add some initial data
+        //initApp(app); // add some initial data
 
         while (true) {
             System.out.println("Are you already a member? (y/n)");

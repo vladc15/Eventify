@@ -37,6 +37,13 @@ public class MapEventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -68,6 +75,13 @@ public class MapEventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -98,6 +112,13 @@ public class MapEventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -128,6 +149,13 @@ public class MapEventRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -135,13 +163,14 @@ public class MapEventRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
+        double mapValue = 0;
         try {
             connection = DatabaseConfiguration.getConnection();
             String selectLocationSql = "SELECT mapValue FROM map_events WHERE eventId = " + eventId + " AND mapKey = '" + mapKey + "'";
             stmt = connection.createStatement();
             rs = stmt.executeQuery(selectLocationSql);
             if (rs.next()) {
-                return rs.getDouble("mapValue");
+                mapValue = rs.getDouble("mapValue");
             }
             connection.commit();
             connection.close();
@@ -161,9 +190,24 @@ public class MapEventRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return 0;
+        return mapValue;
     }
 
     public static Map<String, Double> getMap(int eventId) {
@@ -193,6 +237,13 @@ public class MapEventRepository {
             if (stmt != null) {
                 try {
                     stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

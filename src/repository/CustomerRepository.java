@@ -41,6 +41,13 @@ public class CustomerRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -73,6 +80,13 @@ public class CustomerRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -88,7 +102,6 @@ public class CustomerRepository {
             if (rs.next()) {
                 customerId = rs.getInt("id");
             }
-            return customerId;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -105,9 +118,24 @@ public class CustomerRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
-            return -1;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return customerId;
     }
 
 
@@ -126,7 +154,6 @@ public class CustomerRepository {
                 customers.add(customer);
             }
             connection.close();
-            return customers;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -143,9 +170,24 @@ public class CustomerRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return customers;
     }
 
     public List<Review> getReviews(Customer customer) {
@@ -162,7 +204,6 @@ public class CustomerRepository {
                 reviews.add(review);
             }
             connection.close();
-            return reviews;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -179,9 +220,24 @@ public class CustomerRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return reviews;
     }
 
     public TreeSet<Ticket> getTickets(Customer customer) {
@@ -198,7 +254,6 @@ public class CustomerRepository {
                 tickets.add(ticket);
             }
             connection.close();
-            return tickets;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -223,8 +278,16 @@ public class CustomerRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return tickets;
     }
 
     public double getWallet(Customer customer) {
@@ -239,7 +302,6 @@ public class CustomerRepository {
             if (rs.next()) {
                 wallet = rs.getDouble("wallet");
             }
-            return wallet;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -264,8 +326,16 @@ public class CustomerRepository {
                 }
             }
             e.printStackTrace();
-            return -1;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return wallet;
     }
 
     public void updateWallet(Customer customer, double newWallet) {
@@ -294,6 +364,13 @@ public class CustomerRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

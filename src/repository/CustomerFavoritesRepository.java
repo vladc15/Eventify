@@ -39,31 +39,88 @@ public class CustomerFavoritesRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void addCustomerFavorite(int customerId, int eventId) {
         Connection connection = null;
+        Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String insertCustomerFavoriteSql = "INSERT INTO customer_favorites(customerId, eventId) VALUES(" +
                     customerId + "," + eventId + ")";
-            Statement stmt = connection.createStatement();
+            stmt = connection.createStatement();
             stmt.execute(insertCustomerFavoriteSql);
+            connection.commit();
+            connection.close();
         } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void removeCustomerFavorite(int customerId, int eventId) {
         Connection connection = null;
+        Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String deleteCustomerFavoriteSql = "DELETE FROM customer_favorites WHERE customerId = " + customerId + " AND eventId = " + eventId;
-            Statement stmt = connection.createStatement();
+            stmt = connection.createStatement();
             stmt.execute(deleteCustomerFavoriteSql);
+            connection.commit();
+            connection.close();
         } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -82,7 +139,6 @@ public class CustomerFavoritesRepository {
                 Event event = EventRepository.getEventById(rs.getInt("eventId"));
                 events.add(event);
             }
-            return events;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -106,8 +162,16 @@ public class CustomerFavoritesRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return events;
     }
 
     public static void showCustomerFavorites(int customerId) {

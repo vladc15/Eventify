@@ -12,25 +12,15 @@ import java.util.List;
 public class CustomerHistoryRepository {
     public static void createTable() {
         Connection connection = null;
+        Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_history" +
                     "(customerId int, eventId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (eventId) REFERENCES events(id)), PRIMARY KEY (customerId, eventId)";
-            Statement stmt = connection.createStatement();
-            stmt.execute(createTableSql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addToHistory(int customerId, int eventId) {
-        Connection connection = null;
-        Statement stmt = null;
-        try {
-            connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            String sql = "INSERT INTO customer_history (customerId, eventId) VALUES (" + customerId + ", " + eventId + ")";
-            stmt.executeUpdate(sql);
+            stmt.execute(createTableSql);
+            connection.commit();
+            connection.close();
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -48,6 +38,50 @@ public class CustomerHistoryRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void addToHistory(int customerId, int eventId) {
+        Connection connection = null;
+        Statement stmt = null;
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            String sql = "INSERT INTO customer_history (customerId, eventId) VALUES (" + customerId + ", " + eventId + ")";
+            stmt.executeUpdate(sql);
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -89,6 +123,14 @@ public class CustomerHistoryRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return events;
     }
@@ -129,6 +171,14 @@ public class CustomerHistoryRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

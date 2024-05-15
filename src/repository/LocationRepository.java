@@ -39,6 +39,13 @@ public class LocationRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -71,6 +78,13 @@ public class LocationRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -78,15 +92,15 @@ public class LocationRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
+        Location location = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String selectLocationSql = "SELECT * FROM locations WHERE id=" + id;
             stmt = connection.createStatement();
             rs = stmt.executeQuery(selectLocationSql);
             if (rs.next()) {
-                Location location = new Location(rs.getInt("id"), rs.getString("address"), rs.getString("city"),
+                location = new Location(rs.getInt("id"), rs.getString("address"), rs.getString("city"),
                         rs.getInt("totalCapacity"), rs.getInt("rows"), rs.getInt("columns"));
-                return location;
             }
             connection.close();
         } catch (Exception e) {
@@ -105,22 +119,38 @@ public class LocationRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return location;
     }
 
     public static int getLocationId(Location location) {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
+        int locationId = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
             String selectLocationSql = "SELECT * FROM locations WHERE address='" + location.getAddress() + "' AND city='" + location.getCity() + "'";
             stmt = connection.createStatement();
             rs = stmt.executeQuery(selectLocationSql);
             if (rs.next()) {
-                return rs.getInt("id");
+                locationId = rs.getInt("id");
             }
             connection.close();
         } catch (Exception e) {
@@ -139,9 +169,24 @@ public class LocationRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return -1;
+        return locationId;
     }
 
     public static void updateLocation(Location location) {
@@ -173,6 +218,13 @@ public class LocationRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -205,6 +257,13 @@ public class LocationRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -235,6 +294,13 @@ public class LocationRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -269,7 +335,22 @@ public class LocationRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -289,7 +370,6 @@ public class LocationRepository {
                 locations.add(location);
             }
             connection.close();
-            return locations;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -314,7 +394,15 @@ public class LocationRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return locations;
     }
 }

@@ -39,6 +39,13 @@ public class EventArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -69,6 +76,13 @@ public class EventArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -99,6 +113,13 @@ public class EventArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -118,7 +139,6 @@ public class EventArtistRepository {
                 artists.add(artist);
             }
             connection.close();
-            return artists;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -135,9 +155,24 @@ public class EventArtistRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return artists;
     }
 
     public static List<Integer> getArtistIdsById(int eventID) {
@@ -155,7 +190,6 @@ public class EventArtistRepository {
                 artistIds.add(artistID);
             }
             connection.close();
-            return artistIds;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -172,9 +206,24 @@ public class EventArtistRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return artistIds;
     }
 
     public static List<Integer> getEventIdsByArtistId(int artistID) {
@@ -192,7 +241,6 @@ public class EventArtistRepository {
                 eventIds.add(eventID);
             }
             connection.close();
-            return eventIds;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -209,9 +257,24 @@ public class EventArtistRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return eventIds;
     }
 
     public static List<Event> getEventsByArtistId(int artistID) {
@@ -230,7 +293,6 @@ public class EventArtistRepository {
                 events.add(event);
             }
             connection.close();
-            return events;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -247,9 +309,24 @@ public class EventArtistRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return events;
     }
 
     public static void showEventArtists(int eventID) {

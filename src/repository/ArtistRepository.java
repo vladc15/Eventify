@@ -40,6 +40,13 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -72,6 +79,13 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -89,7 +103,6 @@ public class ArtistRepository {
                 Artist artist = (Artist) UserRepository.getUserById(userId);
                 artists.add(artist);
             }
-            return artists;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -113,8 +126,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return artists;
     }
 
     public String getBio(int id) {
@@ -129,7 +150,6 @@ public class ArtistRepository {
             if (rs.next()) {
                 bio = rs.getString("bio");
             }
-            return bio;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -153,8 +173,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return bio;
     }
 
     public void updateBio(int id, String bio) {
@@ -184,6 +212,13 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -199,7 +234,6 @@ public class ArtistRepository {
             if (rs.next()) {
                 genre = rs.getString("genre");
             }
-            return genre;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -223,8 +257,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return genre;
     }
 
     public void updateGenre(int id, String genre) {
@@ -254,6 +296,13 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -269,7 +318,6 @@ public class ArtistRepository {
             if (rs.next()) {
                 artistId = rs.getInt("id");
             }
-            return artistId;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -293,8 +341,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return -1;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return artistId;
     }
 
     public double getRating(int id) {
@@ -312,7 +368,6 @@ public class ArtistRepository {
                 nr++;
             }
             rating /= nr;
-            return rating;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -336,8 +391,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return 0.0;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return rating;
     }
 
     public List<Review> getReviews(int id) {
@@ -353,7 +416,6 @@ public class ArtistRepository {
                 Review review = new Review(rs.getInt("r.id"), EventRepository.getEventById(rs.getInt("r.event_id")), UserRepository.getUserById(rs.getInt("r.user_id")), rs.getDouble("r.rating"), rs.getString("r.comment"));
                 reviews.add(review);
             }
-            return reviews;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -377,8 +439,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return reviews;
     }
 
     public List<Event> getEvents(int id) {
@@ -394,7 +464,6 @@ public class ArtistRepository {
                 Event event = EventRepository.getEventById(rs.getInt("eventID"));
                 events.add(event);
             }
-            return events;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -418,8 +487,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return events;
     }
 
     public List<Ticket> getTickets(int id) {
@@ -435,7 +512,6 @@ public class ArtistRepository {
                 Ticket ticket = TicketRepository.getTicketById(rs.getInt("t.id"));
                 tickets.add(ticket);
             }
-            return tickets;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -459,8 +535,16 @@ public class ArtistRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return tickets;
     }
 
 }

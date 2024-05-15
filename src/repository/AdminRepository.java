@@ -35,6 +35,13 @@ public class AdminRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -58,6 +65,21 @@ public class AdminRepository {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

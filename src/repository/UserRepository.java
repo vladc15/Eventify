@@ -39,6 +39,13 @@ public class UserRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -69,6 +76,13 @@ public class UserRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -99,18 +113,27 @@ public class UserRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static int getUserIdByUsername(String username) {
         Connection connection = null;
         Statement stmt = null;
+        ResultSet rs = null;
+        int userId = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id FROM users WHERE username = '" + username + "'");
+            rs = stmt.executeQuery("SELECT id FROM users WHERE username = '" + username + "'");
             if (rs.next()) {
-                return rs.getInt("id");
+                userId = rs.getInt("id");
             }
             connection.commit();
             connection.close();
@@ -130,20 +153,37 @@ public class UserRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return -1;
+        return userId;
     }
 
     public static int getUserId(User user) {
         Connection connection = null;
         Statement stmt = null;
+        ResultSet rs = null;
+        int userId = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id FROM users WHERE username = '" + user.getUsername() + "'");
+            rs = stmt.executeQuery("SELECT id FROM users WHERE username = '" + user.getUsername() + "'");
             if (rs.next()) {
-                return rs.getInt("id");
+                userId = rs.getInt("id");
             }
             connection.commit();
             connection.close();
@@ -163,18 +203,35 @@ public class UserRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return -1;
+        return userId;
     }
 
     public static User getUserById(int userId) {
         Connection connection = null;
         Statement stmt = null;
+        ResultSet rs = null;
+        User user = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM users u LEFT JOIN customers c LEFT JOIN artists a LEFT JOIN admins ad ON (u.id = c.userId OR u.id = a.userId OR u.id = ad.userId) WHERE u.id = " + userId);
+            rs = stmt.executeQuery("SELECT * FROM users u LEFT JOIN customers c LEFT JOIN artists a LEFT JOIN admins ad ON (u.id = c.userId OR u.id = a.userId OR u.id = ad.userId) WHERE u.id = " + userId);
             if (rs.next()) {
                 if (rs.getInt("c.userId") == userId) {
                     Customer c = new Customer(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")));
@@ -184,11 +241,11 @@ public class UserRepository {
                     c.setReviews(ReviewRepository.getReviewsByUserId(userId));
                     c.setFollowedArtists(CustomerFollowedArtistsRepository.getCustomerFollowedArtists(customer_id));
                     c.setTickets(CustomerTicketsRepository.getTicketsByCustomerId(customer_id));
-                    return c;
+                    user = c;
                 } else if (rs.getInt("a.userId") == userId) {
-                    return new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")), rs.getString("a.bio"), rs.getString("a.genre"));
+                    user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")), rs.getString("a.bio"), rs.getString("a.genre"));
                 } else if (rs.getInt("ad.userId") == userId) {
-                    return Admin.getInstance();
+                    user = Admin.getInstance();
                 }
             }
             connection.commit();
@@ -209,9 +266,24 @@ public class UserRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return user;
     }
 
     public void updateName(String name, int userId) {
@@ -241,6 +313,13 @@ public class UserRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -271,6 +350,13 @@ public class UserRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -301,6 +387,13 @@ public class UserRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -37,6 +37,13 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,6 +74,13 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -101,6 +115,13 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -108,15 +129,15 @@ public class TicketRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
+        int ticketID = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
             String getTicketIdSql = "SELECT id FROM tickets WHERE eventID = " + EventRepository.getEventId(ticket.getEvent()) + " AND type = '" + ticket.getType() + "' AND seat = '" + ticket.getSeat() + "'";
             stmt = connection.createStatement();
             rs = stmt.executeQuery(getTicketIdSql);
             if (rs.next()) {
-                return rs.getInt(1);
+                ticketID = rs.getInt(1);
             }
-            return -1;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -141,8 +162,16 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
-            return -1;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return ticketID;
     }
 
     public static void deleteTicket(Ticket ticket) {
@@ -187,6 +216,14 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -198,6 +235,7 @@ public class TicketRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
+        Ticket ticket = null;
         try {
             connection = DatabaseConfiguration.getConnection();
             String getTicketByIdSql = "SELECT * FROM tickets t LEFT JOIN concert_tickets ct LEFT JOIN filmScreening_tickets ft LEFT JOIN theatre_play_tickets tt ON t.id = ct.ticketID OR t.id = ft.ticketID OR t.id = tt.ticketID WHERE t.id = " + ticketID;
@@ -205,14 +243,13 @@ public class TicketRepository {
             rs = stmt.executeQuery(getTicketByIdSql);
             if (rs.next()) {
                 if (rs.getInt("ct.ticketID") != 0) {
-                    return new ConcertTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("ct.afterPartyPrice"), rs.getDouble("ct.meetAndGreetPrice"));
+                    ticket = new ConcertTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("ct.afterPartyPrice"), rs.getDouble("ct.meetAndGreetPrice"));
                 } else if (rs.getInt("ft.ticketID") != 0) {
-                    return new FilmScreeningTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("ft.qaPrice"), rs.getDouble("ft.imaxPrice"));
+                    ticket = new FilmScreeningTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("ft.qaPrice"), rs.getDouble("ft.imaxPrice"));
                 } else if (rs.getInt("tt.ticketID") != 0) {
-                    return new TheatrePlayTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("tt.qaPrice"));
+                    ticket = new TheatrePlayTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("tt.qaPrice"));
                 }
             }
-            return null;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -237,8 +274,16 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return ticket;
     }
 
     public void updateType(int ticketID, String type) {
@@ -268,6 +313,13 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -298,6 +350,13 @@ public class TicketRepository {
                 }
             }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -331,7 +390,22 @@ public class TicketRepository {
                     ex.printStackTrace();
                 }
             }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return tickets;
     }
