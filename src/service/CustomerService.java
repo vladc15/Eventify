@@ -7,10 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeSet;
 
-import model.Event;
-import model.Location;
-import model.Review;
-import model.Ticket;
+import model.*;
 import user.Artist;
 import user.Customer;
 
@@ -132,7 +129,7 @@ public class CustomerService implements UserService {
                     break;
                 case 9:
                     logOut();
-                    break;
+                    return;
                 default:
                     System.out.println("Invalid option. Try again.");
             }
@@ -497,9 +494,16 @@ public class CustomerService implements UserService {
                             customer.purchaseTicket(ticket);
                             tickets.remove(ticket);
 
-                            getCustomerTicketsRepository().addCustomerTicket(getUserRepository().getUserId(customer), getTicketRepository().getTicketId(ticket));
+                            getCustomerTicketsRepository().addCustomerTicket(getTicketRepository().getTicketId(ticket), getCustomerRepository().getCustomerId(customer));
                             getCustomerRepository().updateWallet(customer, currentWallet - ticket.getPrice());
-                            getTicketRepository().deleteTicket(ticket);
+
+                            //getTicketRepository().deleteTicket(ticket);
+                            if (ticket instanceof ConcertTicket)
+                                getConcertTicketRepository().deleteConcertTicket((ConcertTicket) ticket);
+                            else if (ticket instanceof FilmScreeningTicket)
+                                getFilmScreeningTicketRepository().deleteFilmScreeningTicket((FilmScreeningTicket) ticket);
+                            else if (ticket instanceof TheatrePlayTicket)
+                                getTheatrePlayTicketRepository().deleteTheatrePlayTicket((TheatrePlayTicket) ticket);
                             AuditService.getInstance().logAction("Reserved ticket");
                         } else
                             System.out.println("Not enough funds in wallet.");

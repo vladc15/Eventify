@@ -112,7 +112,7 @@ public class TheatrePlayTicketRepository {
 
     public static void deleteTheatrePlayTicket(TheatrePlayTicket theatrePlayTicket) {
         deleteTheatrePlayTicket(TicketRepository.getTicketId(theatrePlayTicket));
-        TicketRepository.deleteTicket(theatrePlayTicket);
+        //TicketRepository.deleteTicket(theatrePlayTicket);
     }
 
     public static void updateQAPrice(int ticketID, double qaPrice) {

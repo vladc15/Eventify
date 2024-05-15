@@ -204,7 +204,7 @@ public class CustomerRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM reviews WHERE customerId = " + getCustomerId(customer));
+            rs = stmt.executeQuery("SELECT * FROM reviews WHERE user_id = " + getCustomerId(customer));
             while (rs.next()) {
                 Review review = new Review(rs.getInt("id"), EventRepository.getEventById(rs.getInt("event_id")), UserRepository.getUserById(rs.getInt("user_id")), rs.getDouble("rating"), rs.getString("comment"));
                 reviews.add(review);
@@ -256,7 +256,7 @@ public class CustomerRepository {
             stmt = connection.createStatement();
             rs = stmt.executeQuery("SELECT * FROM customer_tickets WHERE customerId = " + getCustomerId(customer));
             while (rs.next()) {
-                Ticket ticket = TicketRepository.getTicketById(rs.getInt("id"));
+                Ticket ticket = TicketRepository.getTicketById(rs.getInt("ticketId"));
                 tickets.add(ticket);
             }
             connection.close();

@@ -110,6 +110,6 @@ public class TheatrePlayRepository {
 
     public static void deleteTheatrePlay(TheatrePlay theatrePlay) {
         deleteTheatrePlay(EventRepository.getEventId(theatrePlay));
-        EventRepository.deleteEvent(theatrePlay);
+        //EventRepository.deleteEvent(theatrePlay);
     }
 }

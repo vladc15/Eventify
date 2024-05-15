@@ -110,6 +110,6 @@ public class FilmScreeningRepository {
 
     public static void deleteFilmScreening(FilmScreening filmScreening) {
         deleteFilmScreening(EventRepository.getEventId(filmScreening));
-        EventRepository.deleteEvent(filmScreening);
+        //EventRepository.deleteEvent(filmScreening);
     }
 }

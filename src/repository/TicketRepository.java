@@ -252,7 +252,8 @@ public class TicketRepository {
                     ticket = new FilmScreeningTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.ticket_type"), rs.getString("t.seat"), rs.getDouble("ft.qaPrice"), rs.getDouble("ft.imaxPrice"));
                 } else if (rs.getInt("tt.ticketID") != 0) {
                     ticket = new TheatrePlayTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.ticket_type"), rs.getString("t.seat"), rs.getDouble("tt.qaPrice"));
-                }
+                } else
+                    ticket = new Ticket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.ticket_type"), rs.getString("t.seat"));
             }
         } catch (Exception e) {
             if (connection != null) {

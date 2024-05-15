@@ -127,6 +127,6 @@ public class ConcertRepository {
 
     public static void deleteConcert(Concert concert) {
         deleteConcert(EventRepository.getEventId(concert));
-        EventRepository.deleteEvent(concert);
+        //EventRepository.deleteEvent(concert);
     }
 }

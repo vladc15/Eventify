@@ -201,6 +201,6 @@ public class ConcertTicketRepository {
 
     public static void deleteConcertTicket(ConcertTicket concertTicket) {
         deleteConcertTicket(TicketRepository.getTicketId(concertTicket));
-        TicketRepository.deleteTicket(concertTicket);
+        //TicketRepository.deleteTicket(concertTicket);
     }
 }

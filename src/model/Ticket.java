@@ -2,7 +2,7 @@ package model;
 
 import java.util.Scanner;
 
-public abstract class Ticket implements Comparable<Ticket> {
+public class Ticket implements Comparable<Ticket> {
     protected int ticketId;
     //private int eventId;
     protected Event event;

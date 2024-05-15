@@ -1,6 +1,7 @@
 import application.App;
 import database.DatabaseManagerUtil;
 import model.*;
+import repository.*;
 import service.*;
 import user.Admin;
 import user.Artist;
@@ -92,6 +93,10 @@ public class Main {
         Location location2 = new Location(2, "Address2", "City2", 2000, 20, 20);
         Location location3 = new Location(3, "Address3", "City3", 3000, 30, 30);
 
+        LocationRepository.addLocation(location1);
+        LocationRepository.addLocation(location2);
+        LocationRepository.addLocation(location3);
+
         Map<String, Double> ticketPrices1 = new HashMap<>();
         ticketPrices1.put("VIP", 100.0);
         ticketPrices1.put("Normal", 50.0);
@@ -120,12 +125,26 @@ public class Main {
         app.addFutureEvent(filmScreening2);
         app.addFutureEvent(theatrePlay1);
 
+        ConcertRepository.addConcert(concert1);
+        ConcertRepository.addConcert(concert2);
+        ConcertRepository.addConcert(concert3);
+        FilmScreeningRepository.addFilmScreening(filmScreening1);
+        FilmScreeningRepository.addFilmScreening(filmScreening2);
+        TheatrePlayRepository.addTheatrePlay(theatrePlay1);
+
         app.addTicket(concertTicket1);
         app.addTicket(concertTicket2);
         app.addTicket(concertTicket3);
         app.addTicket(filmScreeningTicket1);
         app.addTicket(filmScreeningTicket2);
         app.addTicket(theatrePlayTicket1);
+
+        ConcertTicketRepository.addConcertTicket(concertTicket1);
+        ConcertTicketRepository.addConcertTicket(concertTicket2);
+        ConcertTicketRepository.addConcertTicket(concertTicket3);
+        FilmScreeningTicketRepository.addFilmScreeningTicket(filmScreeningTicket1);
+        FilmScreeningTicketRepository.addFilmScreeningTicket(filmScreeningTicket2);
+        TheatrePlayTicketRepository.addTheatrePlayTicket(theatrePlayTicket1);
 
     }
 }

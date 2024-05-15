@@ -112,7 +112,7 @@ public class FilmScreeningTicketRepository {
 
     public static void deleteFilmScreeningTicket(FilmScreeningTicket filmScreeningTicket) {
         deleteFilmScreeningTicket(TicketRepository.getTicketId(filmScreeningTicket));
-        TicketRepository.deleteTicket(TicketRepository.getTicketId(filmScreeningTicket));
+        //TicketRepository.deleteTicket(TicketRepository.getTicketId(filmScreeningTicket));
     }
 
     public static void updateQaPrice(int ticketID, double qaPrice) {
