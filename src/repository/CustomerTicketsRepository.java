@@ -17,7 +17,7 @@ public class CustomerTicketsRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_tickets" +
-                    "(ticketId int, customerId int, FOREIGN KEY (ticketId) REFERENCES tickets(id), FOREIGN KEY (customerId) REFERENCES customers(id))";
+                    "(ticketId int, customerId int, FOREIGN KEY (ticketId) REFERENCES tickets(id), FOREIGN KEY (customerId) REFERENCES customers(id), PRIMARY KEY (ticketId, customerId))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();

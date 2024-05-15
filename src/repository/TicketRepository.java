@@ -6,6 +6,7 @@ import model.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TicketRepository {
@@ -15,7 +16,7 @@ public class TicketRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS tickets" +
-                    "(id int PRIMARY KEY AUTO_INCREMENT, eventID int, type varchar(100), seat varchar(100), FOREIGN KEY (eventID) REFERENCES events(id))";
+                    "(id int PRIMARY KEY AUTO_INCREMENT, eventID int, ticket_type varchar(100), seat varchar(100), FOREIGN KEY (eventID) REFERENCES events(id))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();
@@ -52,7 +53,7 @@ public class TicketRepository {
         Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addTicketSql = "INSERT INTO tickets (eventID, type, seat) VALUES (" + eventID + ", '" + type + "', '" + seat + "')";
+            String addTicketSql = "INSERT INTO tickets (eventID, ticket_type, seat) VALUES (" + eventID + ", '" + type + "', '" + seat + "')";
             stmt = connection.createStatement();
             stmt.execute(addTicketSql);
             connection.commit();
@@ -132,7 +133,7 @@ public class TicketRepository {
         int ticketID = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String getTicketIdSql = "SELECT id FROM tickets WHERE eventID = " + EventRepository.getEventId(ticket.getEvent()) + " AND type = '" + ticket.getType() + "' AND seat = '" + ticket.getSeat() + "'";
+            String getTicketIdSql = "SELECT id FROM tickets WHERE eventID = " + EventRepository.getEventId(ticket.getEvent()) + " AND ticket_type = '" + ticket.getType() + "' AND seat = '" + ticket.getSeat() + "'";
             stmt = connection.createStatement();
             rs = stmt.executeQuery(getTicketIdSql);
             if (rs.next()) {
@@ -188,7 +189,7 @@ public class TicketRepository {
             stmt = connection.createStatement();
             rs = stmt.executeQuery(showEventTicketsSql);
             while (rs.next()) {
-                System.out.println("Ticket ID: " + rs.getInt(1) + ", Event ID: " + rs.getInt(2) + ", Type: " + rs.getString(3) + ", Seat: " + rs.getString(4));
+                System.out.println("Ticket ID: " + rs.getInt(1) + ", Event ID: " + rs.getInt(2) + ", ticket_type: " + rs.getString(3) + ", Seat: " + rs.getString(4));
             }
             connection.commit();
             connection.close();
@@ -243,11 +244,11 @@ public class TicketRepository {
             rs = stmt.executeQuery(getTicketByIdSql);
             if (rs.next()) {
                 if (rs.getInt("ct.ticketID") != 0) {
-                    ticket = new ConcertTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("ct.afterPartyPrice"), rs.getDouble("ct.meetAndGreetPrice"));
+                    ticket = new ConcertTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.ticket_type"), rs.getString("t.seat"), rs.getDouble("ct.afterPartyPrice"), rs.getDouble("ct.meetAndGreetPrice"));
                 } else if (rs.getInt("ft.ticketID") != 0) {
-                    ticket = new FilmScreeningTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("ft.qaPrice"), rs.getDouble("ft.imaxPrice"));
+                    ticket = new FilmScreeningTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.ticket_type"), rs.getString("t.seat"), rs.getDouble("ft.qaPrice"), rs.getDouble("ft.imaxPrice"));
                 } else if (rs.getInt("tt.ticketID") != 0) {
-                    ticket = new TheatrePlayTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.type"), rs.getString("t.seat"), rs.getDouble("tt.qaPrice"));
+                    ticket = new TheatrePlayTicket(ticketID, EventRepository.getEventById(rs.getInt("t.eventID")), rs.getString("t.ticket_type"), rs.getString("t.seat"), rs.getDouble("tt.qaPrice"));
                 }
             }
         } catch (Exception e) {
@@ -291,7 +292,7 @@ public class TicketRepository {
         Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String updateTypeSql = "UPDATE tickets SET type = '" + type + "' WHERE id = " + ticketID;
+            String updateTypeSql = "UPDATE tickets SET ticket_type = '" + type + "' WHERE id = " + ticketID;
             stmt = connection.createStatement();
             stmt.execute(updateTypeSql);
             connection.commit();
@@ -364,7 +365,7 @@ public class TicketRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        List<Ticket> tickets = null;
+        List<Ticket> tickets = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             String getTicketsSql = "SELECT * FROM tickets";

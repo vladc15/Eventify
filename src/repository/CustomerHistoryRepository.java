@@ -16,7 +16,7 @@ public class CustomerHistoryRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_history" +
-                    "(customerId int, eventId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (eventId) REFERENCES events(id)), PRIMARY KEY (customerId, eventId)";
+                    "(customerId int, eventId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (eventId) REFERENCES events(id), PRIMARY KEY (customerId, eventId))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();

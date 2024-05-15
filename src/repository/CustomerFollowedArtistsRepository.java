@@ -16,7 +16,7 @@ public class CustomerFollowedArtistsRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_followed_artists" +
-                    "(customerId int, artistId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (artistId) REFERENCES artists(id)), PRIMARY KEY (customerId, artistId)";
+                    "(customerId int, artistId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (artistId) REFERENCES artists(id), PRIMARY KEY (customerId, artistId))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();
@@ -127,7 +127,7 @@ public class CustomerFollowedArtistsRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        List<Artist> artists = null;
+        List<Artist> artists = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             String selectCustomerFollowedArtistsSql = "SELECT * FROM customer_followed_artists cfa LEFT JOIN artists a ON cfa.artistId = a.id WHERE cfa.customerId = " + customerId;
@@ -135,7 +135,7 @@ public class CustomerFollowedArtistsRepository {
             rs = stmt.executeQuery(selectCustomerFollowedArtistsSql);
             artists = new ArrayList<>();
             while (rs.next()) {
-                Artist artist = (Artist)UserRepository.getUserById(rs.getInt("id"));
+                Artist artist = (Artist)UserRepository.getUserById(rs.getInt("userId"));
                 artists.add(artist);
             }
         } catch (Exception e) {

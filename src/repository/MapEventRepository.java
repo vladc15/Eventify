@@ -15,7 +15,7 @@ public class MapEventRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS map_events" +
-                    "(eventId int, mapKey varchar(100), mapValue double, PRIMARY KEY (eventId, mapKey, mapValue))";
+                    "(eventId int, mapKey varchar(100), mapValue double, FOREIGN KEY(eventId) REFERENCES events(id), PRIMARY KEY (eventId, mapKey, mapValue))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();

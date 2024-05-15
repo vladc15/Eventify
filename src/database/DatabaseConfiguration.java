@@ -15,6 +15,7 @@ public class DatabaseConfiguration {
         try {
             if (connection == null || connection.isClosed()) {
                 connection = java.sql.DriverManager.getConnection(URL, USER, PASSWORD);
+                connection.setAutoCommit(false);
             }
         } catch (Exception e) {
             e.printStackTrace();

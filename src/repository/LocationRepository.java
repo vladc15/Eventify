@@ -17,7 +17,7 @@ public class LocationRepository {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS locations" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, address varchar(30) NOT NULL" +
-                    ", city varchar(30), totalCapacity int, rows int, columns int)";
+                    ", city varchar(30), totalCapacity int, capacity_rows int, capacity_columns int)";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();
@@ -54,7 +54,7 @@ public class LocationRepository {
         Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String insertLocationSql = "INSERT INTO locations(address, city, totalCapacity, rows, columns) VALUES('" +
+            String insertLocationSql = "INSERT INTO locations(address, city, totalCapacity, capacity_rows, capacity_columns) VALUES('" +
                     location.getAddress() + "','" + location.getCity() + "'," + location.getTotalCapacity() + "," +
                     location.getRows() + "," + location.getColumns() + ")";
             stmt = connection.createStatement();
@@ -100,7 +100,7 @@ public class LocationRepository {
             rs = stmt.executeQuery(selectLocationSql);
             if (rs.next()) {
                 location = new Location(rs.getInt("id"), rs.getString("address"), rs.getString("city"),
-                        rs.getInt("totalCapacity"), rs.getInt("rows"), rs.getInt("columns"));
+                        rs.getInt("totalCapacity"), rs.getInt("capacity_rows"), rs.getInt("capacity_columns"));
             }
             connection.close();
         } catch (Exception e) {
@@ -195,8 +195,8 @@ public class LocationRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String updateLocationSql = "UPDATE locations SET address='" + location.getAddress() + "', city='" +
-                    location.getCity() + "', totalCapacity=" + location.getTotalCapacity() + ", rows=" + location.getRows() +
-                    ", columns=" + location.getColumns() + " WHERE id=" + location.getLocationId();
+                    location.getCity() + "', totalCapacity=" + location.getTotalCapacity() + ", capacity_rows=" + location.getRows() +
+                    ", capacity_columns=" + location.getColumns() + " WHERE id=" + location.getLocationId();
             stmt = connection.createStatement();
             stmt.execute(updateLocationSql);
             connection.commit();
@@ -234,8 +234,8 @@ public class LocationRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String updateLocationSql = "UPDATE locations SET address='" + location.getAddress() + "', city='" +
-                    location.getCity() + "', totalCapacity=" + location.getTotalCapacity() + ", rows=" + location.getRows() +
-                    ", columns=" + location.getColumns() + " WHERE id=" + id;
+                    location.getCity() + "', totalCapacity=" + location.getTotalCapacity() + ", capacity_rows=" + location.getRows() +
+                    ", capacity_columns=" + location.getColumns() + " WHERE id=" + id;
             stmt = connection.createStatement();
             stmt.execute(updateLocationSql);
             connection.commit();
@@ -316,7 +316,7 @@ public class LocationRepository {
             while (rs.next()) {
                 System.out.println("Location id: " + rs.getInt("id") + ", address: " + rs.getString("address") +
                         ", city: " + rs.getString("city") + ", total capacity: " + rs.getInt("totalCapacity") +
-                        ", rows: " + rs.getInt("rows") + ", columns: " + rs.getInt("columns"));
+                        ", capacity_rows: " + rs.getInt("capacity_rows") + ", capacity_columns: " + rs.getInt("capacity_columns"));
             }
             connection.close();
         } catch (Exception e) {
@@ -366,7 +366,7 @@ public class LocationRepository {
             rs = stmt.executeQuery(selectLocationSql);
             while (rs.next()) {
                 Location location = new Location(rs.getInt("id"), rs.getString("address"), rs.getString("city"),
-                        rs.getInt("totalCapacity"), rs.getInt("rows"), rs.getInt("columns"));
+                        rs.getInt("totalCapacity"), rs.getInt("capacity_rows"), rs.getInt("capacity_columns"));
                 locations.add(location);
             }
             connection.close();

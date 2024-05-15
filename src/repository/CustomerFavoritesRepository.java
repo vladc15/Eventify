@@ -17,7 +17,7 @@ public class CustomerFavoritesRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_favorites" +
-                    "(customerId int, eventId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (eventId) REFERENCES events(id)), PRIMARY KEY (customerId, eventId)";
+                    "(customerId int, eventId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (eventId) REFERENCES events(id), PRIMARY KEY (customerId, eventId))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();
@@ -128,7 +128,7 @@ public class CustomerFavoritesRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        TreeSet<Event> events = null;
+        TreeSet<Event> events = new TreeSet<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();

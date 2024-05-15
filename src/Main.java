@@ -17,9 +17,9 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        DatabaseManagerUtil.initDatabase();
         App app = App.getInstance();
         RegistrationService registrationService = app.getRegistrationService();
-        DatabaseManagerUtil.initDatabase();
 
         //initApp(app); // add some initial data
 

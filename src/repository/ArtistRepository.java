@@ -9,6 +9,7 @@ import user.Artist;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistRepository {
@@ -93,7 +94,7 @@ public class ArtistRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        List<Artist> artists = null;
+        List<Artist> artists = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
@@ -367,7 +368,8 @@ public class ArtistRepository {
                 rating += rs.getDouble("rating");
                 nr++;
             }
-            rating /= nr;
+            if (nr != 0)
+                rating /= nr;
         } catch (Exception e) {
             if (connection != null) {
                 try {
@@ -407,7 +409,7 @@ public class ArtistRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        List<Review> reviews = null;
+        List<Review> reviews = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
@@ -455,7 +457,7 @@ public class ArtistRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        List<Event> events = null;
+        List<Event> events = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
@@ -503,7 +505,7 @@ public class ArtistRepository {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        List<Ticket> tickets = null;
+        List<Ticket> tickets = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();

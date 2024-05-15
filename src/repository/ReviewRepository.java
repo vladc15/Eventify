@@ -22,8 +22,8 @@ public class ReviewRepository {
                     "user_id INT," +
                     "rating DOUBLE," +
                     "comment varchar(200)," +
-                    "FOREIGN KEY (event_id) REFERENCES event(event_id)," +
-                    "FOREIGN KEY (user_id) REFERENCES user(user_id)" +
+                    "FOREIGN KEY (event_id) REFERENCES events(id)," +
+                    "FOREIGN KEY (user_id) REFERENCES users(id)" +
                     ")");
             connection.commit();
             connection.close();

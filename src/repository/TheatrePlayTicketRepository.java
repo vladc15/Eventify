@@ -13,7 +13,7 @@ public class TheatrePlayTicketRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS theatre_play_tickets" +
-                    "(id int PRIMARY KEY AUTO_INCREMENT, ticketID int, qaPrice double, FOREIGN KEY (ticketID) REFERENCES tickets(id)";
+                    "(id int PRIMARY KEY AUTO_INCREMENT, ticketID int, qaPrice double, FOREIGN KEY (ticketID) REFERENCES tickets(id))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();
