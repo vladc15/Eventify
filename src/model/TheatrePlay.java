@@ -58,6 +58,14 @@ public class TheatrePlay extends Event {
         System.out.print("Enter questions and answers: ");
         this.qa = Boolean.parseBoolean(scanner.nextLine());
     }
+
+    public void fromInputWithoutArtists(Scanner scanner) {
+        super.fromInputWithoutArtists(scanner);
+        System.out.print("Enter intermission: ");
+        this.intermission = Boolean.parseBoolean(scanner.nextLine());
+        System.out.print("Enter questions and answers: ");
+        this.qa = Boolean.parseBoolean(scanner.nextLine());
+    }
     
     public Artist getDirector() { return artists.get(0); }
     public List<Artist> getActors() { return artists.subList(1, artists.size()); }

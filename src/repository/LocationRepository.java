@@ -304,53 +304,14 @@ public class LocationRepository {
         }
     }
 
+    public void deleteLocation(Location location) {
+        deleteLocation(getLocationId(location));
+    }
+
     public static void showLocations() {
-        Connection connection = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            connection = DatabaseConfiguration.getConnection();
-            String selectLocationSql = "SELECT * FROM locations";
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectLocationSql);
-            while (rs.next()) {
-                System.out.println("Location id: " + rs.getInt("id") + ", address: " + rs.getString("address") +
-                        ", city: " + rs.getString("city") + ", total capacity: " + rs.getInt("totalCapacity") +
-                        ", capacity_rows: " + rs.getInt("capacity_rows") + ", capacity_columns: " + rs.getInt("capacity_columns"));
-            }
-            connection.close();
-        } catch (Exception e) {
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                    connection.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) connection.close();
-                if (stmt != null) stmt.close();
-                if (rs != null) rs.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        List<Location> locations = getLocations();
+        for (Location location : locations) {
+            System.out.println(location);
         }
     }
 

@@ -2,6 +2,7 @@ package repository;
 
 import database.DatabaseConfiguration;
 import model.*;
+import user.Artist;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ public class EventRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             String createTableSql = "CREATE TABLE IF NOT EXISTS events" +
-                    "(id int PRIMARY KEY AUTO_INCREMENT, name varchar(100), description varchar(100), date varchar(50), time varchar(50), duration int, totalTickets int, availableTickets int, locationID int, genre varchar(50))";
+                    "(id int PRIMARY KEY AUTO_INCREMENT, name varchar(100), description varchar(100), date varchar(50), time varchar(50), duration int, totalTickets int, availableTickets int, locationID int NULL, genre varchar(50), FOREIGN KEY (locationID) REFERENCES locations(id))";
             stmt = connection.createStatement();
             stmt.execute(createTableSql);
             connection.commit();
@@ -90,7 +91,14 @@ public class EventRepository {
         Statement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + event.getName() + "', '" + event.getDescription() + "', '" + event.getDate() + "', '" + event.getTime() + "', " + event.getDuration() + ", " + event.getTotalTickets() + ", " + event.getAvailableTickets() + ", " + LocationRepository.getLocationId(event.getLocation()) + ", '" + event.getGenre() + "')";
+            String addEventSql = "";
+            if (event.getLocation() != null) {
+                if (LocationRepository.getLocationId(event.getLocation()) == -1)
+                    LocationRepository.addLocation(event.getLocation());
+                addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + event.getName() + "', '" + event.getDescription() + "', '" + event.getDate() + "', '" + event.getTime() + "', " + event.getDuration() + ", " + event.getTotalTickets() + ", " + event.getAvailableTickets() + ", " + LocationRepository.getLocationId(event.getLocation()) + ", '" + event.getGenre() + "')";
+            } else {
+                addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + event.getName() + "', '" + event.getDescription() + "', '" + event.getDate() + "', '" + event.getTime() + "', " + event.getDuration() + ", " + event.getTotalTickets() + ", " + event.getAvailableTickets() + ", " + -1 + ", '" + event.getGenre() + "')";
+            }
             stmt = connection.createStatement();
             stmt.execute(addEventSql);
             connection.commit();
@@ -258,14 +266,22 @@ public class EventRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM events e LEFT JOIN concerts c LEFT JOIN filmScreenings f LEFT JOIN theaterPlays t LEFT JOIN event_artists ea LEFT JOIN map_events me ON (e.id = c.eventID OR e.id = f.eventID OR e.id = t.eventID) AND e.id = ea.eventID AND e.id = me.eventID WHERE e.id = " + id);
+            rs = stmt.executeQuery("SELECT * FROM events e " +
+                                        "LEFT JOIN concerts c ON e.id = c.eventID " +
+                                        "LEFT JOIN filmScreenings f ON e.id = f.eventID " +
+                                        "LEFT JOIN theatrePlays t ON e.id = t.eventID " +
+                                        "LEFT JOIN event_artists ea ON e.id = ea.eventID " +
+                                        "LEFT JOIN map_events me ON e.id = me.eventID WHERE e.id = " + id);
             if (rs.next()) {
+                Location location = null;
+                if (rs.getInt("locationID") != 0)
+                    location = LocationRepository.getLocationById(rs.getInt("locationID"));
                 if (rs.getString("isSeated") != null) {
-                    event = new Concert(id, rs.getString("name"), rs.getString("description"), rs.getString("date"), rs.getString("time"), rs.getInt("duration"), rs.getInt("totalTickets"), rs.getInt("availableTickets"), LocationRepository.getLocationById(rs.getInt("locationID")), EventArtistRepository.getArtistsByEventID(id), MapEventRepository.getMap(id), rs.getString("genre"), rs.getBoolean("isSeated"), rs.getBoolean("afterParty"), rs.getBoolean("meetAndGreet"));
+                    event = new Concert(id, rs.getString("name"), rs.getString("description"), rs.getString("date"), rs.getString("time"), rs.getInt("duration"), rs.getInt("totalTickets"), rs.getInt("availableTickets"), location, EventArtistRepository.getArtistsByEventID(id), MapEventRepository.getMap(id), rs.getString("genre"), rs.getBoolean("isSeated"), rs.getBoolean("afterParty"), rs.getBoolean("meetAndGreet"));
                 } else if (rs.getString("dimension") != null) {
-                    event = new FilmScreening(id, rs.getString("name"), rs.getString("description"), rs.getString("date"), rs.getString("time"), rs.getInt("duration"), rs.getInt("totalTickets"), rs.getInt("availableTickets"), LocationRepository.getLocationById(rs.getInt("locationID")), EventArtistRepository.getArtistsByEventID(id), MapEventRepository.getMap(id), rs.getString("genre"), rs.getString("dimension"), rs.getBoolean("imax"), rs.getInt("releaseYear"), rs.getBoolean("premiere"), rs.getInt("appropriateAge"), rs.getBoolean("qa"));
+                    event = new FilmScreening(id, rs.getString("name"), rs.getString("description"), rs.getString("date"), rs.getString("time"), rs.getInt("duration"), rs.getInt("totalTickets"), rs.getInt("availableTickets"), location, EventArtistRepository.getArtistsByEventID(id), MapEventRepository.getMap(id), rs.getString("genre"), rs.getString("dimension"), rs.getBoolean("imax"), rs.getInt("releaseYear"), rs.getBoolean("premiere"), rs.getInt("appropriateAge"), rs.getBoolean("qa"));
                 } else {
-                    event = new TheatrePlay(id, rs.getString("name"), rs.getString("description"), rs.getString("date"), rs.getString("time"), rs.getInt("duration"), rs.getInt("totalTickets"), rs.getInt("availableTickets"), LocationRepository.getLocationById(rs.getInt("locationID")), EventArtistRepository.getArtistsByEventID(id), MapEventRepository.getMap(id), rs.getString("genre"), rs.getBoolean("intermission"), rs.getBoolean("qa"));
+                    event = new TheatrePlay(id, rs.getString("name"), rs.getString("description"), rs.getString("date"), rs.getString("time"), rs.getInt("duration"), rs.getInt("totalTickets"), rs.getInt("availableTickets"), location, EventArtistRepository.getArtistsByEventID(id), MapEventRepository.getMap(id), rs.getString("genre"), rs.getBoolean("intermission"), rs.getBoolean("qa"));
                 }
             }
             connection.close();

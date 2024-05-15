@@ -362,7 +362,7 @@ public class ArtistRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM artists a LEFT JOIN event_artists ea LEFT JOIN reviews r ON a.id = ea.artistID AND ea.eventID = r.event_id WHERE a.id = " + id);
+            rs = stmt.executeQuery("SELECT * FROM artists a JOIN event_artists ea JOIN reviews r ON a.id = ea.artistID AND ea.eventID = r.event_id WHERE a.id = " + id);
             int nr = 0;
             while (rs.next()) {
                 rating += rs.getDouble("rating");
@@ -413,7 +413,7 @@ public class ArtistRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM artists a LEFT JOIN event_artists ea LEFT JOIN reviews r ON a.id = ea.artistID AND ea.eventID = r.event_id WHERE a.id = " + id);
+            rs = stmt.executeQuery("SELECT * FROM artists a JOIN event_artists ea JOIN reviews r ON a.id = ea.artistID AND ea.eventID = r.event_id WHERE a.id = " + id);
             while (rs.next()) {
                 Review review = new Review(rs.getInt("r.id"), EventRepository.getEventById(rs.getInt("r.event_id")), UserRepository.getUserById(rs.getInt("r.user_id")), rs.getDouble("r.rating"), rs.getString("r.comment"));
                 reviews.add(review);
@@ -509,7 +509,7 @@ public class ArtistRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM event_artists ea LEFT JOIN tickets t ON ea.eventID = t.eventID WHERE ea.artistID = " + id);
+            rs = stmt.executeQuery("SELECT * FROM event_artists ea JOIN tickets t ON ea.eventID = t.eventID WHERE ea.artistID = " + id);
             while (rs.next()) {
                 Ticket ticket = TicketRepository.getTicketById(rs.getInt("t.id"));
                 tickets.add(ticket);

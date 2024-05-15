@@ -239,7 +239,10 @@ public class TicketRepository {
         Ticket ticket = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String getTicketByIdSql = "SELECT * FROM tickets t LEFT JOIN concert_tickets ct LEFT JOIN filmScreening_tickets ft LEFT JOIN theatre_play_tickets tt ON t.id = ct.ticketID OR t.id = ft.ticketID OR t.id = tt.ticketID WHERE t.id = " + ticketID;
+            String getTicketByIdSql = "SELECT * FROM tickets t " +
+                                        "LEFT JOIN concert_tickets ct ON t.id = ct.ticketID " +
+                                        "LEFT JOIN filmScreening_tickets ft ON t.id = ft.ticketID " +
+                                        "LEFT JOIN theatre_play_tickets tt ON t.id = tt.ticketID WHERE t.id = " + ticketID;
             stmt = connection.createStatement();
             rs = stmt.executeQuery(getTicketByIdSql);
             if (rs.next()) {

@@ -92,6 +92,22 @@ public class FilmScreening extends Event {
         System.out.print("Is QA? (true/false): ");
         this.qa = Boolean.parseBoolean(scanner.nextLine());
     }
+
+    public void fromInputWithoutArtists(Scanner scanner) {
+        super.fromInputWithoutArtists(scanner);
+        System.out.print("Enter dimension: ");
+        this.dimension = scanner.nextLine();
+        System.out.print("Is IMAX? (true/false): ");
+        this.imax = Boolean.parseBoolean(scanner.nextLine());
+        System.out.print("Enter release year: ");
+        this.releaseYear = scanner.nextInt();
+        System.out.print("Is premiere? (true/false): ");
+        this.premiere = Boolean.parseBoolean(scanner.nextLine());
+        System.out.print("Enter appropriate age: ");
+        this.appropriateAge = scanner.nextInt();
+        System.out.print("Is QA? (true/false): ");
+        this.qa = Boolean.parseBoolean(scanner.nextLine());
+    }
     
     public Artist getDirector() { return artists.get(0); }
     public List<Artist> getActors() { return artists.subList(1, artists.size()); }

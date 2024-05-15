@@ -59,6 +59,7 @@ public class UserRepository {
                 String insertUserSql = "INSERT INTO users(username, password, name, age) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ")";
                 stmt.execute(insertUserSql);
             } else {
+                LocationRepository.addLocation(user.getLocation());
                 String insertUserSql = "INSERT INTO users(username, password, name, age, locationID) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ", " + LocationRepository.getLocationId(user.getLocation()) + ")";
                 stmt.execute(insertUserSql);
             }
@@ -268,9 +269,13 @@ public class UserRepository {
                     c.setTickets(CustomerTicketsRepository.getTicketsByCustomerId(customer_id));
                     user = c;
                 } else if (rs.getInt("a.userId") == userId) {
-                    if (rs.getInt("u.locationID") == 0)
-                        user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), null, rs.getString("a.bio"), rs.getString("a.genre"));
-                    else {
+                    if (rs.getInt("u.locationID") == 0) {
+                        user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"));
+                        user.setName(rs.getString("u.name"));
+                        user.setAge(rs.getInt("u.age"));
+                        ((Artist) user).setBio(rs.getString("a.bio"));
+                        ((Artist) user).setGenre(rs.getString("a.genre"));
+                    } else {
                         user = new Artist(userId, rs.getString("u.username"), rs.getString("u.password"), rs.getString("u.name"), rs.getInt("u.age"), LocationRepository.getLocationById(rs.getInt("u.locationID")), rs.getString("a.bio"), rs.getString("a.genre"));
                     }
                 } else if (rs.getInt("ad.userId") == userId) {

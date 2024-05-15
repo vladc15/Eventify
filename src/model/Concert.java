@@ -68,6 +68,16 @@ public class Concert extends Event {
         System.out.print("Meet and greet? (true/false): ");
         this.meetAndGreet = Boolean.parseBoolean(scanner.nextLine());
     }
+
+    public void fromInputWithoutArtists(Scanner scanner) {
+        super.fromInputWithoutArtists(scanner);
+        System.out.print("Is seated? (true/false): ");
+        this.isSeated = Boolean.parseBoolean(scanner.nextLine());
+        System.out.print("After party? (true/false): ");
+        this.afterParty = Boolean.parseBoolean(scanner.nextLine());
+        System.out.print("Meet and greet? (true/false): ");
+        this.meetAndGreet = Boolean.parseBoolean(scanner.nextLine());
+    }
     
     public Artist getHeadliner() { return artists.get(0); }
     public List<Artist> getOpeners() {
