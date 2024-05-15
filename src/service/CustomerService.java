@@ -1,5 +1,7 @@
 package service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,7 +16,7 @@ import user.Customer;
 
 
 // singleton
-public class CustomerService implements IUserService {
+public class CustomerService implements UserService {
     private static CustomerService instance = null;
     private Customer customer;
 
@@ -40,6 +42,18 @@ public class CustomerService implements IUserService {
     }
 
     public Customer getCustomer() { return customer; }
+
+    private void moveEventsToHistory() {
+        TreeSet<Ticket> tickets = getCustomerRepository().getTickets(customer);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        for (Ticket ticket : tickets) {
+            LocalDate currentDate = LocalDate.now();
+            LocalDate eventDate = LocalDate.parse(ticket.getEvent().getDate(), formatter);
+            if (eventDate.isBefore(currentDate)) {
+                getCustomerHistoryRepository().addToHistory(getUserRepository().getUserId(customer), getEventRepository().getEventId(ticket.getEvent()));
+            }
+        }
+    }
 
     public void showMenu() {
         System.out.println("\n----------Customer menu:----------");
@@ -88,6 +102,7 @@ public class CustomerService implements IUserService {
         while (true) {
             this.showMenu();
             moveEventsToPast(); // check constantly if the date of an event has passed
+            moveEventsToHistory(); // check constantly if the date of an event has passed
             System.out.print("Enter option: ");
             int option = scanner.nextInt();
             switch (option) {
@@ -130,7 +145,11 @@ public class CustomerService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            customer.showHistory();
+            //customer.showHistory();
+            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getUserRepository().getUserId(customer));
+            for (Event event : history)
+                System.out.println(event);
+            AuditService.getInstance().logAction("Showed history");
         } else if (option == 2)
             return;
         else
@@ -145,27 +164,39 @@ public class CustomerService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            customer.showFavorites();
+            //customer.showFavorites();
+            TreeSet<Event> favorites = getCustomerFavoritesRepository().getCustomerFavorites(getUserRepository().getUserId(customer));
+            for (Event event : favorites)
+                System.out.println(event);
+            AuditService.getInstance().logAction("Showed favorites");
         } else if (option == 2) {
             System.out.println("These are your past events:");
-            customer.showHistory();
+            //customer.showHistory();
+            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getUserRepository().getUserId(customer));
+            for (Event event : history)
+                System.out.println(event);
             System.out.println("Enter the id of the event you want to add to favorites:");
             int id = scanner.nextInt();
-            List<Event> history = customer.getHistory();
             for (Event event : history)
                 if (event.getEventId() == id) {
                     customer.addEventToFavorites(event);
+                    getCustomerFavoritesRepository().addCustomerFavorite(getUserRepository().getUserId(customer), getEventRepository().getEventId(event));
+                    AuditService.getInstance().logAction("Added event to favorites");
                     break;
                 }
         } else if (option == 3) {
             System.out.println("These are your favorites:");
-            customer.showFavorites();
+            //customer.showFavorites();
+            TreeSet<Event> favorites = getCustomerFavoritesRepository().getCustomerFavorites(getUserRepository().getUserId(customer));
+            for (Event event : favorites)
+                System.out.println(event);
             System.out.println("Enter the id of the event you want to remove from favorites:");
             int id = scanner.nextInt();
-            TreeSet<Event> favorites = customer.getFavorites();
             for (Event event : favorites)
                 if (event.getEventId() == id) {
                     favorites.remove(event);
+                    getCustomerFavoritesRepository().removeCustomerFavorite(getUserRepository().getUserId(customer), getEventRepository().getEventId(event));
+                    AuditService.getInstance().logAction("Removed event from favorites");
                     break;
                 }
         } else if (option == 4)
@@ -182,10 +213,15 @@ public class CustomerService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            customer.showFollowedArtists();
+            //customer.showFollowedArtists();
+            List<Artist> followedArtists = getCustomerFollowedArtistsRepository().getCustomerFollowedArtists(getUserRepository().getUserId(customer));
+            for (Artist artist : followedArtists)
+                System.out.println(artist);
+            AuditService.getInstance().logAction("Showed followed artists");
         } else if (option == 2) {
             System.out.println("These are all the current artists with events:");
-            List<Artist> artists = getRegistrationService().getArtists();
+            //List<Artist> artists = getRegistrationService().getArtists();
+            List<Artist> artists = getArtistRepository().getArtists();
             for (Artist artist : artists)
                 System.out.println(artist);
             System.out.println("Enter the id of the artist you want to follow:");
@@ -193,17 +229,23 @@ public class CustomerService implements IUserService {
             for (Artist artist : artists)
                 if (artist.getUserId() == id) {
                     customer.addArtistToFollowedArtists(artist);
+                    getCustomerFollowedArtistsRepository().addCustomerFollowedArtist(getUserRepository().getUserId(customer), getArtistRepository().getArtistId(artist));
+                    AuditService.getInstance().logAction("Added artist to followed artists");
                     break;
                 }
         } else if (option == 3) {
             System.out.println("These are the artists you follow:");
-            customer.showFollowedArtists();
+            //customer.showFollowedArtists();
+            List<Artist> followedArtists = getCustomerFollowedArtistsRepository().getCustomerFollowedArtists(getUserRepository().getUserId(customer));
+            for (Artist artist : followedArtists)
+                System.out.println(artist);
             System.out.println("Enter the id of the artist you want to remove from followed artists:");
             int id = scanner.nextInt();
-            List<Artist> followedArtists = customer.getFollowedArtists();
             for (Artist artist : followedArtists)
                 if (artist.getUserId() == id) {
                     followedArtists.remove(artist);
+                    getCustomerFollowedArtistsRepository().removeCustomerFollowedArtist(getUserRepository().getUserId(customer), getArtistRepository().getArtistId(artist));
+                    AuditService.getInstance().logAction("Removed artist from followed artists");
                     break;
                 }
         } else if (option == 4)
@@ -221,13 +263,19 @@ public class CustomerService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            customer.showReviews();
+            //customer.showReviews();
+            List<Review> reviews = getCustomerRepository().getReviews(customer);
+            for (Review review : reviews)
+                System.out.println(review);
+            AuditService.getInstance().logAction("Showed reviews");
         } else if (option == 2) {
             System.out.println("These are your past events:");
-            customer.showHistory();
+            //customer.showHistory();
+            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getUserRepository().getUserId(customer));
+            for (Event event : history)
+                System.out.println(event);
             System.out.println("Enter the id of the event you want to review:");
             int id = scanner.nextInt();
-            List<Event> history = customer.getHistory();
             for (Event event : history)
                 if (event.getEventId() == id) {
                     System.out.print("Enter your review: ");
@@ -236,25 +284,33 @@ public class CustomerService implements IUserService {
                     double rating = scanner.nextDouble();
                     int allocatedId = getRegistrationService().allocateId();
                     customer.addReview(new Review(allocatedId, event, customer, rating, review));
+                    getReviewRepository().insertReview(getEventRepository().getEventId(event), getUserRepository().getUserId(customer), rating, review);
+                    AuditService.getInstance().logAction("Added review");
                     break;
                 }
         } else if (option == 3) {
             System.out.println("These are your reviews:");
-            customer.showReviews();
+            //customer.showReviews();
+            List<Review> reviews = getCustomerRepository().getReviews(customer);
+            for (Review review : reviews)
+                System.out.println(review);
             System.out.println("Enter the id of the review you want to remove:");
             int id = scanner.nextInt();
-            List<Review> reviews = customer.getReviews();
             for (Review review : reviews)
                 if (review.getReviewId() == id) {
                     reviews.remove(review);
+                    getReviewRepository().deleteReview(review);
+                    AuditService.getInstance().logAction("Removed review");
                     break;
                 }
         } else if (option == 4) {
             System.out.println("These are your reviews:");
-            customer.showReviews();
+            //customer.showReviews();
+            List<Review> reviews = getCustomerRepository().getReviews(customer);
+            for (Review review : reviews)
+                System.out.println(review);
             System.out.println("Enter the id of the review you want to update:");
             int id = scanner.nextInt();
-            List<Review> reviews = customer.getReviews();
             for (Review review : reviews)
                 if (review.getReviewId() == id) {
                     System.out.print("Enter your review: ");
@@ -263,6 +319,8 @@ public class CustomerService implements IUserService {
                     double newRating = scanner.nextDouble();
                     review.setComment(newReview);
                     review.setRating(newRating);
+                    getReviewRepository().updateReview(review, newRating, newReview);
+                    AuditService.getInstance().logAction("Updated review");
                     break;
                 }
         } else if (option == 5)
@@ -277,7 +335,11 @@ public class CustomerService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            customer.showTickets();
+            //customer.showTickets();
+            TreeSet<Ticket> tickets = getCustomerRepository().getTickets(customer);
+            for (Ticket ticket : tickets)
+                System.out.println(ticket);
+            AuditService.getInstance().logAction("Showed ordered tickets");
         } else if (option == 2)
             return;
         else
@@ -291,19 +353,22 @@ public class CustomerService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            System.out.println("Wallet: " + customer.getWallet());
+            //System.out.println("Wallet: " + customer.getWallet());
+            System.out.println("Wallet: " + getCustomerRepository().getWallet(customer));
+            AuditService.getInstance().logAction("Showed wallet");
         } else if (option == 2) {
             System.out.print("Enter amount to add: ");
             double amount = scanner.nextDouble();
             customer.setWallet(customer.getWallet() + amount);
+            getCustomerRepository().updateWallet(customer, customer.getWallet());
+            AuditService.getInstance().logAction("Added funds to wallet");
         } else if (option == 3)
             return;
         else
             System.out.println("Invalid option. Try again.");
     }
 
-    // plus adaugare la favorite, follow artist, review(?)
-    // plus reserve seat
+
     private void searchEvents(Scanner scanner) {
         System.out.println("1. Find upcoming events");
         System.out.println("2. Find nearest events");
@@ -321,12 +386,14 @@ public class CustomerService implements IUserService {
             List<Event> futureEvents = getFutureEvents();
             for (Event event : futureEvents)
                 System.out.println(event);
+            AuditService.getInstance().logAction("Found upcoming events");
         } else if (option == 2) {
             List<Event> futureEvents = getFutureEvents();
             Location userLocation = customer.getLocation();
             for (Event event : futureEvents)
                 if (event.getLocation().getCity().equals(userLocation.getCity()))
                     System.out.println(event);
+            AuditService.getInstance().logAction("Found nearest events");
         } else if (option == 3) {
             System.out.println("Enter date: ");
             String date = scanner.nextLine();
@@ -334,6 +401,7 @@ public class CustomerService implements IUserService {
             for (Event event : futureEvents)
                 if (event.getDate().equals(date))
                     System.out.println(event);
+            AuditService.getInstance().logAction("Found event by date");
         } else if (option == 4) {
             System.out.println("Enter price range: ");
             double minPrice = scanner.nextDouble();
@@ -344,12 +412,14 @@ public class CustomerService implements IUserService {
                 for (Map.Entry<String, Double> entry : prices.entrySet())
                     if (entry.getValue() >= minPrice && entry.getValue() <= maxPrice) {
                         System.out.println(event);
-                        break;
+                        //break;
                     }
             }
+            AuditService.getInstance().logAction("Found events by price");
         } else if (option == 5) {
             System.out.println("These are all the current artists with events:");
-            List<Artist> artists = getRegistrationService().getArtists();
+            //List<Artist> artists = getRegistrationService().getArtists();
+            List<Artist> artists = getArtistRepository().getArtists();
             for (Artist artist : artists)
                 System.out.println(artist);
             System.out.println("Enter the id of the artist whose events you want to see:");
@@ -362,6 +432,7 @@ public class CustomerService implements IUserService {
                             System.out.println(event);
                     break;
                 }
+            AuditService.getInstance().logAction("Found event by artist");
         } else if (option == 6) {
             System.out.println("Enter genre: ");
             String genre = scanner.nextLine();
@@ -369,6 +440,7 @@ public class CustomerService implements IUserService {
             for (Event event : futureEvents)
                 if (event.getGenre().equals(genre))
                     System.out.println(event);
+            AuditService.getInstance().logAction("Found event by genre");
         } else if (option == 7) {
             List<Event> pastEvents = getPastEvents();
             for (Event event : pastEvents)
@@ -377,7 +449,11 @@ public class CustomerService implements IUserService {
             int id = scanner.nextInt();
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
-                    event.showReviews();
+                    //event.showReviews();
+                    List<Review> reviews = getEventRepository().getReviews(event);
+                    for (Review review : reviews)
+                        System.out.println(review);
+                    AuditService.getInstance().logAction("Showed reviews of an event");
                     break;
                 }
         } else if (option == 8) {
@@ -386,10 +462,14 @@ public class CustomerService implements IUserService {
                 System.out.println(event);
             System.out.println("Enter the id of the event you want to see tickets for:");
             int id = scanner.nextInt();
-            List<Ticket> tickets = getTickets();
+            /*List<Ticket> tickets = getTickets();
             for (Ticket ticket : tickets)
                 if (ticket.getEvent().getEventId() == id)
-                    System.out.println(ticket);
+                    System.out.println(ticket);*/
+            List<Ticket> tickets = getEventRepository().getTickets(getEventRepository().getEventById(id));
+            for (Ticket ticket : tickets)
+                System.out.println(ticket);
+            AuditService.getInstance().logAction("Showed tickets available for an event");
         } else if (option == 9) {
             List<Event> futureEvents = getFutureEvents();
             for (Event event : futureEvents)
@@ -397,10 +477,13 @@ public class CustomerService implements IUserService {
             System.out.println("Enter the id of the event you want to reserve a ticket for:");
             int id = scanner.nextInt();
             System.out.println("These are the tickets available for this event:");
-            List<Ticket> tickets = getTickets();
+            /*List<Ticket> tickets = getTickets();
             for (Ticket ticket : tickets)
                 if (ticket.getEvent().getEventId() == id)
-                    System.out.println(ticket);
+                    System.out.println(ticket);*/
+            List<Ticket> tickets = getEventRepository().getTickets(getEventRepository().getEventById(id));
+            for (Ticket ticket : tickets)
+                System.out.println(ticket);
             System.out.println("Enter the number of tickets you want to reserve:");
             int number = scanner.nextInt();
             System.out.println("Enter the ids of the tickets you want to reserve:");
@@ -408,12 +491,21 @@ public class CustomerService implements IUserService {
                 int ticketId = scanner.nextInt();
                 for (Ticket ticket : tickets)
                     if (ticket.getTicketId() == ticketId) {
-                        customer.purchaseTicket(ticket);
-                        tickets.remove(ticket);
+                        double currentWallet = getCustomerRepository().getWallet(customer);
+                        if (currentWallet >= ticket.getPrice()) {
+                            customer.purchaseTicket(ticket);
+                            tickets.remove(ticket);
+
+                            getCustomerTicketsRepository().addCustomerTicket(getUserRepository().getUserId(customer), getTicketRepository().getTicketId(ticket));
+                            getCustomerRepository().updateWallet(customer, currentWallet - ticket.getPrice());
+                            getTicketRepository().deleteTicket(ticket);
+                            AuditService.getInstance().logAction("Reserved ticket");
+                        } else
+                            System.out.println("Not enough funds in wallet.");
                         break;
                     }
             }
-            setTickets(tickets);
+            //setTickets(tickets);
         } else if (option == 10)
             return;
         else

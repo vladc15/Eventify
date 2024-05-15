@@ -1,6 +1,10 @@
 package service;
 
 import model.Location;
+import repository.AdminRepository;
+import repository.ArtistRepository;
+import repository.CustomerRepository;
+import repository.UserRepository;
 import user.Admin;
 import user.Artist;
 import user.Customer;
@@ -14,12 +18,22 @@ public class RegistrationService {
     private Admin admin;
     private Set<Integer> ids;
 
+    private UserRepository userRepository = new UserRepository();
+    private CustomerRepository customerRepository = new CustomerRepository();
+    private ArtistRepository artistRepository = new ArtistRepository();
+    private AdminRepository adminRepository = new AdminRepository();
+
     private User currentUser;
 
     public RegistrationService() {
-        this.customers = new ArrayList<>();
+        /*this.customers = new ArrayList<>();
         this.artists = new ArrayList<>();
-        this.admin = Admin.getInstance();
+        this.admin = Admin.getInstance();*/
+
+        this.customers = customerRepository.getCustomers();
+        this.artists = artistRepository.getArtists();
+        this.admin = adminRepository.getAdmin();
+
         this.ids = new HashSet<>();
         this.currentUser = null;
     }
@@ -39,16 +53,19 @@ public class RegistrationService {
     public int logIn(String username, String password) {
         if (admin.getUsername().equals(username) && admin.getPassword().equals(password)) {
             currentUser = admin;
+            AuditService.getInstance().logAction("Admin logged in");
             return 0;
         }
         for (Customer customer : customers)
             if (customer.getUsername().equals(username) && customer.getPassword().equals(password)) {
                 currentUser = customer;
+                AuditService.getInstance().logAction("Customer logged in");
                 return 1;
             }
         for (Artist artist : artists)
             if (artist.getUsername().equals(username) && artist.getPassword().equals(password)) {
                 currentUser = artist;
+                AuditService.getInstance().logAction("Artist logged in");
                 return 2;
             }
         return -1;
@@ -65,11 +82,16 @@ public class RegistrationService {
     public int logOut() {
         System.out.println("Goodbye, " + currentUser.getUsername() + "!");
         currentUser = null;
+        AuditService.getInstance().logAction("User logged out");
         return 0;
     }
 
     private Boolean checkUsername(String username) {
-        if (admin != null && admin.getUsername().equals(username))
+        if (userRepository.getUserIdByUsername(username) != -1)
+            return false;
+        return true;
+
+        /*if (admin != null && admin.getUsername().equals(username))
             return false;
         for (Customer customer : customers)
             if (customer.getUsername().equals(username))
@@ -77,7 +99,7 @@ public class RegistrationService {
         for (Artist artist : artists)
             if (artist.getUsername().equals(username))
                 return false;
-        return true;
+        return true;*/
     }
 
     public void signUpAdmin(Scanner scanner) {
@@ -96,6 +118,8 @@ public class RegistrationService {
         String password = scanner.nextLine();
         int allocated_id = allocateId();
         this.admin = Admin.getInstance(allocated_id, username, password);
+        adminRepository.addAdmin(this.admin);
+        AuditService.getInstance().logAction("Admin account created");
         System.out.println("Admin account created successfully!");
     }
 
@@ -121,16 +145,20 @@ public class RegistrationService {
             scanner.nextLine();
             System.out.println("Customer location:");
             Location location = new Location();
-            location.fromInput(scanner);
+            location.fromInputUser(scanner);
             int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password, name, age, location);
             customers.add(customer);
+            customerRepository.addCustomer(customer);
+            AuditService.getInstance().logAction("Customer account created");
         }
         else {
             // create account with basic info
             int allocated_id = allocateId();
             Customer customer = new Customer(allocated_id, username, password);
             customers.add(customer);
+            customerRepository.addCustomer(customer);
+            AuditService.getInstance().logAction("Customer account created");
         }
         System.out.println("Customer account created successfully!");
     }
@@ -165,22 +193,26 @@ public class RegistrationService {
             int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password, name, age, location, bio, genre);
             artists.add(artist);
+            artistRepository.addArtist(artist);
+            AuditService.getInstance().logAction("Artist account created");
         }
         else {
             // create account with basic info
             int allocated_id = allocateId();
             Artist artist = new Artist(allocated_id, username, password);
             artists.add(artist);
+            artistRepository.addArtist(artist);
+            AuditService.getInstance().logAction("Artist account created");
         }
         System.out.println("Artist account created successfully!");
     }
 
-    public void deleteCustomer(Customer customer) { customers.remove(customer); }
-    public void deleteArtist(Artist artist) { artists.remove(artist); }
-    public void deleteAdmin() { admin = null; }
+    //public void deleteCustomer(Customer customer) { customers.remove(customer); }
+    //public void deleteArtist(Artist artist) { artists.remove(artist); }
+    //public void deleteAdmin() { admin = null; }
 
     public int allocateId() {
-        int id = ids.size();
+        int id = 100 + ids.size();
         ids.add(id);
         return id;
     }

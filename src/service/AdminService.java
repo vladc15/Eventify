@@ -11,7 +11,7 @@ import user.Artist;
 import user.Customer;
 
 
-public class AdminService implements IUserService {
+public class AdminService implements UserService {
     private static AdminService instance = null;
     private Admin admin;
 
@@ -94,11 +94,13 @@ public class AdminService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            List<Event> events = getFutureEvents();
+            /*List<Event> events = getFutureEvents();
             List<Event> pastEvents = getPastEvents();
-            events.addAll(pastEvents);
+            events.addAll(pastEvents);*/
+            List<Event> events = getEventRepository().getEvents();
             for (Event event : events)
                 System.out.println(event);
+            AuditService.getInstance().logAction("Showed events");
         } else if (option == 2) {
             System.out.println("Enter the type of event you want to add:");
             System.out.println("1. Concert");
@@ -138,11 +140,15 @@ public class AdminService implements IUserService {
             for (Event event : futureEvents)
                 if (event.getEventId() == id) {
                     futureEvents.remove(event);
+                    getEventRepository().deleteEvent(event);
+                    AuditService.getInstance().logAction("Deleted event");
                     break;
                 }
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
                     pastEvents.remove(event);
+                    getEventRepository().deleteEvent(event);
+                    AuditService.getInstance().logAction("Deleted event");
                     break;
                 }
             setFutureEvents(futureEvents);
@@ -155,27 +161,16 @@ public class AdminService implements IUserService {
 
     private void manageCustomers(Scanner scanner) {
         System.out.println("1. Show customers");
-        System.out.println("2. Delete customer");
-        System.out.println("3. Back");
+        System.out.println("2. Back");
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            List<Customer> customers = getRegistrationService().getCustomers();
+            //List<Customer> customers = getRegistrationService().getCustomers();
+            List<Customer> customers = getCustomerRepository().getCustomers();
             for (Customer customer : customers)
                 System.out.println(customer);
-        } else if (option == 2) {
-            List<Customer> customers = getRegistrationService().getCustomers();
-            for (Customer customer : customers)
-                System.out.println(customer);
-            System.out.println("Enter the id of the customer you want to delete:");
-            int id = scanner.nextInt();
-            for (Customer customer : customers)
-                if (customer.getUserId() == id) {
-                    customers.remove(customer);
-                    break;
-                }
-            getRegistrationService().setCustomers(customers);
-        } else if (option == 3)
+            AuditService.getInstance().logAction("Showed customers");
+        } else if (option == 2)
             return;
         else
             System.out.println("Invalid option. Try again.");
@@ -183,27 +178,16 @@ public class AdminService implements IUserService {
 
     private void manageArtists(Scanner scanner) {
         System.out.println("1. Show artists");
-        System.out.println("2. Delete artist");
-        System.out.println("3. Back");
+        System.out.println("2. Back");
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            List<Artist> artists = getRegistrationService().getArtists();
+            //List<Artist> artists = getRegistrationService().getArtists();
+            List<Artist> artists = getArtistRepository().getArtists();
             for (Artist artist : artists)
                 System.out.println(artist);
-        } else if (option == 2) {
-            List<Artist> artists = getRegistrationService().getArtists();
-            for (Artist artist : artists)
-                System.out.println(artist);
-            System.out.println("Enter the id of the artist you want to delete:");
-            int id = scanner.nextInt();
-            for (Artist artist : artists)
-                if (artist.getUserId() == id) {
-                    artists.remove(artist);
-                    break;
-                }
-            getRegistrationService().setArtists(artists);
-        } else if (option == 3)
+            AuditService.getInstance().logAction("Showed artists");
+        } else if (option == 2)
             return;
         else
             System.out.println("Invalid option. Try again.");
@@ -224,7 +208,11 @@ public class AdminService implements IUserService {
             int id = scanner.nextInt();
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
-                    event.showReviews();
+                    //event.showReviews();
+                    List<Review> reviews = getReviewRepository().getReviewsByEventId(getEventRepository().getEventId(event));
+                    for (Review review : reviews)
+                        System.out.println(review);
+                    AuditService.getInstance().logAction("Showed reviews");
                     break;
                 }
         } else if (option == 2) {
@@ -235,15 +223,23 @@ public class AdminService implements IUserService {
             int id = scanner.nextInt();
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
-                    event.showReviews();
+                    //event.showReviews();
+                    List<Review> reviews = getReviewRepository().getReviewsByEventId(getEventRepository().getEventId(event));
+                    for (Review review : reviews)
+                        System.out.println(review);
                     System.out.println("Enter the id of the review you want to update:");
                     int reviewId = scanner.nextInt();
-                    List<Review> reviews = event.getReviews();
+                    //List<Review> reviews = event.getReviews();
                     for (Review review : reviews)
                         if (review.getReviewId() == reviewId) {
                             System.out.print("Enter new review: ");
                             String newReview = scanner.nextLine();
+                            System.out.println("Enter new rating: ");
+                            double newRating = scanner.nextDouble();
+                            getReviewRepository().updateReview(review, newRating, newReview);
                             review.setComment(newReview);
+                            review.setRating(newRating);
+                            AuditService.getInstance().logAction("Updated review");
                             break;
                         }
                     break;
@@ -256,13 +252,18 @@ public class AdminService implements IUserService {
             int id = scanner.nextInt();
             for (Event event : pastEvents)
                 if (event.getEventId() == id) {
-                    event.showReviews();
+                    //event.showReviews();
+                    List<Review> reviews = getReviewRepository().getReviewsByEventId(getEventRepository().getEventId(event));
+                    for (Review review : reviews)
+                        System.out.println(review);
                     System.out.println("Enter the id of the review you want to delete:");
                     int reviewId = scanner.nextInt();
-                    List<Review> reviews = event.getReviews();
+                    //List<Review> reviews = event.getReviews();
                     for (Review review : reviews)
                         if (review.getReviewId() == reviewId) {
                             reviews.remove(review);
+                            getReviewRepository().deleteReview(review);
+                            AuditService.getInstance().logAction("Deleted review");
                             break;
                         }
                     break;
@@ -280,11 +281,14 @@ public class AdminService implements IUserService {
         System.out.print("Enter option: ");
         int option = scanner.nextInt();
         if (option == 1) {
-            List<Ticket> tickets = getTickets();
+            //List<Ticket> tickets = getTickets();
+            List<Ticket> tickets = getTicketRepository().getTickets();
             for (Ticket ticket : tickets)
                 System.out.println(ticket);
+            AuditService.getInstance().logAction("Showed tickets");
         } else if (option == 2) {
-            List<Ticket> tickets = getTickets();
+            //List<Ticket> tickets = getTickets();
+            List<Ticket> tickets = getTicketRepository().getTickets();
             for (Ticket ticket : tickets)
                 System.out.println(ticket);
             System.out.println("Enter the id of the ticket you want to delete:");
@@ -292,9 +296,11 @@ public class AdminService implements IUserService {
             for (Ticket ticket : tickets)
                 if (ticket.getTicketId() == id) {
                     tickets.remove(ticket);
+                    getTicketRepository().deleteTicket(ticket);
+                    AuditService.getInstance().logAction("Deleted ticket");
                     break;
                 }
-            setTickets(tickets);
+            //setTickets(tickets);
         } else if (option == 3)
             return;
         else

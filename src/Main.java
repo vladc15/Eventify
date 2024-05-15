@@ -1,9 +1,7 @@
 import application.App;
+import database.DatabaseManagerUtil;
 import model.*;
-import service.AdminService;
-import service.ArtistService;
-import service.CustomerService;
-import service.RegistrationService;
+import service.*;
 import user.Admin;
 import user.Artist;
 import user.Customer;
@@ -19,10 +17,11 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        DatabaseManagerUtil.initDatabase();
         App app = App.getInstance();
         RegistrationService registrationService = app.getRegistrationService();
 
-        initApp(app); // add some initial data
+        //initApp(app); // add some initial data
 
         while (true) {
             System.out.println("Are you already a member? (y/n)");
@@ -36,7 +35,7 @@ public class Main {
             if (answer.equals("n")) {
                 System.out.println("-------Register-------");
                 System.out.println("Choose the type of account:");
-                System.out.println("1. User");
+                System.out.println("1. Customer");
                 System.out.println("2. Artist");
                 System.out.println("3. Admin");
                 System.out.println("Enter your choice:");
@@ -63,24 +62,28 @@ public class Main {
 
             if (accountType == 1) {
                 Customer currentCustomer = (Customer) currentUser;
+                AuditService.getInstance().logAction("Customer login");
                 System.out.println("Welcome into the customer account, " + currentUser.getName() + "!");
                 CustomerService customerService = CustomerService.getInstance(currentCustomer);
                 customerService.executeAction(scanner);
                 break;
             } else if (accountType == 2) {
                 Artist currentArtist = (Artist) currentUser;
+                AuditService.getInstance().logAction("Artist login");
                 System.out.println("Welcome into the artist account, " + currentUser.getName() + "!");
                 ArtistService artistService = ArtistService.getInstance(currentArtist);
                 artistService.executeAction(scanner);
                 break;
             } else {
                 Admin currentAdmin = (Admin) currentUser;
+                AuditService.getInstance().logAction("Admin login");
                 System.out.println("Welcome into the admin account, " + currentUser.getName() + "!");
                 AdminService adminService = AdminService.getInstance(currentAdmin);
                 adminService.executeAction(scanner);
                 break;
             }
         }
+        AuditService.getInstance().close();
     }
 
     private static void initApp(App app) {

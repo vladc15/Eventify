@@ -2,12 +2,34 @@ package service;
 
 import application.App;
 import model.*;
+import repository.*;
 import user.User;
 
 import java.util.List;
 import java.util.Scanner;
 
-public interface IUserService {
+public interface UserService {
+    default LocationRepository getLocationRepository() { return new LocationRepository(); }
+    default EventRepository getEventRepository() { return new EventRepository(); }
+    default UserRepository getUserRepository() { return new UserRepository(); }
+    default ConcertRepository getConcertRepository() { return new ConcertRepository(); }
+    default FilmScreeningRepository getFilmScreeningRepository() { return new FilmScreeningRepository(); }
+    default TheatrePlayRepository getTheatrePlayRepository() { return new TheatrePlayRepository(); }
+    default CustomerRepository getCustomerRepository() { return new CustomerRepository(); }
+    default ArtistRepository getArtistRepository() { return new ArtistRepository(); }
+    default AdminRepository getAdminRepository() { return new AdminRepository(); }
+    default ReviewRepository getReviewRepository() { return new ReviewRepository(); }
+    default TicketRepository getTicketRepository() { return new TicketRepository(); }
+    default ConcertTicketRepository getConcertTicketRepository() { return new ConcertTicketRepository(); }
+    default FilmScreeningTicketRepository getFilmScreeningTicketRepository() { return new FilmScreeningTicketRepository(); }
+    default TheatrePlayTicketRepository getTheatrePlayTicketRepository() { return new TheatrePlayTicketRepository(); }
+    default EventArtistRepository getEventArtistRepository() { return new EventArtistRepository(); }
+    default CustomerFollowedArtistsRepository getCustomerFollowedArtistsRepository() { return new CustomerFollowedArtistsRepository(); }
+    default CustomerFavoritesRepository getCustomerFavoritesRepository() { return new CustomerFavoritesRepository(); }
+    default CustomerHistoryRepository getCustomerHistoryRepository() { return new CustomerHistoryRepository(); }
+    default CustomerTicketsRepository getCustomerTicketsRepository() { return new CustomerTicketsRepository(); }
+    default MapEventRepository getMapEventRepository() { return new MapEventRepository(); }
+
     void showMenu();
     void executeAction(Scanner scanner);
 
@@ -21,9 +43,16 @@ public interface IUserService {
     default void setFutureEvents(List<Event> futureEvents) { App.getInstance().setFutureEvents(futureEvents); }
     default void setPastEvents(List<Event> pastEvents) { App.getInstance().setPastEvents(pastEvents); }
 
-    default List<Ticket> getTickets() { return App.getInstance().getTickets(); }
-    default void setTickets(List<Ticket> tickets) { App.getInstance().setTickets(tickets); }
-    default void addTicket(Ticket ticket) { App.getInstance().addTicket(ticket); }
+    default List<Ticket> getTickets() { /*return App.getInstance().getTickets();*/ return getTicketRepository().getTickets(); }
+    //default void setTickets(List<Ticket> tickets) { App.getInstance().setTickets(tickets); }
+    default void addTicket(Ticket ticket) { /*App.getInstance().addTicket(ticket);*/
+        if (ticket instanceof ConcertTicket)
+            getConcertTicketRepository().addConcertTicket((ConcertTicket) ticket);
+        else if (ticket instanceof FilmScreeningTicket)
+            getFilmScreeningTicketRepository().addFilmScreeningTicket((FilmScreeningTicket) ticket);
+        else if (ticket instanceof TheatrePlayTicket)
+            getTheatrePlayTicketRepository().addTheatrePlayTicket((TheatrePlayTicket) ticket);
+    }
 
     default void moveEventsToPast() { App.getInstance().moveEventsToPast(); }
 
@@ -44,28 +73,40 @@ public interface IUserService {
             case 1:
                 System.out.println("Enter new name: ");
                 event.setName(scanner.nextLine());
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event name updated");
                 break;
             case 2:
                 System.out.println("Enter new description: ");
                 event.setDescription(scanner.nextLine());
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event description updated");
                 break;
             case 3:
                 System.out.println("Enter new date: ");
                 event.setDate(scanner.nextLine());
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event date updated");
                 break;
             case 4:
                 System.out.println("Enter new time: ");
                 event.setTime(scanner.nextLine());
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event time updated");
                 break;
             case 5:
                 System.out.println("Enter new duration: ");
                 event.setDuration(Integer.parseInt(scanner.nextLine()));
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event duration updated");
                 break;
             case 6:
                 System.out.println("Enter new location: ");
                 Location newLocation = new Location();
                 newLocation.fromInput(scanner);
                 event.setLocation(newLocation);
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event location updated");
                 break;
             case 7:
                 System.out.println("Do you want to update existing ticket prices or add new ones? (update/add)");
@@ -77,6 +118,8 @@ public interface IUserService {
                     double price = scanner.nextDouble();
                     scanner.nextLine();
                     event.updateTickets(type, price);
+                    getMapEventRepository().updateMap(event.getEventId(), type, price);
+                    AuditService.getInstance().logAction("Event ticket updated");
                 }
                 else if (response.equals("add")) {
                     System.out.println("Enter the number of new ticket types: ");
@@ -88,6 +131,8 @@ public interface IUserService {
                         System.out.println("Enter ticket price: ");
                         String price = scanner.nextLine();
                         event.updateTickets(type, Double.parseDouble(price));
+                        getMapEventRepository().addToMap(event.getEventId(), type, Double.parseDouble(price));
+                        AuditService.getInstance().logAction("Event ticket added");
                     }
                 }
                 else
@@ -96,6 +141,8 @@ public interface IUserService {
             case 8:
                 System.out.println("Enter new genre: ");
                 event.setGenre(scanner.nextLine());
+                getEventRepository().updateEventById(event.getEventId(), event);
+                AuditService.getInstance().logAction("Event genre updated");
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -108,14 +155,23 @@ public interface IUserService {
         if (eventType == 1) {
             event = new Concert();
             event.fromInput(scanner);
+            ConcertRepository concertRepository = getConcertRepository();
+            concertRepository.addConcert((Concert) event);
+            AuditService.getInstance().logAction("Concert added");
         }
         else if (eventType == 2) {
             event = new FilmScreening();
             event.fromInput(scanner);
+            FilmScreeningRepository filmScreeningRepository = getFilmScreeningRepository();
+            filmScreeningRepository.addFilmScreening((FilmScreening) event);
+            AuditService.getInstance().logAction("Film screening added");
         }
         else if (eventType == 3) {
             event = new TheatrePlay();
             event.fromInput(scanner);
+            TheatrePlayRepository theatrePlayRepository = getTheatrePlayRepository();
+            theatrePlayRepository.addTheatrePlay((TheatrePlay) event);
+            AuditService.getInstance().logAction("Theatre play added");
         }
         else
             System.out.println("Invalid event type");
@@ -134,31 +190,33 @@ public interface IUserService {
                 break;
             }
         }
-        setTickets(tickets);
+        //setTickets(tickets);
     }
 
     default Ticket updateTicket(Ticket ticket, Scanner scanner) {
         System.out.println("Specify what do you want to update: ");
         System.out.println("1. Ticket type");
         System.out.println("2. Seat");
-        System.out.println("3. Both");
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine();
+        TicketRepository ticketRepository = getTicketRepository();
         switch (choice) {
             case 1:
                 System.out.println("Enter new ticket type: ");
+
                 ticket.setType(scanner.nextLine());
+                ticketRepository.updateType(ticketRepository.getTicketId(ticket), scanner.nextLine());
+                AuditService.getInstance().logAction("Ticket type updated");
+
                 break;
             case 2:
                 System.out.println("Enter new seat: ");
+
                 ticket.setSeat(scanner.nextLine());
-                break;
-            case 3:
-                System.out.println("Enter new ticket type: ");
-                ticket.setType(scanner.nextLine());
-                System.out.println("Enter new seat: ");
-                ticket.setSeat(scanner.nextLine());
+                ticketRepository.updateSeat(ticketRepository.getTicketId(ticket), scanner.nextLine());
+                AuditService.getInstance().logAction("Ticket seat updated");
+
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -174,41 +232,50 @@ public interface IUserService {
         int option = scanner.nextInt();
         if (option == 1) {
             System.out.println(user);
+            AuditService.getInstance().logAction("Profile shown");
         } else if (option == 2) {
-            System.out.println("1. Change username");
-            System.out.println("2. Change password");
-            System.out.println("3. Change name");
-            System.out.println("4. Change age");
-            System.out.println("5. Change location");
+            System.out.println("1. Change name");
+            System.out.println("2. Change age");
+            System.out.println("3. Change location");
             System.out.print("Enter option: ");
             int option2 = scanner.nextInt();
             scanner.nextLine();
+            UserRepository userRepository = getUserRepository();
+            LocationRepository locationRepository = getLocationRepository();
             switch (option2) {
                 case 1:
-                    System.out.print("Enter new username: ");
-                    String newUsername = scanner.nextLine();
-                    user.setUsername(newUsername);
-                    break;
-                case 2:
-                    System.out.print("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    user.setPassword(newPassword);
-                    break;
-                case 3:
                     System.out.print("Enter new name: ");
                     String newName = scanner.nextLine();
+
                     user.setName(newName);
+                    userRepository.updateName(newName, userRepository.getUserId(user));
+                    AuditService.getInstance().logAction("Name updated");
+
                     break;
-                case 4:
+                case 2:
                     System.out.print("Enter new age: ");
                     int newAge = scanner.nextInt();
+
                     user.setAge(newAge);
+                    userRepository.updateAge(newAge, userRepository.getUserId(user));
+                    AuditService.getInstance().logAction("Age updated");
+
                     break;
-                case 5:
+                case 3:
                     System.out.print("Enter new location: ");
                     Location newLocation = new Location();
                     newLocation.fromInput(scanner);
+
                     user.setLocation(newLocation);
+                    int locationId = locationRepository.getLocationId(newLocation);
+                    if (locationId != -1)
+                        userRepository.updateLocation(locationId, userRepository.getUserId(user));
+                    else {
+                        locationRepository.addLocation(newLocation);
+                        userRepository.updateLocation(locationRepository.getLocationId(newLocation), userRepository.getUserId(user));
+                    }
+                    AuditService.getInstance().logAction("Location updated");
+
                     break;
                 default:
                     System.out.println("Invalid option. Try again.");

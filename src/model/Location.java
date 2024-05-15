@@ -87,4 +87,13 @@ public class Location {
         this.columns = scanner.nextInt();
     }
 
+    public void fromInputUser(Scanner scanner) {
+        System.out.print("Enter address: ");
+        //String address = scanner.nextLine();
+        this.address = scanner.nextLine();
+        System.out.print("Enter city: ");
+        //String city = scanner.nextLine();
+        this.city = scanner.nextLine();
+    }
+
 }
