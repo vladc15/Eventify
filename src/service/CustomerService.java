@@ -1,5 +1,7 @@
 package service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -40,6 +42,18 @@ public class CustomerService implements UserService {
     }
 
     public Customer getCustomer() { return customer; }
+
+    private void moveEventsToHistory() {
+        TreeSet<Ticket> tickets = getCustomerRepository().getTickets(customer);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        for (Ticket ticket : tickets) {
+            LocalDate currentDate = LocalDate.now();
+            LocalDate eventDate = LocalDate.parse(ticket.getEvent().getDate(), formatter);
+            if (eventDate.isBefore(currentDate)) {
+                getCustomerHistoryRepository().addToHistory(getUserRepository().getUserId(customer), getEventRepository().getEventId(ticket.getEvent()));
+            }
+        }
+    }
 
     public void showMenu() {
         System.out.println("\n----------Customer menu:----------");
@@ -88,6 +102,7 @@ public class CustomerService implements UserService {
         while (true) {
             this.showMenu();
             moveEventsToPast(); // check constantly if the date of an event has passed
+            moveEventsToHistory(); // check constantly if the date of an event has passed
             System.out.print("Enter option: ");
             int option = scanner.nextInt();
             switch (option) {
