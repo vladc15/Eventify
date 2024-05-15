@@ -376,9 +376,9 @@ public class EventRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM reviews WHERE eventID = " + getEventId(event));
+            rs = stmt.executeQuery("SELECT * FROM reviews WHERE event_id = " + getEventId(event));
             while (rs.next()) {
-                Review review = new Review(rs.getInt("id"), event, UserRepository.getUserById(rs.getInt("userID")), rs.getDouble("rating"), rs.getString("comment"));
+                Review review = new Review(rs.getInt("id"), event, UserRepository.getUserById(rs.getInt("user_id")), rs.getDouble("rating"), rs.getString("comment"));
                 reviews.add(review);
             }
         } catch (Exception e) {

@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.TreeSet;
 
 import model.*;
+import repository.EventRepository;
 import user.Artist;
 import user.Customer;
 
@@ -43,11 +44,20 @@ public class CustomerService implements UserService {
     private void moveEventsToHistory() {
         TreeSet<Ticket> tickets = getCustomerRepository().getTickets(customer);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        List<Event> current_history = getCustomerHistoryRepository().getCustomerHistory(getCustomerRepository().getCustomerId(customer));
         for (Ticket ticket : tickets) {
+            int ok = 0;
+            for (Event event : current_history)
+                if (getEventRepository().getEventId(ticket.getEvent()) == EventRepository.getEventId(event)) {
+                    ok = 1;
+                    break;
+                }
+            if (ok == 1)
+                continue;
             LocalDate currentDate = LocalDate.now();
             LocalDate eventDate = LocalDate.parse(ticket.getEvent().getDate(), formatter);
             if (eventDate.isBefore(currentDate)) {
-                getCustomerHistoryRepository().addToHistory(getUserRepository().getUserId(customer), getEventRepository().getEventId(ticket.getEvent()));
+                getCustomerHistoryRepository().addToHistory(getCustomerRepository().getCustomerId(customer), getEventRepository().getEventId(ticket.getEvent()));
             }
         }
     }
@@ -143,7 +153,7 @@ public class CustomerService implements UserService {
         int option = scanner.nextInt();
         if (option == 1) {
             //customer.showHistory();
-            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getUserRepository().getUserId(customer));
+            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getCustomerRepository().getCustomerId(customer));
             for (Event event : history)
                 System.out.println(event);
             AuditService.getInstance().logAction("Showed history");
@@ -162,14 +172,14 @@ public class CustomerService implements UserService {
         int option = scanner.nextInt();
         if (option == 1) {
             //customer.showFavorites();
-            TreeSet<Event> favorites = getCustomerFavoritesRepository().getCustomerFavorites(getUserRepository().getUserId(customer));
+            TreeSet<Event> favorites = getCustomerFavoritesRepository().getCustomerFavorites(getCustomerRepository().getCustomerId(customer));
             for (Event event : favorites)
                 System.out.println(event);
             AuditService.getInstance().logAction("Showed favorites");
         } else if (option == 2) {
             System.out.println("These are your past events:");
             //customer.showHistory();
-            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getUserRepository().getUserId(customer));
+            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getCustomerRepository().getCustomerId(customer));
             for (Event event : history)
                 System.out.println(event);
             System.out.println("Enter the id of the event you want to add to favorites:");
@@ -177,14 +187,14 @@ public class CustomerService implements UserService {
             for (Event event : history)
                 if (event.getEventId() == id) {
                     customer.addEventToFavorites(event);
-                    getCustomerFavoritesRepository().addCustomerFavorite(getUserRepository().getUserId(customer), getEventRepository().getEventId(event));
+                    getCustomerFavoritesRepository().addCustomerFavorite(getCustomerRepository().getCustomerId(customer), getEventRepository().getEventId(event));
                     AuditService.getInstance().logAction("Added event to favorites");
                     break;
                 }
         } else if (option == 3) {
             System.out.println("These are your favorites:");
             //customer.showFavorites();
-            TreeSet<Event> favorites = getCustomerFavoritesRepository().getCustomerFavorites(getUserRepository().getUserId(customer));
+            TreeSet<Event> favorites = getCustomerFavoritesRepository().getCustomerFavorites(getCustomerRepository().getCustomerId(customer));
             for (Event event : favorites)
                 System.out.println(event);
             System.out.println("Enter the id of the event you want to remove from favorites:");
@@ -192,7 +202,7 @@ public class CustomerService implements UserService {
             for (Event event : favorites)
                 if (event.getEventId() == id) {
                     favorites.remove(event);
-                    getCustomerFavoritesRepository().removeCustomerFavorite(getUserRepository().getUserId(customer), getEventRepository().getEventId(event));
+                    getCustomerFavoritesRepository().removeCustomerFavorite(getCustomerRepository().getCustomerId(customer), getEventRepository().getEventId(event));
                     AuditService.getInstance().logAction("Removed event from favorites");
                     break;
                 }
@@ -211,7 +221,7 @@ public class CustomerService implements UserService {
         int option = scanner.nextInt();
         if (option == 1) {
             //customer.showFollowedArtists();
-            List<Artist> followedArtists = getCustomerFollowedArtistsRepository().getCustomerFollowedArtists(getUserRepository().getUserId(customer));
+            List<Artist> followedArtists = getCustomerFollowedArtistsRepository().getCustomerFollowedArtists(getCustomerRepository().getCustomerId(customer));
             for (Artist artist : followedArtists)
                 System.out.println(artist);
             AuditService.getInstance().logAction("Showed followed artists");
@@ -226,14 +236,14 @@ public class CustomerService implements UserService {
             for (Artist artist : artists)
                 if (artist.getUserId() == id) {
                     customer.addArtistToFollowedArtists(artist);
-                    getCustomerFollowedArtistsRepository().addCustomerFollowedArtist(getUserRepository().getUserId(customer), getArtistRepository().getArtistId(artist));
+                    getCustomerFollowedArtistsRepository().addCustomerFollowedArtist(getCustomerRepository().getCustomerId(customer), getArtistRepository().getArtistId(artist));
                     AuditService.getInstance().logAction("Added artist to followed artists");
                     break;
                 }
         } else if (option == 3) {
             System.out.println("These are the artists you follow:");
             //customer.showFollowedArtists();
-            List<Artist> followedArtists = getCustomerFollowedArtistsRepository().getCustomerFollowedArtists(getUserRepository().getUserId(customer));
+            List<Artist> followedArtists = getCustomerFollowedArtistsRepository().getCustomerFollowedArtists(getCustomerRepository().getCustomerId(customer));
             for (Artist artist : followedArtists)
                 System.out.println(artist);
             System.out.println("Enter the id of the artist you want to remove from followed artists:");
@@ -241,7 +251,7 @@ public class CustomerService implements UserService {
             for (Artist artist : followedArtists)
                 if (artist.getUserId() == id) {
                     followedArtists.remove(artist);
-                    getCustomerFollowedArtistsRepository().removeCustomerFollowedArtist(getUserRepository().getUserId(customer), getArtistRepository().getArtistId(artist));
+                    getCustomerFollowedArtistsRepository().removeCustomerFollowedArtist(getCustomerRepository().getCustomerId(customer), getArtistRepository().getArtistId(artist));
                     AuditService.getInstance().logAction("Removed artist from followed artists");
                     break;
                 }
