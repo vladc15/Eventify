@@ -2,6 +2,7 @@ package repository;
 
 import database.DatabaseConfiguration;
 import model.Review;
+import user.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -303,6 +304,50 @@ public class ReviewRepository {
             rs = stmt.executeQuery("SELECT * FROM reviews WHERE user_id = " + userId);
             while (rs.next()) {
                 Review review = new Review(rs.getInt("id"), EventRepository.getEventById(rs.getInt("event_id")), UserRepository.getUserById(rs.getInt("user_id")), rs.getDouble("rating"), rs.getString("comment"));
+                reviews.add(review);
+            }
+            connection.commit();
+            connection.close();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) connection.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return reviews;
+    }
+
+    public static List<Review> getReviewsByUserId(int userId, User user) {
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<model.Review> reviews = new ArrayList<>();
+        try {
+            connection = DatabaseConfiguration.getConnection();
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM reviews WHERE user_id = " + userId);
+            while (rs.next()) {
+                model.Review review = new model.Review(rs.getInt("id"), EventRepository.getEventById(rs.getInt("event_id")), user, rs.getDouble("rating"), rs.getString("comment"));
                 reviews.add(review);
             }
             connection.commit();

@@ -64,21 +64,21 @@ public class Main {
             if (accountType == 1) {
                 Customer currentCustomer = (Customer) currentUser;
                 AuditService.getInstance().logAction("Customer login");
-                System.out.println("Welcome into the customer account, " + currentUser.getName() + "!");
+                System.out.println("Welcome into the customer account, " + currentUser.getUsername() + "!");
                 CustomerService customerService = CustomerService.getInstance(currentCustomer);
                 customerService.executeAction(scanner);
                 break;
             } else if (accountType == 2) {
                 Artist currentArtist = (Artist) currentUser;
                 AuditService.getInstance().logAction("Artist login");
-                System.out.println("Welcome into the artist account, " + currentUser.getName() + "!");
+                System.out.println("Welcome into the artist account, " + currentUser.getUsername() + "!");
                 ArtistService artistService = ArtistService.getInstance(currentArtist);
                 artistService.executeAction(scanner);
                 break;
             } else {
                 Admin currentAdmin = (Admin) currentUser;
                 AuditService.getInstance().logAction("Admin login");
-                System.out.println("Welcome into the admin account, " + currentUser.getName() + "!");
+                System.out.println("Welcome into the admin account, " + currentUser.getUsername() + "!");
                 AdminService adminService = AdminService.getInstance(currentAdmin);
                 adminService.executeAction(scanner);
                 break;

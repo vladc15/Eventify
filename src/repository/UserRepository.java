@@ -264,9 +264,9 @@ public class UserRepository {
                     int customer_id = rs.getInt("c.id");
                     c.setFavorites(CustomerFavoritesRepository.getCustomerFavorites(customer_id));
                     c.setHistory(CustomerHistoryRepository.getCustomerHistory(customer_id));
-                    c.setReviews(ReviewRepository.getReviewsByUserId(userId));
                     c.setFollowedArtists(CustomerFollowedArtistsRepository.getCustomerFollowedArtists(customer_id));
                     c.setTickets(CustomerTicketsRepository.getTicketsByCustomerId(customer_id));
+                    c.setReviews(ReviewRepository.getReviewsByUserId(userId, c));
                     user = c;
                 } else if (rs.getInt("a.userId") == userId) {
                     if (rs.getInt("u.locationID") == 0) {

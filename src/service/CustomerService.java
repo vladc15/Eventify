@@ -278,7 +278,7 @@ public class CustomerService implements UserService {
         } else if (option == 2) {
             System.out.println("These are your past events:");
             //customer.showHistory();
-            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getUserRepository().getUserId(customer));
+            List<Event> history = getCustomerHistoryRepository().getCustomerHistory(getCustomerRepository().getCustomerId(customer));
             for (Event event : history)
                 System.out.println(event);
             System.out.println("Enter the id of the event you want to review:");
@@ -286,7 +286,7 @@ public class CustomerService implements UserService {
             for (Event event : history)
                 if (event.getEventId() == id) {
                     System.out.print("Enter your review: ");
-                    String review = scanner.nextLine();
+                    String review = scanner.next();
                     System.out.println("Rating (1-5): ");
                     double rating = scanner.nextDouble();
                     int allocatedId = getRegistrationService().allocateId();

@@ -59,7 +59,7 @@ public class Review {
     public void setEvent(Event event) { this.event = event; }
     public void setUser(User user) { this.user = user; }
     
-    public String toString() { return "Review ID: " + reviewId + ", Event: " + event.toString() + ", User: " + user.toString() + ", Rating: " + rating + ", Comment: " + comment; }
+    public String toString() { return "Review ID: " + reviewId + ", Event: " + event.toString() + ", User Id: " + user.getUserId() + ", Rating: " + rating + ", Comment: " + comment; }
     public String toCSV() { return reviewId + "," + event.toCSV() + "," + user.toCSV() + "," + rating + "," + comment; }
     
     public boolean equals(Review review) { return reviewId == review.getReviewId() && event.equals(review.getEvent()) && user.equals(review.getUser()) && rating == review.getRating() && comment.equals(review.getComment()); }
