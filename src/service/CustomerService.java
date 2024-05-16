@@ -367,7 +367,7 @@ public class CustomerService implements UserService {
         } else if (option == 2) {
             System.out.print("Enter amount to add: ");
             double amount = scanner.nextDouble();
-            customer.setWallet(customer.getWallet() + amount);
+            customer.setWallet(getCustomerRepository().getWallet(customer) + amount);
             getCustomerRepository().updateWallet(customer, customer.getWallet());
             AuditService.getInstance().logAction("Added funds to wallet");
         } else if (option == 3)
@@ -404,7 +404,7 @@ public class CustomerService implements UserService {
             AuditService.getInstance().logAction("Found nearest events");
         } else if (option == 3) {
             System.out.println("Enter date: ");
-            String date = scanner.nextLine();
+            String date = scanner.next();
             List<Event> futureEvents = getFutureEvents();
             for (Event event : futureEvents)
                 if (event.getDate().equals(date))
@@ -443,7 +443,7 @@ public class CustomerService implements UserService {
             AuditService.getInstance().logAction("Found event by artist");
         } else if (option == 6) {
             System.out.println("Enter genre: ");
-            String genre = scanner.nextLine();
+            String genre = scanner.next();
             List<Event> futureEvents = getFutureEvents();
             for (Event event : futureEvents)
                 if (event.getGenre().equals(genre))
