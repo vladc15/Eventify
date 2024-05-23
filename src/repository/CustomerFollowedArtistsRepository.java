@@ -4,6 +4,7 @@ import database.DatabaseConfiguration;
 import user.Artist;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -50,13 +51,18 @@ public class CustomerFollowedArtistsRepository {
 
     public void addCustomerFollowedArtist(int customerId, int artistId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String insertCustomerFollowedArtistSql = "INSERT INTO customer_followed_artists(customerId, artistId) VALUES(" +
-                    customerId + "," + artistId + ")";
-            stmt = connection.createStatement();
-            stmt.execute(insertCustomerFollowedArtistSql);
+            //String insertCustomerFollowedArtistSql = "INSERT INTO customer_followed_artists(customerId, artistId) VALUES(" +
+            //        customerId + "," + artistId + ")";
+            //stmt = connection.createStatement();
+            //stmt.execute(insertCustomerFollowedArtistSql);
+            String insertCustomerFollowedArtistSql = "INSERT INTO customer_followed_artists(customerId, artistId) VALUES(?, ?)";
+            stmt = connection.prepareStatement(insertCustomerFollowedArtistSql);
+            stmt.setInt(1, customerId);
+            stmt.setInt(2, artistId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -88,12 +94,17 @@ public class CustomerFollowedArtistsRepository {
 
     public void removeCustomerFollowedArtist(int customerId, int artistId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteCustomerFollowedArtistSql = "DELETE FROM customer_followed_artists WHERE customerId = " + customerId + " AND artistId = " + artistId;
-            stmt = connection.createStatement();
-            stmt.execute(deleteCustomerFollowedArtistSql);
+            //String deleteCustomerFollowedArtistSql = "DELETE FROM customer_followed_artists WHERE customerId = " + customerId + " AND artistId = " + artistId;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteCustomerFollowedArtistSql);
+            String deleteCustomerFollowedArtistSql = "DELETE FROM customer_followed_artists WHERE customerId = ? AND artistId = ?";
+            stmt = connection.prepareStatement(deleteCustomerFollowedArtistSql);
+            stmt.setInt(1, customerId);
+            stmt.setInt(2, artistId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -125,14 +136,18 @@ public class CustomerFollowedArtistsRepository {
 
     public static List<Artist> getCustomerFollowedArtists(int customerId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Artist> artists = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectCustomerFollowedArtistsSql = "SELECT * FROM customer_followed_artists cfa LEFT JOIN artists a ON cfa.artistId = a.id WHERE cfa.customerId = " + customerId;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectCustomerFollowedArtistsSql);
+            //String selectCustomerFollowedArtistsSql = "SELECT * FROM customer_followed_artists cfa LEFT JOIN artists a ON cfa.artistId = a.id WHERE cfa.customerId = " + customerId;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectCustomerFollowedArtistsSql);
+            String selectCustomerFollowedArtistsSql = "SELECT * FROM customer_followed_artists cfa LEFT JOIN artists a ON cfa.artistId = a.id WHERE cfa.customerId = ?";
+            stmt = connection.prepareStatement(selectCustomerFollowedArtistsSql);
+            stmt.setInt(1, customerId);
+            rs = stmt.executeQuery();
             artists = new ArrayList<>();
             while (rs.next()) {
                 Artist artist = (Artist)UserRepository.getUserById(rs.getInt("userId"));

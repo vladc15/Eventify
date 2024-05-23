@@ -4,6 +4,7 @@ import database.DatabaseConfiguration;
 import user.Admin;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -50,12 +51,15 @@ public class AdminRepository {
         UserRepository.addUser(admin);
 
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            stmt = connection.createStatement();
-            String insertAdminSql = "INSERT INTO admins(userID) VALUES(" + UserRepository.getUserId(admin) + ")";
-            stmt.execute(insertAdminSql);
+            //stmt = connection.createStatement();
+            //String insertAdminSql = "INSERT INTO admins(userID) VALUES(" + UserRepository.getUserId(admin) + ")";
+            String insertAdminSql = "INSERT INTO admins(userID) VALUES(?)";
+            stmt = connection.prepareStatement(insertAdminSql);
+            stmt.setInt(1, UserRepository.getUserId(admin));
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import model.*;
 import user.Artist;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -51,12 +52,23 @@ public class EventRepository {
 
     public static void addEvent(String name, String description, String date, String time, int duration, int totalTickets, int availableTickets, int locationID, String genre) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + name + "', '" + description + "', '" + date + "', '" + time + "', " + duration + ", " + totalTickets + ", " + availableTickets + ", " + locationID + ", '" + genre + "')";
-            stmt = connection.createStatement();
-            stmt.execute(addEventSql);
+            //String addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + name + "', '" + description + "', '" + date + "', '" + time + "', " + duration + ", " + totalTickets + ", " + availableTickets + ", " + locationID + ", '" + genre + "')";
+            //stmt = connection.createStatement();
+            //stmt.execute(addEventSql);
+            stmt = connection.prepareStatement("INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt.setString(1, name);
+            stmt.setString(2, description);
+            stmt.setString(3, date);
+            stmt.setString(4, time);
+            stmt.setInt(5, duration);
+            stmt.setInt(6, totalTickets);
+            stmt.setInt(7, availableTickets);
+            stmt.setInt(8, locationID);
+            stmt.setString(9, genre);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -88,19 +100,31 @@ public class EventRepository {
 
     public static void addEvent(Event event) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addEventSql = "";
+            String addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             if (event.getLocation() != null) {
                 if (LocationRepository.getLocationId(event.getLocation()) == -1)
                     LocationRepository.addLocation(event.getLocation());
-                addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + event.getName() + "', '" + event.getDescription() + "', '" + event.getDate() + "', '" + event.getTime() + "', " + event.getDuration() + ", " + event.getTotalTickets() + ", " + event.getAvailableTickets() + ", " + LocationRepository.getLocationId(event.getLocation()) + ", '" + event.getGenre() + "')";
-            } else {
-                addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + event.getName() + "', '" + event.getDescription() + "', '" + event.getDate() + "', '" + event.getTime() + "', " + event.getDuration() + ", " + event.getTotalTickets() + ", " + event.getAvailableTickets() + ", " + -1 + ", '" + event.getGenre() + "')";
+                //addEventSql = "INSERT INTO events (name, description, date, time, duration, totalTickets, availableTickets, locationID, genre) VALUES ('" + event.getName() + "', '" + event.getDescription() + "', '" + event.getDate() + "', '" + event.getTime() + "', " + event.getDuration() + ", " + event.getTotalTickets() + ", " + event.getAvailableTickets() + ", " + LocationRepository.getLocationId(event.getLocation()) + ", '" + event.getGenre() + "')";
             }
-            stmt = connection.createStatement();
-            stmt.execute(addEventSql);
+            //stmt = connection.createStatement();
+            //stmt.execute(addEventSql);
+            stmt = connection.prepareStatement(addEventSql);
+            stmt.setString(1, event.getName());
+            stmt.setString(2, event.getDescription());
+            stmt.setString(3, event.getDate());
+            stmt.setString(4, event.getTime());
+            stmt.setInt(5, event.getDuration());
+            stmt.setInt(6, event.getTotalTickets());
+            stmt.setInt(7, event.getAvailableTickets());
+            if (event.getLocation() != null)
+                stmt.setInt(8, LocationRepository.getLocationId(event.getLocation()));
+            else
+                stmt.setInt(8, -1);
+            stmt.setString(9, event.getGenre());
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -132,12 +156,28 @@ public class EventRepository {
 
     public static void updateEventById(int eventId, Event event) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String updateEventSql = "UPDATE events SET name = '" + event.getName() + "', description = '" + event.getDescription() + "', date = '" + event.getDate() + "', time = '" + event.getTime() + "', duration = " + event.getDuration() + ", totalTickets = " + event.getTotalTickets() + ", availableTickets = " + event.getAvailableTickets() + ", locationID = " + LocationRepository.getLocationId(event.getLocation()) + ", genre = '" + event.getGenre() + "' WHERE id = " + eventId;
-            stmt = connection.createStatement();
-            stmt.execute(updateEventSql);
+            //String updateEventSql = "UPDATE events SET name = '" + event.getName() + "', description = '" + event.getDescription() + "', date = '" + event.getDate() + "', time = '" + event.getTime() + "', duration = " + event.getDuration() + ", totalTickets = " + event.getTotalTickets() + ", availableTickets = " + event.getAvailableTickets() + ", locationID = " + LocationRepository.getLocationId(event.getLocation()) + ", genre = '" + event.getGenre() + "' WHERE id = " + eventId;
+            //stmt = connection.createStatement();
+            //stmt.execute(updateEventSql);
+            String updateEventSql = "UPDATE events SET name = ?, description = ?, date = ?, time = ?, duration = ?, totalTickets = ?, availableTickets = ?, locationID = ?, genre = ? WHERE id = ?";
+            stmt = connection.prepareStatement(updateEventSql);
+            stmt.setString(1, event.getName());
+            stmt.setString(2, event.getDescription());
+            stmt.setString(3, event.getDate());
+            stmt.setString(4, event.getTime());
+            stmt.setInt(5, event.getDuration());
+            stmt.setInt(6, event.getTotalTickets());
+            stmt.setInt(7, event.getAvailableTickets());
+            if (event.getLocation() != null)
+                stmt.setInt(8, LocationRepository.getLocationId(event.getLocation()));
+            else
+                stmt.setInt(8, -1);
+            stmt.setString(9, event.getGenre());
+            stmt.setInt(10, eventId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -170,12 +210,15 @@ public class EventRepository {
 
     public static void deleteEventById(int eventId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteEventSql = "DELETE FROM events WHERE id = " + eventId;
-            stmt = connection.createStatement();
-            stmt.execute(deleteEventSql);
+            //String deleteEventSql = "DELETE FROM events WHERE id = " + eventId;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteEventSql);
+            stmt = connection.prepareStatement("DELETE FROM events WHERE id = ?");
+            stmt.setInt(1, eventId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -207,14 +250,29 @@ public class EventRepository {
 
     public static int getEventId(Event event) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         int eventId = -1;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String getEventIdSql = "SELECT id FROM events WHERE name = '" + event.getName() + "' AND description = '" + event.getDescription() + "' AND date = '" + event.getDate() + "' AND time = '" + event.getTime() + "' AND duration = " + event.getDuration() + " AND totalTickets = " + event.getTotalTickets() + " AND availableTickets = " + event.getAvailableTickets() + " AND locationID = " + LocationRepository.getLocationId(event.getLocation()) + " AND genre = '" + event.getGenre() + "'";
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(getEventIdSql);
+            //String getEventIdSql = "SELECT id FROM events WHERE name = '" + event.getName() + "' AND description = '" + event.getDescription() + "' AND date = '" + event.getDate() + "' AND time = '" + event.getTime() + "' AND duration = " + event.getDuration() + " AND totalTickets = " + event.getTotalTickets() + " AND availableTickets = " + event.getAvailableTickets() + " AND locationID = " + LocationRepository.getLocationId(event.getLocation()) + " AND genre = '" + event.getGenre() + "'";
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(getEventIdSql);
+            String getEventIdSql = "SELECT id FROM events WHERE name = ? AND description = ? AND date = ? AND time = ? AND duration = ? AND totalTickets = ? AND availableTickets = ? AND locationID = ? AND genre = ?";
+            stmt = connection.prepareStatement(getEventIdSql);
+            stmt.setString(1, event.getName());
+            stmt.setString(2, event.getDescription());
+            stmt.setString(3, event.getDate());
+            stmt.setString(4, event.getTime());
+            stmt.setInt(5, event.getDuration());
+            stmt.setInt(6, event.getTotalTickets());
+            stmt.setInt(7, event.getAvailableTickets());
+            if (event.getLocation() != null)
+                stmt.setInt(8, LocationRepository.getLocationId(event.getLocation()));
+            else
+                stmt.setInt(8, -1);
+            stmt.setString(9, event.getGenre());
+            rs = stmt.executeQuery();
             if (rs.next()) {
                 eventId = rs.getInt("id");
             }
@@ -260,18 +318,27 @@ public class EventRepository {
 
     public static Event getEventById(int id) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         Event event = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM events e " +
+            //stmt = connection.createStatement();
+            /*rs = stmt.executeQuery("SELECT * FROM events e " +
                                         "LEFT JOIN concerts c ON e.id = c.eventID " +
                                         "LEFT JOIN filmScreenings f ON e.id = f.eventID " +
                                         "LEFT JOIN theatrePlays t ON e.id = t.eventID " +
                                         "LEFT JOIN event_artists ea ON e.id = ea.eventID " +
-                                        "LEFT JOIN map_events me ON e.id = me.eventID WHERE e.id = " + id);
+                                        "LEFT JOIN map_events me ON e.id = me.eventID WHERE e.id = " + id);*/
+            String getEventByIdSql = "SELECT * FROM events e " +
+                    "LEFT JOIN concerts c ON e.id = c.eventID " +
+                    "LEFT JOIN filmScreenings f ON e.id = f.eventID " +
+                    "LEFT JOIN theatrePlays t ON e.id = t.eventID " +
+                    "LEFT JOIN event_artists ea ON e.id = ea.eventID " +
+                    "LEFT JOIN map_events me ON e.id = me.eventID WHERE e.id = ?";
+            stmt = connection.prepareStatement(getEventByIdSql);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
             if (rs.next()) {
                 Location location = null;
                 if (rs.getInt("locationID") != 0)
@@ -370,13 +437,16 @@ public class EventRepository {
 
     public List<Review> getReviews(Event event) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Review> reviews = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM reviews WHERE event_id = " + getEventId(event));
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery("SELECT * FROM reviews WHERE event_id = " + getEventId(event));
+            stmt = connection.prepareStatement("SELECT * FROM reviews WHERE event_id = ?");
+            stmt.setInt(1, getEventId(event));
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 Review review = new Review(rs.getInt("id"), event, UserRepository.getUserById(rs.getInt("user_id")), rs.getDouble("rating"), rs.getString("comment"));
                 reviews.add(review);
@@ -418,13 +488,16 @@ public class EventRepository {
 
     public List<Ticket> getTickets(Event event) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Ticket> tickets = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM tickets WHERE eventID = " + getEventId(event));
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery("SELECT * FROM tickets WHERE eventID = " + getEventId(event));
+            stmt = connection.prepareStatement("SELECT * FROM tickets WHERE eventID = ?");
+            stmt.setInt(1, getEventId(event));
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 Ticket ticket = TicketRepository.getTicketById(rs.getInt("id"));
                 tickets.add(ticket);

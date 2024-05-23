@@ -4,6 +4,7 @@ import database.DatabaseConfiguration;
 import model.Concert;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class ConcertRepository {
@@ -47,12 +48,19 @@ public class ConcertRepository {
 
     public static void addConcert(boolean isSeated, boolean afterParty, boolean meetAndGreet, int eventID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addConcertSql = "INSERT INTO concerts (isSeated, afterParty, meetAndGreet, eventID) VALUES (" + isSeated + ", " + afterParty + ", " + meetAndGreet + ", " + eventID + ")";
-            stmt = connection.createStatement();
-            stmt.execute(addConcertSql);
+            //String addConcertSql = "INSERT INTO concerts (isSeated, afterParty, meetAndGreet, eventID) VALUES (" + isSeated + ", " + afterParty + ", " + meetAndGreet + ", " + eventID + ")";
+            //stmt = connection.createStatement();
+            //stmt.execute(addConcertSql);
+            String addConcertSql = "INSERT INTO concerts (isSeated, afterParty, meetAndGreet, eventID) VALUES (?, ?, ?, ?)";
+            stmt = connection.prepareStatement(addConcertSql);
+            stmt.setBoolean(1, isSeated);
+            stmt.setBoolean(2, afterParty);
+            stmt.setBoolean(3, meetAndGreet);
+            stmt.setInt(4, eventID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -90,12 +98,16 @@ public class ConcertRepository {
 
     public static void deleteConcert(int concertId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteConcertSql = "DELETE FROM concerts WHERE id = " + concertId;
-            stmt = connection.createStatement();
-            stmt.execute(deleteConcertSql);
+            //String deleteConcertSql = "DELETE FROM concerts WHERE id = " + concertId;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteConcertSql);
+            String deleteConcertSql = "DELETE FROM concerts WHERE id = ?";
+            stmt = connection.prepareStatement(deleteConcertSql);
+            stmt.setInt(1, concertId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import database.DatabaseConfiguration;
 import model.TheatrePlay;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class TheatrePlayRepository {
@@ -47,12 +48,18 @@ public class TheatrePlayRepository {
 
     public static void addTheatrePlay(boolean intermission, boolean qa, int eventID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addTheatrePlaySql = "INSERT INTO theatrePlays (intermission, qa, eventID) VALUES (" + intermission + ", " + qa + ", " + eventID + ")";
-            stmt = connection.createStatement();
-            stmt.execute(addTheatrePlaySql);
+            //String addTheatrePlaySql = "INSERT INTO theatrePlays (intermission, qa, eventID) VALUES (" + intermission + ", " + qa + ", " + eventID + ")";
+            //stmt = connection.createStatement();
+            //stmt.execute(addTheatrePlaySql);
+            String addTheatrePlaySql = "INSERT INTO theatrePlays (intermission, qa, eventID) VALUES (?, ?, ?)";
+            stmt = connection.prepareStatement(addTheatrePlaySql);
+            stmt.setBoolean(1, intermission);
+            stmt.setBoolean(2, qa);
+            stmt.setInt(3, eventID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -81,12 +88,16 @@ public class TheatrePlayRepository {
 
     public static void deleteTheatrePlay(int theatrePlayID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteTheatrePlaySql = "DELETE FROM theatrePlays WHERE id = " + theatrePlayID;
-            stmt = connection.createStatement();
-            stmt.execute(deleteTheatrePlaySql);
+            //String deleteTheatrePlaySql = "DELETE FROM theatrePlays WHERE id = " + theatrePlayID;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteTheatrePlaySql);
+            String deleteTheatrePlaySql = "DELETE FROM theatrePlays WHERE id = ?";
+            stmt = connection.prepareStatement(deleteTheatrePlaySql);
+            stmt.setInt(1, theatrePlayID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {

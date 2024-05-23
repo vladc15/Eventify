@@ -5,6 +5,7 @@ import model.Event;
 import user.Artist;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -51,12 +52,17 @@ public class EventArtistRepository {
 
     public static void addEventArtist(int eventID, int artistID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String insertEventArtistSql = "INSERT INTO event_artists(eventID, artistID) VALUES(" + eventID + "," + artistID + ")";
-            stmt = connection.createStatement();
-            stmt.execute(insertEventArtistSql);
+            //String insertEventArtistSql = "INSERT INTO event_artists(eventID, artistID) VALUES(" + eventID + "," + artistID + ")";
+            //stmt = connection.createStatement();
+            //stmt.execute(insertEventArtistSql);
+            String insertEventArtistSql = "INSERT INTO event_artists(eventID, artistID) VALUES(?, ?)";
+            stmt = connection.prepareStatement(insertEventArtistSql);
+            stmt.setInt(1, eventID);
+            stmt.setInt(2, artistID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -88,12 +94,17 @@ public class EventArtistRepository {
 
     public static void deleteEventArtist(int eventID, int artistID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteEventArtistSql = "DELETE FROM event_artists WHERE eventID = " + eventID + " AND artistID = " + artistID;
-            stmt = connection.createStatement();
-            stmt.execute(deleteEventArtistSql);
+            //String deleteEventArtistSql = "DELETE FROM event_artists WHERE eventID = " + eventID + " AND artistID = " + artistID;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteEventArtistSql);
+            String deleteEventArtistSql = "DELETE FROM event_artists WHERE eventID = ? AND artistID = ?";
+            stmt = connection.prepareStatement(deleteEventArtistSql);
+            stmt.setInt(1, eventID);
+            stmt.setInt(2, artistID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -125,14 +136,18 @@ public class EventArtistRepository {
 
     public static List<Artist> getArtistsByEventID(int eventID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Artist> artists = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectArtistsSql = "SELECT * FROM event_artists ea LEFT JOIN artists a ON ea.artistID = a.id WHERE eventID=" + eventID;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectArtistsSql);
+            //String selectArtistsSql = "SELECT * FROM event_artists ea LEFT JOIN artists a ON ea.artistID = a.id WHERE eventID=" + eventID;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectArtistsSql);
+            String selectArtistsSql = "SELECT * FROM event_artists WHERE eventID=?";
+            stmt = connection.prepareStatement(selectArtistsSql);
+            stmt.setInt(1, eventID);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 int userId = rs.getInt("id");
                 Artist artist = (Artist)UserRepository.getUserById(userId);
@@ -177,14 +192,18 @@ public class EventArtistRepository {
 
     public static List<Integer> getArtistIdsById(int eventID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Integer> artistIds = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectArtistsSql = "SELECT * FROM event_artists WHERE eventID=" + eventID;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectArtistsSql);
+            //String selectArtistsSql = "SELECT * FROM event_artists WHERE eventID=" + eventID;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectArtistsSql);
+            String selectArtistsSql = "SELECT * FROM event_artists WHERE eventID=?";
+            stmt = connection.prepareStatement(selectArtistsSql);
+            stmt.setInt(1, eventID);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 int artistID = rs.getInt("artistID");
                 artistIds.add(artistID);
@@ -228,14 +247,18 @@ public class EventArtistRepository {
 
     public static List<Integer> getEventIdsByArtistId(int artistID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Integer> eventIds = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectEventsSql = "SELECT * FROM event_artists WHERE artistID=" + artistID;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectEventsSql);
+            //String selectEventsSql = "SELECT * FROM event_artists WHERE artistID=" + artistID;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectEventsSql);
+            String selectEventsSql = "SELECT * FROM event_artists WHERE artistID=?";
+            stmt = connection.prepareStatement(selectEventsSql);
+            stmt.setInt(1, artistID);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 int eventID = rs.getInt("eventID");
                 eventIds.add(eventID);
@@ -279,14 +302,18 @@ public class EventArtistRepository {
 
     public static List<Event> getEventsByArtistId(int artistID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Event> events = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectEventsSql = "SELECT * FROM event_artists WHERE artistID=" + artistID;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectEventsSql);
+            //String selectEventsSql = "SELECT * FROM event_artists WHERE artistID=" + artistID;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectEventsSql);
+            String selectEventsSql = "SELECT * FROM event_artists WHERE artistID=?";
+            stmt = connection.prepareStatement(selectEventsSql);
+            stmt.setInt(1, artistID);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 int eventID = rs.getInt("eventID");
                 Event event = EventRepository.getEventById(eventID);

@@ -3,7 +3,9 @@ package repository;
 import database.DatabaseConfiguration;
 import model.TheatrePlayTicket;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class TheatrePlayTicketRepository {
@@ -47,12 +49,17 @@ public class TheatrePlayTicketRepository {
 
     public static void addTheatrePlayTicket(int ticketID, double qaPrice) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String addTheatrePlayTicketSql = "INSERT INTO theatre_play_tickets (ticketID, qaPrice) VALUES (" + ticketID + ", " + qaPrice + ")";
-            stmt = connection.createStatement();
-            stmt.execute(addTheatrePlayTicketSql);
+            //String addTheatrePlayTicketSql = "INSERT INTO theatre_play_tickets (ticketID, qaPrice) VALUES (" + ticketID + ", " + qaPrice + ")";
+            //stmt = connection.createStatement();
+            //stmt.execute(addTheatrePlayTicketSql);
+            String addTheatrePlayTicketSql = "INSERT INTO theatre_play_tickets (ticketID, qaPrice) VALUES (?, ?)";
+            stmt = connection.prepareStatement(addTheatrePlayTicketSql);
+            stmt.setInt(1, ticketID);
+            stmt.setDouble(2, qaPrice);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -82,12 +89,16 @@ public class TheatrePlayTicketRepository {
 
     public static void deleteTheatrePlayTicket(int ticketID) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteTheatrePlayTicketSql = "DELETE FROM theatre_play_tickets WHERE ticketID = " + ticketID;
-            stmt = connection.createStatement();
-            stmt.execute(deleteTheatrePlayTicketSql);
+            //String deleteTheatrePlayTicketSql = "DELETE FROM theatre_play_tickets WHERE ticketID = " + ticketID;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteTheatrePlayTicketSql);
+            String deleteTheatrePlayTicketSql = "DELETE FROM theatre_play_tickets WHERE ticketID = ?";
+            stmt = connection.prepareStatement(deleteTheatrePlayTicketSql);
+            stmt.setInt(1, ticketID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -117,12 +128,17 @@ public class TheatrePlayTicketRepository {
 
     public static void updateQAPrice(int ticketID, double qaPrice) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String updateQAPriceSql = "UPDATE theatre_play_tickets SET qaPrice = " + qaPrice + " WHERE ticketID = " + ticketID;
-            stmt = connection.createStatement();
-            stmt.execute(updateQAPriceSql);
+            //String updateQAPriceSql = "UPDATE theatre_play_tickets SET qaPrice = " + qaPrice + " WHERE ticketID = " + ticketID;
+            //stmt = connection.createStatement();
+            //stmt.execute(updateQAPriceSql);
+            String updateQAPriceSql = "UPDATE theatre_play_tickets SET qaPrice = ? WHERE ticketID = ?";
+            stmt = connection.prepareStatement(updateQAPriceSql);
+            stmt.setDouble(1, qaPrice);
+            stmt.setInt(2, ticketID);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {

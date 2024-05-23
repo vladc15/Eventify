@@ -4,6 +4,7 @@ import database.DatabaseConfiguration;
 import model.Ticket;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -51,13 +52,18 @@ public class CustomerTicketsRepository {
 
     public void addCustomerTicket(int ticketId, int customerId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String insertCustomerTicketSql = "INSERT INTO customer_tickets(ticketId, customerId) VALUES(" +
-                    ticketId + "," + customerId + ")";
-            stmt = connection.createStatement();
-            stmt.execute(insertCustomerTicketSql);
+            //String insertCustomerTicketSql = "INSERT INTO customer_tickets(ticketId, customerId) VALUES(" +
+            //        ticketId + "," + customerId + ")";
+            //stmt = connection.createStatement();
+            //stmt.execute(insertCustomerTicketSql);
+            String insertCustomerTicketSql = "INSERT INTO customer_tickets(ticketId, customerId) VALUES(?, ?)";
+            stmt = connection.prepareStatement(insertCustomerTicketSql);
+            stmt.setInt(1, ticketId);
+            stmt.setInt(2, customerId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -89,12 +95,17 @@ public class CustomerTicketsRepository {
 
     public void deleteCustomerTicket(int ticketId, int customerId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             connection = DatabaseConfiguration.getConnection();
-            String deleteCustomerTicketSql = "DELETE FROM customer_tickets WHERE ticketId = " + ticketId + " AND customerId = " + customerId;
-            stmt = connection.createStatement();
-            stmt.execute(deleteCustomerTicketSql);
+            //String deleteCustomerTicketSql = "DELETE FROM customer_tickets WHERE ticketId = " + ticketId + " AND customerId = " + customerId;
+            //stmt = connection.createStatement();
+            //stmt.execute(deleteCustomerTicketSql);
+            String deleteCustomerTicketSql = "DELETE FROM customer_tickets WHERE ticketId = ? AND customerId = ?";
+            stmt = connection.prepareStatement(deleteCustomerTicketSql);
+            stmt.setInt(1, ticketId);
+            stmt.setInt(2, customerId);
+            stmt.executeQuery();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -126,14 +137,18 @@ public class CustomerTicketsRepository {
 
     public List<Integer> getTicketsIdsByCustomerId(int customerId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Integer> tickets = new ArrayList<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectTicketsSql = "SELECT ticketId FROM customer_tickets WHERE customerId=" + customerId;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectTicketsSql);
+            //String selectTicketsSql = "SELECT ticketId FROM customer_tickets WHERE customerId=" + customerId;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectTicketsSql);
+            String selectTicketsSql = "SELECT ticketId FROM customer_tickets WHERE customerId=?";
+            stmt = connection.prepareStatement(selectTicketsSql);
+            stmt.setInt(1, customerId);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 tickets.add(rs.getInt("ticketId"));
             }
@@ -175,14 +190,18 @@ public class CustomerTicketsRepository {
 
     public static TreeSet<Ticket> getTicketsByCustomerId(int customerId) {
         Connection connection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         TreeSet<Ticket> tickets = new TreeSet<>();
         try {
             connection = DatabaseConfiguration.getConnection();
-            String selectTicketsSql = "SELECT ticketId FROM customer_tickets WHERE customerId=" + customerId;
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(selectTicketsSql);
+            //String selectTicketsSql = "SELECT ticketId FROM customer_tickets WHERE customerId=" + customerId;
+            //stmt = connection.createStatement();
+            //rs = stmt.executeQuery(selectTicketsSql);
+            String selectTicketsSql = "SELECT ticketId FROM customer_tickets WHERE customerId=?";
+            stmt = connection.prepareStatement(selectTicketsSql);
+            stmt.setInt(1, customerId);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 Ticket ticket = new TicketRepository().getTicketById(rs.getInt("ticketId"));
                 tickets.add(ticket);
