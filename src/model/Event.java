@@ -119,7 +119,7 @@ public abstract class Event implements Comparable<Event>{
     public String toString() {
         return "Event ID: " + eventId + ", Name: " + name + ", Description: " + description +
                 ", Date: " + date + ", Time: " + time + ", Duration: " + duration + ", Total Tickets: " + totalTickets +
-                ", Available Tickets: " + availableTickets + ", Location: " + location + ", Artists: " + artists + ", Seats: " + seats +
+                ", Available Tickets: " + availableTickets + ", Location: " + location + ", Artists: " + artists +
                 ", Reviews: " + reviews + ", Ticket Prices: " + ticketPrices + ", Genre: " + genre;
     }
 
