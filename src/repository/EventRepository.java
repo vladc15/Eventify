@@ -20,7 +20,7 @@ public class EventRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS events" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, name varchar(100), description varchar(100), date varchar(50), time varchar(50), duration int, totalTickets int, availableTickets int, locationID int NULL, genre varchar(50), FOREIGN KEY (locationID) REFERENCES locations(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class EventRepository {
             stmt.setInt(7, availableTickets);
             stmt.setInt(8, locationID);
             stmt.setString(9, genre);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -124,7 +124,7 @@ public class EventRepository {
             else
                 stmt.setInt(8, -1);
             stmt.setString(9, event.getGenre());
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -177,7 +177,7 @@ public class EventRepository {
                 stmt.setInt(8, -1);
             stmt.setString(9, event.getGenre());
             stmt.setInt(10, eventId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -218,7 +218,7 @@ public class EventRepository {
             //stmt.execute(deleteEventSql);
             stmt = connection.prepareStatement("DELETE FROM events WHERE id = ?");
             stmt.setInt(1, eventId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

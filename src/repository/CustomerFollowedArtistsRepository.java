@@ -19,7 +19,7 @@ public class CustomerFollowedArtistsRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_followed_artists" +
                     "(customerId int, artistId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (artistId) REFERENCES artists(id), PRIMARY KEY (customerId, artistId))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class CustomerFollowedArtistsRepository {
             stmt = connection.prepareStatement(insertCustomerFollowedArtistSql);
             stmt.setInt(1, customerId);
             stmt.setInt(2, artistId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -104,7 +104,7 @@ public class CustomerFollowedArtistsRepository {
             stmt = connection.prepareStatement(deleteCustomerFollowedArtistSql);
             stmt.setInt(1, customerId);
             stmt.setInt(2, artistId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

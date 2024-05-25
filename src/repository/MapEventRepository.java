@@ -19,7 +19,7 @@ public class MapEventRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS map_events" +
                     "(eventId int, mapKey varchar(100), mapValue double, FOREIGN KEY(eventId) REFERENCES events(id), PRIMARY KEY (eventId, mapKey, mapValue))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class MapEventRepository {
             stmt.setInt(1, eventId);
             stmt.setString(2, mapKey);
             stmt.setDouble(3, mapValue);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class MapEventRepository {
             stmt.setInt(1, eventId);
             stmt.setString(2, mapKey);
             stmt.setDouble(3, mapValue);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class MapEventRepository {
             stmt.setDouble(1, mapValue);
             stmt.setInt(2, eventId);
             stmt.setString(3, mapKey);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

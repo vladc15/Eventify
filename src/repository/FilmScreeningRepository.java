@@ -16,7 +16,7 @@ public class FilmScreeningRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS filmScreenings" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, dimension varchar(50), imax boolean, releaseYear int, premiere boolean, appropriateAge int, qa boolean, eventID int, FOREIGN KEY (eventID) REFERENCES events(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class FilmScreeningRepository {
             stmt.setInt(5, appropriateAge);
             stmt.setBoolean(6, qa);
             stmt.setInt(7, eventID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class FilmScreeningRepository {
             String deleteFilmScreeningSql = "DELETE FROM filmScreenings WHERE id = ?";
             stmt = connection.prepareStatement(deleteFilmScreeningSql);
             stmt.setInt(1, filmScreeningId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

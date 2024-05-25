@@ -20,7 +20,7 @@ public class EventArtistRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS event_artists" +
                     "(eventID int, artistID int, PRIMARY KEY(eventID, artistID), FOREIGN KEY(eventID) REFERENCES events(id), FOREIGN KEY(artistID) REFERENCES artists(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class EventArtistRepository {
             stmt = connection.prepareStatement(insertEventArtistSql);
             stmt.setInt(1, eventID);
             stmt.setInt(2, artistID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -104,7 +104,7 @@ public class EventArtistRepository {
             stmt = connection.prepareStatement(deleteEventArtistSql);
             stmt.setInt(1, eventID);
             stmt.setInt(2, artistID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

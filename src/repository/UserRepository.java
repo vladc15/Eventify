@@ -20,7 +20,7 @@ public class UserRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS users" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, username varchar(30) NOT NULL, password varchar(30) NOT NULL, name varchar(30), age int, locationID int NULL, FOREIGN KEY (locationID) REFERENCES locations(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class UserRepository {
                 stmt.setString(2, user.getPassword());
                 stmt.setString(3, user.getName());
                 stmt.setInt(4, user.getAge());
-                stmt.executeQuery();
+                stmt.executeUpdate();
             } else {
                 LocationRepository.addLocation(user.getLocation());
                 //String insertUserSql = "INSERT INTO users(username, password, name, age, locationID) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ", " + LocationRepository.getLocationId(user.getLocation()) + ")";
@@ -77,7 +77,7 @@ public class UserRepository {
                 stmt.setString(3, user.getName());
                 stmt.setInt(4, user.getAge());
                 stmt.setInt(5, LocationRepository.getLocationId(user.getLocation()));
-                stmt.executeQuery();
+                stmt.executeUpdate();
             }
             //String insertUserSql = "INSERT INTO users(username, password, name, age, locationID) VALUES('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getName() + "', " + user.getAge() + ", " + LocationRepository.getLocationId(user.getLocation()) + ")";
             //stmt.execute(insertUserSql);
@@ -126,7 +126,7 @@ public class UserRepository {
                 stmt.setString(3, user.getName());
                 stmt.setInt(4, user.getAge());
                 stmt.setInt(5, userId);
-                stmt.executeQuery();
+                stmt.executeUpdate();
             } else {
                 //String updateUserSql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', age = " + user.getAge() + ", locationID = " + LocationRepository.getLocationId(user.getLocation()) + " WHERE id = " + userId;
                 //stmt.execute(updateUserSql);
@@ -138,7 +138,7 @@ public class UserRepository {
                 stmt.setInt(4, user.getAge());
                 stmt.setInt(5, LocationRepository.getLocationId(user.getLocation()));
                 stmt.setInt(6, userId);
-                stmt.executeQuery();
+                stmt.executeUpdate();
             }
             //String updateUserSql = "UPDATE users SET username = '" + user.getUsername() + "', password = '" + user.getPassword() + "', name = '" + user.getName() + "', age = " + user.getAge() + ", locationID = " + LocationRepository.getLocationId(user.getLocation()) + " WHERE id = " + userId;
             //stmt.execute(updateUserSql);
@@ -380,7 +380,7 @@ public class UserRepository {
             stmt = connection.prepareStatement(updateNameSql);
             stmt.setString(1, name);
             stmt.setInt(2, userId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -422,7 +422,7 @@ public class UserRepository {
             stmt = connection.prepareStatement(updateAgeSql);
             stmt.setInt(1, age);
             stmt.setInt(2, userId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -464,7 +464,7 @@ public class UserRepository {
             stmt = connection.prepareStatement(updateLocationSql);
             stmt.setInt(1, locationId);
             stmt.setInt(2, userId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

@@ -22,7 +22,7 @@ public class CustomerRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS customers" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, wallet double, userId int, FOREIGN KEY (userId) REFERENCES users(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class CustomerRepository {
             stmt = connection.prepareStatement("INSERT INTO customers(wallet, userId) VALUES(?, ?)");
             stmt.setDouble(1, customer.getWallet());
             stmt.setInt(2, UserRepository.getUserId(customer));
-            stmt.executeQuery();
+            stmt.executeUpdate();
             //String insertCustomerSql = "INSERT INTO customers(wallet, userId) VALUES(" + customer.getWallet() + ", " + UserRepository.getUserId(customer) + ")";
             //stmt.execute(insertCustomerSql);
             connection.commit();
@@ -365,7 +365,7 @@ public class CustomerRepository {
             stmt = connection.prepareStatement("UPDATE customers SET wallet = ? WHERE userId = ?");
             stmt.setDouble(1, newWallet);
             stmt.setInt(2, UserRepository.getUserId(customer));
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

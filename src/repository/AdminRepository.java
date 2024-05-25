@@ -17,7 +17,7 @@ public class AdminRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS admins" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, userID int, FOREIGN KEY (userID) REFERENCES users(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {

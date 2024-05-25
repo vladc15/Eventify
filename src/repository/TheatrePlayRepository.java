@@ -16,7 +16,7 @@ public class TheatrePlayRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS theatrePlays" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, intermission boolean, qa boolean, eventID int, FOREIGN KEY (eventID) REFERENCES events(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class TheatrePlayRepository {
             stmt.setBoolean(1, intermission);
             stmt.setBoolean(2, qa);
             stmt.setInt(3, eventID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class TheatrePlayRepository {
             String deleteTheatrePlaySql = "DELETE FROM theatrePlays WHERE id = ?";
             stmt = connection.prepareStatement(deleteTheatrePlaySql);
             stmt.setInt(1, theatrePlayID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

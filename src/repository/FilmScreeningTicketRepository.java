@@ -17,7 +17,7 @@ public class FilmScreeningTicketRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS filmScreening_tickets" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, ticketID int, qaPrice double, imaxPrice double, FOREIGN KEY (ticketID) REFERENCES tickets(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class FilmScreeningTicketRepository {
             stmt.setInt(1, ticketID);
             stmt.setDouble(2, qaPrice);
             stmt.setDouble(3, imaxPrice);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public class FilmScreeningTicketRepository {
             String deleteFilmScreeningTicketSql = "DELETE FROM filmScreening_tickets WHERE ticketID = ?";
             stmt = connection.prepareStatement(deleteFilmScreeningTicketSql);
             stmt.setInt(1, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class FilmScreeningTicketRepository {
             stmt = connection.prepareStatement(updateQaPriceSql);
             stmt.setDouble(1, qaPrice);
             stmt.setInt(2, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -174,7 +174,7 @@ public class FilmScreeningTicketRepository {
             stmt = connection.prepareStatement(updateImaxPriceSql);
             stmt.setDouble(1, imaxPrice);
             stmt.setInt(2, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

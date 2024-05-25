@@ -17,7 +17,7 @@ public class ConcertTicketRepository {
                     "(id int PRIMARY KEY AUTO_INCREMENT, ticketID int, afterPartyPrice double, meetAndGreetPrice double, " +
                     "FOREIGN KEY (ticketID) REFERENCES tickets(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class ConcertTicketRepository {
             stmt.setInt(1, ticketID);
             stmt.setDouble(2, afterPartyPrice);
             stmt.setDouble(3, meetAndGreetPrice);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class ConcertTicketRepository {
             stmt = connection.prepareStatement(updateAfterPartyPriceSql);
             stmt.setDouble(1, afterPartyPrice);
             stmt.setInt(2, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class ConcertTicketRepository {
             stmt = connection.prepareStatement(updateMeetAndGreetPriceSql);
             stmt.setDouble(1, meetAndGreetPrice);
             stmt.setInt(2, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -190,7 +190,7 @@ public class ConcertTicketRepository {
             String deleteConcertTicketSql = "DELETE FROM concert_tickets WHERE ticketID = ?";
             stmt = connection.prepareStatement(deleteConcertTicketSql);
             stmt.setInt(1, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

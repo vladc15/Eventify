@@ -22,7 +22,7 @@ public class ArtistRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS artists" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, bio varchar(30), genre varchar(30), userId int, FOREIGN KEY (userId) REFERENCES users(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {

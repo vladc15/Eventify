@@ -21,7 +21,7 @@ public class LocationRepository {
                     "(id int PRIMARY KEY AUTO_INCREMENT, address varchar(30) NOT NULL" +
                     ", city varchar(30), totalCapacity int, capacity_rows int, capacity_columns int)";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class LocationRepository {
             stmt.setInt(3, location.getTotalCapacity());
             stmt.setInt(4, location.getRows());
             stmt.setInt(5, location.getColumns());
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -226,7 +226,7 @@ public class LocationRepository {
             stmt.setInt(4, location.getRows());
             stmt.setInt(5, location.getColumns());
             stmt.setInt(6, location.getLocationId());
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -274,7 +274,7 @@ public class LocationRepository {
             stmt.setInt(4, location.getRows());
             stmt.setInt(5, location.getColumns());
             stmt.setInt(6, id);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -315,7 +315,7 @@ public class LocationRepository {
             String deleteLocationSql = "DELETE FROM locations WHERE id=?";
             stmt = connection.prepareStatement(deleteLocationSql);
             stmt.setInt(1, id);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

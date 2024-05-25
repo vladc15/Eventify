@@ -18,7 +18,7 @@ public class ReviewRepository {
         try {
             connection = DatabaseConfiguration.getConnection();
             stmt = connection.createStatement();
-            stmt.execute("CREATE TABLE IF NOT EXISTS reviews (" +
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS reviews (" +
                     "id INT PRIMARY KEY AUTO_INCREMENT," +
                     "event_id INT," +
                     "user_id INT," +
@@ -68,7 +68,7 @@ public class ReviewRepository {
             stmt.setInt(2, userId);
             stmt.setDouble(3, rating);
             stmt.setString(4, comment);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class ReviewRepository {
             //stmt.executeUpdate("DELETE FROM reviews WHERE id = " + reviewId);
             stmt = connection.prepareStatement("DELETE FROM reviews WHERE id = ?");
             stmt.setInt(1, reviewId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class ReviewRepository {
             stmt.setInt(2, EventRepository.getEventId(review.getEvent()));
             stmt.setDouble(3, review.getRating());
             stmt.setString(4, review.getComment());
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -249,7 +249,7 @@ public class ReviewRepository {
             stmt.setInt(4, EventRepository.getEventId(review.getEvent()));
             stmt.setDouble(5, review.getRating());
             stmt.setString(6, review.getComment());
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

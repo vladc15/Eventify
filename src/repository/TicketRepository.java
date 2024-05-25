@@ -19,7 +19,7 @@ public class TicketRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS tickets" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, eventID int, ticket_type varchar(100), seat varchar(100), FOREIGN KEY (eventID) REFERENCES events(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class TicketRepository {
             stmt.setInt(1, eventID);
             stmt.setString(2, type);
             stmt.setString(3, seat);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class TicketRepository {
             String deleteTicketSql = "DELETE FROM tickets WHERE id = ?";
             stmt = connection.prepareStatement(deleteTicketSql);
             stmt.setInt(1, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -331,7 +331,7 @@ public class TicketRepository {
             stmt = connection.prepareStatement(updateTypeSql);
             stmt.setString(1, type);
             stmt.setInt(2, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -373,7 +373,7 @@ public class TicketRepository {
             stmt = connection.prepareStatement(updateSeatSql);
             stmt.setString(1, seat);
             stmt.setInt(2, ticketID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

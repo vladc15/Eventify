@@ -20,7 +20,7 @@ public class CustomerFavoritesRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_favorites" +
                     "(customerId int, eventId int, FOREIGN KEY (customerId) REFERENCES customers(id), FOREIGN KEY (eventId) REFERENCES events(id), PRIMARY KEY (customerId, eventId))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class CustomerFavoritesRepository {
             stmt = connection.prepareStatement(insertCustomerFavoriteSql);
             stmt.setInt(1, customerId);
             stmt.setInt(2, eventId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class CustomerFavoritesRepository {
             stmt = connection.prepareStatement(deleteCustomerFavoriteSql);
             stmt.setInt(1, customerId);
             stmt.setInt(2, eventId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

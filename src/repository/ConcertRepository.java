@@ -16,7 +16,7 @@ public class ConcertRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS concerts" +
                     "(id int PRIMARY KEY AUTO_INCREMENT, isSeated boolean, afterParty boolean, meetAndGreet boolean, eventID int, FOREIGN KEY (eventID) REFERENCES events(id))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class ConcertRepository {
             stmt.setBoolean(2, afterParty);
             stmt.setBoolean(3, meetAndGreet);
             stmt.setInt(4, eventID);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class ConcertRepository {
             String deleteConcertSql = "DELETE FROM concerts WHERE id = ?";
             stmt = connection.prepareStatement(deleteConcertSql);
             stmt.setInt(1, concertId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {

@@ -20,7 +20,7 @@ public class CustomerTicketsRepository {
             String createTableSql = "CREATE TABLE IF NOT EXISTS customer_tickets" +
                     "(ticketId int, customerId int, FOREIGN KEY (ticketId) REFERENCES tickets(id), FOREIGN KEY (customerId) REFERENCES customers(id), PRIMARY KEY (ticketId, customerId))";
             stmt = connection.createStatement();
-            stmt.execute(createTableSql);
+            stmt.executeUpdate(createTableSql);
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class CustomerTicketsRepository {
             stmt = connection.prepareStatement(insertCustomerTicketSql);
             stmt.setInt(1, ticketId);
             stmt.setInt(2, customerId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class CustomerTicketsRepository {
             stmt = connection.prepareStatement(deleteCustomerTicketSql);
             stmt.setInt(1, ticketId);
             stmt.setInt(2, customerId);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             connection.commit();
             connection.close();
         } catch (Exception e) {
